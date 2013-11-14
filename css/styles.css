@@ -1,0 +1,11 @@
+.c_node {
+	stroke: #000;
+	fill: #f00;
+}
+
+.node {
+	stroke: #000;
+	stroke-width: 2px;
+	fill: #fff;
+
+}
