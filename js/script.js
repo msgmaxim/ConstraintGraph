@@ -2,7 +2,7 @@ window.addEventListener("load", init);
 
 var width = window.innerWidth,
     height = window.innerHeight;
-var cola = cola.d3adaptor().linkDistance(40).size([]);
+var cola = cola.d3adaptor().linkDistance(40).size([width, height]);
 
 var svg;
 var edgesLayer;
@@ -42,7 +42,7 @@ function ready(){
 }
 
 function draw(){
-	cola.nodes([shown_v, data.constraint_nodes]).links([links]).start();
+	cola.nodes([].concat(data.constraint_nodes, shown_v)).links(links).start();
 
   var v_nodes = nodesLayer.selectAll(".v_node")
     .data(shown_v.filter(function(v) {
@@ -52,8 +52,8 @@ function draw(){
     .enter().append("circle")
     .attr("class", "node")
     .attr("r", VAR_SIZE / 2)
-    .attr("cx", function(d, i) {return 50 + 25 * i;})
-    .attr("cy", 50);
+    // .attr("cx", function(d, i) {return 50 + 25 * i;})
+    // .attr("cy", 50);
 
   var a_nodes = nodesLayer.selectAll(".a_node")
     .data(shown_v.filter(function(v) {return (v.type === "arr");}))
@@ -61,21 +61,21 @@ function draw(){
     .attr("class", "node")
     .attr("width", ARR_SIZE)
     .attr("height", ARR_SIZE)
-    .attr("x", function(d, i) {return 50 + 35 * i - ARR_SIZE / 2;})
-    .attr("y", 120);
+    // .attr("x", function(d, i) {return 50 + 35 * i - ARR_SIZE / 2;})
+    // .attr("y", 120);
 
   var c_nodes = nodesLayer.selectAll(".c_node")
 		.data(data.constraint_nodes)
-		.enter().append("path")
+		.enter().append("circle")
 		.attr("class", "c_node")
-		.attr("d", function(d,i) {
-			var cx = 50 + 20 * i;
-			var cy = 80;
-			var edge = 16;
-			var h = 1 * edge;
-			return "M " + cx + " " + (cy - h/2) + " l " + (edge/2) + " " + (h) + " l " + (-edge) + " " + ("0") + " z";
-		});
-		// .attr("r", C_SIZE / 2)
+		// .attr("d", function(d,i) {
+		// 	var cx = 50 + 20 * i;
+		// 	var cy = 80;
+		// 	var edge = 16;
+		// 	var h = 1 * edge;
+		// 	return "M " + cx + " " + (cy - h/2) + " l " + (edge/2) + " " + (h) + " l " + (-edge) + " " + ("0") + " z";
+		// });
+		.attr("r", C_SIZE / 2)
 		// .attr("cx", function(d, i) {return 50 + 20 * i;})
 		// .attr("cy", 80);
 }
