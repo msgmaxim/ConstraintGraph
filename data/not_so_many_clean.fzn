@@ -4,6 +4,7 @@ array [1..25] of var 1..5: b :: output_array([1..5, 1..5]);
 var 1..5: bb :: output_var;
 array [1..25] of var 1..5: c :: output_array([1..5, 1..5]);
 var 1..5: cc :: output_var;
+constraint all_different_int([a[1], a[2], a[3]]);
 constraint all_different_int([a[1], b[1], c[1]]);
 constraint all_different_int([a[2], b[2], c[2]]);
 constraint all_different_int([a[3], b[3], c[3]]);

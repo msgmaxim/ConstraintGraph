@@ -3,9 +3,26 @@
 	fill: #f00;
 }
 
-.node {
+.v_node {
 	stroke: #000;
 	stroke-width: 2px;
 	fill: #fff;
 
+}
+
+.a_node {
+	stroke: #000;
+	stroke-width: 2px;
+	fill: #fff;
+}
+
+.straight_link {
+	stroke-width: 1px;
+	stroke: #000;
+}
+
+.curved_link {
+	stroke-width: 1px;
+	stroke: #000;
+	fill: none;
 }
