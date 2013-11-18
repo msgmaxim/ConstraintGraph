@@ -68,16 +68,9 @@ function draw(){
     .attr("class", "c_node");
 
   var link = edgesLayer.selectAll(".straight_link")
-      .data(links.filter(function(d) { return (d.type === "straight"); }))
+      .data(links)
       .enter().append("line")
       .attr("class", "straight_link");
-
-  edgesLayer.selectAll(".curved_link")
-      .data(links.filter(function(d) { return (d.type === "curved"); }))
-      .enter().append("ellipse")
-      .attr("class", "curved_link");
-
-
 
     cola.on("tick", update_drawing);
 }
@@ -95,11 +88,12 @@ function update_drawing(){
 
   a_node.attr("x", function (d) { return d.x - ARR_SIZE/2; })
         .attr("y", function (d) { return d.y - ARR_SIZE/2; })
+        .on("click", function (d) {expand_node(d);})
         .append("title").text(function (d) { return d.name; });
 
   c_node.attr("d", function (d) {
     var h = 16;
-    return str = "M " + d.x + " " + (d.y - h/2) + " l " + (h/2) + " " + (h) + " l " + (-h) + " " + ("0") + " z";
+    return "M " + d.x + " " + (d.y - h/2) + " l " + (h/2) + " " + (h) + " l " + (-h) + " " + ("0") + " z";
   })
   .append("title").text(function (d) { return d.type; });
 
@@ -107,20 +101,17 @@ function update_drawing(){
     .attr("y1", function (d) { return d.source.y; })
     .attr("x2", function (d) { return d.target.x; })
     .attr("y2", function (d) { return d.target.y; });
-
-  q_link.attr("cx", function (d) { return (d.source.x + d.target.x)/2; })
-        .attr("cy", function (d) { return (d.source.y + d.target.y)/2; })
-        .attr("rx", function (d) { return 50; })
-        .attr("ry", function (d) { return 10; })
-        .attr("transform", "rotate(10)");
-
 }
-
-
-
 
 function apply_zooming(){
   vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+}
+
+function expand_node(d){
+  d.isCollapsed = false;
+  construct_graph();
+  draw();
+  console.log(d);
 }
 
 function construct_graph(){
@@ -130,6 +121,7 @@ function construct_graph(){
       shown_v.push(v);
     } else {
       // TODO: add corresponding single variables
+      shown_v.push(v);
     }
   }
   construct_cnodes();
@@ -139,6 +131,7 @@ function construct_graph(){
 function construct_cnodes(){
   var name;
   var unique_constraints = {};
+  data.constraint_nodes = [];
   for (var i in data.constraints){
     var cluster = {name:"", arr:{}};
     var c = data.constraints[i];
@@ -163,6 +156,7 @@ function construct_cnodes(){
 }
 
 function create_links(){
+  links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
    
