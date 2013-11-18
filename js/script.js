@@ -17,6 +17,7 @@ var C_SIZE = 12;
 var data = new Data();
 var shown_v = [];
 var links = [];
+var cola_links = [];
 
 function init(){
   init_svg();
@@ -44,7 +45,7 @@ function ready(){
 }
 
 function draw(){
-  cola.nodes([].concat(data.constraint_nodes, shown_v)).links(links).start();
+  cola.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start();
 
   var v_nodes = nodesLayer.selectAll(".v_node")
     .data(shown_v.filter(function(v) {
@@ -115,17 +116,39 @@ function expand_node(d){
 }
 
 function construct_graph(){
+  console.log("reconstruction");
+  shown_v = [];
   for (var i in data.global_v){
     var v = data.global_v[i];
     if (v.type != "arr" || v.isCollapsed){
       shown_v.push(v);
     } else {
       // TODO: add corresponding single variables
-      shown_v.push(v);
+      // generate_nodes_from_array(v.name + "[", v.n);
+      // shown_v.push(v);
+      var n = 1;
+      for (var j = 0; j < v.dims; j++)
+        n *= v.n[j];
+      for (var k = 1; k <= n; k++)
+        shown_v.push(data.all_v[v.name + "[" + k + "]"]);
     }
   }
   construct_cnodes();
   create_links();
+}
+
+// if I want to generate real nodes for array's elements
+function generate_nodes_from_array(str, arr){
+  if (arr.length == 1)
+    for (var i = 1; i <= arr[0]; i++)
+      shown_v.push({name: (str + i + "]")});
+  else {
+    arr.shift();
+    for (var j = 1; j <= arr[0]; j++){
+      generate_nodes_from_array(str + j + ",", arr);
+    }
+      
+  }
 }
 
 function construct_cnodes(){
@@ -142,7 +165,9 @@ function construct_cnodes(){
         name = c.arr[j].host.name;
       else
         name = c.arr[j].name;
-      cluster.arr[name] = data.global_v_names[name];
+      var obj = data.global_v_names[name];
+      if (!obj) obj = data.all_v[name];
+      cluster.arr[name] = obj; //!!!
       cluster.name += name + "_";
 
     }
@@ -157,25 +182,19 @@ function construct_cnodes(){
 
 function create_links(){
   links = [];
+  cola_links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
-   
-    if (Object.keys(c.arr).length == 1){
+
+    for (var j in c.arr){
       var link = {};
+      link.type = "straight";
       link.source = c;
-      link.target = c.arr[Object.keys(c.arr)[0]];
-      link.type = "curved";
-      link.length = 0.8;
+      link.target = c.arr[j];
       links.push(link);
-    } else {
-      for (var j in c.arr){
-        var link = {};
-        link.type = "straight";
-        link.source = c;
-        link.target = c.arr[j];
-        links.push(link);
-      }
+      cola_links.push(link);
     }
+
     
   }
   console.log(links);
