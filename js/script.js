@@ -15,9 +15,9 @@ function init(){
 }
 
 function ready(){
-  console.log(data.global_v);
-  console.log(data.all_v);
-  console.log(data.constraints);
+  // console.log(data.global_v);
+  // console.log(data.all_v);
+  // console.log(data.constraints);
   construct_graph();
   de.draw();
 }
@@ -26,7 +26,7 @@ function expand_node(d){
   d.isCollapsed = false;
   construct_graph();
   de.draw();
-  console.log(d);
+  // console.log(d);
 }
 
 function construct_graph(){
@@ -54,7 +54,7 @@ function construct_graph(){
 
 // if I want to generate real nodes for array's elements
 function generate_nodes_from_array(str, arr){
-  if (arr.length == 1)
+  if (arr.length === 1)
     for (var i = 1; i <= arr[0]; i++)
       shown_v.push({name: (str + i + "]")});
   else {
@@ -92,7 +92,6 @@ function construct_cnodes(){
   for (var k in unique_constraints){
     data.constraint_nodes.push(unique_constraints[k]);
   }
-  console.log(data.constraint_nodes);
 }
 
 function create_links(){
@@ -102,11 +101,12 @@ function create_links(){
     var c = data.constraint_nodes[i];
 
     for (var j in c.arr){
-      var link = {};
-      link.type = "straight";
-      link.source = c;
-      if (c.arr[j].host)
+      var link = {type: "straight", source: c, length: 2};
+      if (c.arr[j].host){
         link.target = c.arr[j].host;
+        if (c.arr[j].host.isCollapsed === false)
+          link.length = 8;
+      }
       else
         link.target = c.arr[j];
       links.push(link);
@@ -115,5 +115,4 @@ function create_links(){
 
     
   }
-  console.log(links);
 }

@@ -16,9 +16,21 @@
 	fill: #fff;
 }
 
+.two_dim_array_e {
+	stroke: #000;
+	stroke-width: 1px;
+	fill: #fff;
+}
+
+.exp_a_node {
+	stroke: rgba(0, 0, 0, .5);
+	stroke-width: 1px;
+	fill: none;
+}
+
 .straight_link {
 	stroke-width: 1px;
-	stroke: #000;
+	stroke: #808080;
 }
 
 .curved_link {

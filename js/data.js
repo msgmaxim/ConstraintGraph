@@ -13,14 +13,10 @@ Data.prototype.readFile = function (file_name, callback){
   ajaxURL += "?noCache=" + (new Date().getTime()) + Math.random();
 
   req.open('get', ajaxURL, false);
-  req.onload =
-		// this._initModel.call(this, data);
-		(
-			function(caller) {
+  req.onload = (function(caller) {
 				return function() {caller._initModel.apply(caller, [arguments[0], callback]);};
 			}
 		)(this);
-
   req.send();
 };
 
@@ -53,7 +49,7 @@ Data._isConstraint = function(str){
 };
 
 Data.prototype._parseConstraints = function(arr){
-	for (var i in arr){
+	for (var i = 0; i < arr.length; i++){
 		var str = arr[i].substring("constraint ".length);
 		var b1 = str.indexOf('(');
 		var b2 = str.indexOf(')');
@@ -68,9 +64,9 @@ Data.prototype._parseConstraints = function(arr){
 };
 
 Data.prototype._loopConstraints = function(){
-	for (var i in this.constraints){
+	for (var i = 0; i < this.constraints.length; i++){
 		var c = this.constraints[i];
-		for (var j in c.arr){
+		for (var j = 0; j < c.arr.length; j++){
 			var v = this.all_v[c.arr[j]];
 			v.constraints.push(c);
 			if (v.host)
@@ -81,7 +77,7 @@ Data.prototype._loopConstraints = function(){
 };
 
 Data.prototype._parseVariables = function(arr){
-	for (var i in arr){
+	for (var i = 0; i < arr.length; i++){
 		var v = {};
 		v.name = arr[i].substring(arr[i].indexOf(':') + 1).match(/[a-zA-z_0-9]+/)[0];
 		this.global_v_names[v.name] = v;
@@ -94,7 +90,7 @@ Data.prototype._parseVariables = function(arr){
 };
 
 Data.prototype._parseArrays = function(arr){
-	for (var i in arr){
+	for (var i = 0; i < arr.length; i++){
 		var a = {};
 
 		var rest = arr[i].substring(arr[i].indexOf(':') + 1).trim();
@@ -107,8 +103,9 @@ Data.prototype._parseArrays = function(arr){
 		a.n = [];
 		a.type = "arr";
 		a.isCollapsed = true;
+
 		var count = 1;
-		for (var j in dims){
+		for (var j = 0; j < dims.length; j++){
 			a.n[j] = parseInt(dims[j].match(/[0-9]*$/)[0], 10);
 			count *= a.n[j];
 		}
@@ -118,6 +115,13 @@ Data.prototype._parseArrays = function(arr){
 			var name = a.name + "[" + k + "]";
 			this.all_v[name] = {host:a, name:name, constraints: []};
 		}
+
+				// TODO: make for all dimentions
+		if (a.dims === 2){
+			a.w = (DrawingEngine.PADDING + DrawingEngine.VAR_SIZE) * a.n[1] + DrawingEngine.PADDING;
+			a.h = (DrawingEngine.PADDING + DrawingEngine.VAR_SIZE) * a.n[0] + DrawingEngine.PADDING;
+		}
+
 		this.global_v_names[a.name] = a;
 		this.global_v.push(a);
 	}
