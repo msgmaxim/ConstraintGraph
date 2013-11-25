@@ -103,16 +103,23 @@ function create_links(){
     for (var j in c.arr){
       var link = {type: "straight", source: c, length: 2};
       if (c.arr[j].host){
-        link.target = c.arr[j].host;
-        if (c.arr[j].host.isCollapsed === false)
+        link.target = c.arr[j].host; // for cola
+        
+        if (c.arr[j].host.isCollapsed === false){
+          link.real_target = c.arr[j];
           link.length = 8;
+        } else {
+          link.real_target = c.arr[j].host;
+        }
+          
       }
-      else
-        link.target = c.arr[j];
+      else {
+         link.target = link.real_target = c.arr[j];
+      }
+        
       links.push(link);
       cola_links.push(link);
     }
-
     
   }
 }

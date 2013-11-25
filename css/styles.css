@@ -1,25 +1,28 @@
 .c_node {
-	stroke: #000;
-	fill: #f00;
+	stroke: rgba(0, 0, 0, 1);
+	fill: rgba(255, 0, 0, 1);
 }
 
-.v_node {
-	stroke: #000;
-	stroke-width: 2px;
-	fill: #fff;
-
+.faded_c_node {
+	stroke: rgba(0, 0, 0, 0.5);
+	fill: rgba(255, 0, 0, 0.5);
 }
 
-.a_node {
-	stroke: #000;
+.v_node, .a_node {
+	stroke: rgba(0, 0, 0, 1);
 	stroke-width: 2px;
 	fill: #fff;
+}
+
+.faded_wnode {
+	stroke: rgba(0, 0, 0, 0.5);
 }
 
 .two_dim_array_e {
-	stroke: #000;
+	stroke: rgba(0, 0, 0, 0.5);
 	stroke-width: 1px;
 	fill: #fff;
+	/*fill: none;*/
 }
 
 .exp_a_node {
