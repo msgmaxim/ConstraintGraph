@@ -82,8 +82,7 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
       DrawingEngine.highlight_element(d);
     })
     .on("mouseleave", function (d) {
-      // d3.select(this)
-      //   .attr("style", function (d) {return "fill: rgba(255, 0, 0, 0.7)";});
+      DrawingEngine.unhighlight_all();
     })
     .each(function(d) {d.svg_element = this;})
     .append("title").text(function (d) { return d.type; });
@@ -100,16 +99,33 @@ DrawingEngine.highlight_element = function(n){
       (n.arr[i].type === "arr" && n.arr[i].isCollapsed) ||
       (n.arr[i].type === "array_element" && !n.arr[i].host.isCollapsed)))
       d3.select(n.arr[i].svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 0, 1)";});
-    else if (!n.arr[i].isCollapsed)
-      console.log(n.arr[i]);
+    // else
+
+      // console.log(n.arr[i]);
   }
+  // console.log("new");
+};
+
+DrawingEngine.unhighlight_all = function(){
+  d3.selectAll(".two_dim_array_e").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1"});
+  d3.selectAll(".c_node").attr("style", function (d) {return "fill: rgba(255, 0, 0, 1"});
+  d3.selectAll(".a_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1"});
+  d3.selectAll(".v_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1"});
 };
 
 DrawingEngine.prototype._draw_array_nodes = function() {
   a_nodes = this.nodesLayer.selectAll(".a_node")
-    .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}));
+    .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}), function (d) { return d.name; });
 
-  a_nodes.enter().append("rect")
+  var a_nodes_enter = a_nodes.enter();
+
+  console.log(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}));
+
+  a_nodes.each(function(d) { d.svg_element = this; }); // because svg_elements becomes undefined for some reason
+
+  var poo = a_nodes_enter;
+
+  a_nodes_enter.append("rect")
     .attr("class", "a_node")
     .attr("width", DrawingEngine.ARR_SIZE)
     .attr("height", DrawingEngine.ARR_SIZE)
@@ -124,6 +140,10 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
 
   exp_a_nodes = this.nodesLayer.selectAll(".exp_a_node")
     .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}));
+
+
+
+  this.nodesLayer.selectAll(".exp_a_node").each(function(d) { d.svg_element = this; }); // because svg_elements becomes undefined for some reason
 
   exp_a_nodes.enter().append("rect")
     .attr("class", "exp_a_node")
@@ -149,14 +169,18 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
 
   });
 
+  console.log(this.nodesLayer.selectAll(".two_dim_array_e"));
+  console.log(this.nodesLayer.selectAll(".two_dim_array_e").data(temp_data).enter());
+
   this.nodesLayer.selectAll(".two_dim_array_e")
-  .data(temp_data).enter().append('rect')
+  .data(temp_data, function (d) { return d.name; }).enter().append('rect')
   .attr("class", "two_dim_array_e")
   .attr("width", DrawingEngine.VAR_SIZE)
   .attr("height", DrawingEngine.VAR_SIZE)
   .each(function (d) {
     d.svg_element = this;
     d.type = "array_element";
+    console.log("adding element " + d.real_name);
   })
   .append("title").text(function (d) { return d.real_name; });
 

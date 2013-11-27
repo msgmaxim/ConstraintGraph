@@ -23,15 +23,18 @@ function ready(){
 }
 
 function expand_node(d){
+
   d.isCollapsed = false;
+    console.log("clicked: ");
+  console.log(d);
   construct_graph();
   de.draw();
-  // console.log(d);
 }
 
 function construct_graph(){
   console.log("reconstruction");
   shown_v = [];
+  if (shown_v.length === 0)
   for (var i in data.global_v){
     var v = data.global_v[i];
     if (v.type != "arr" || v.isCollapsed){
