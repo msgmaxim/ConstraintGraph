@@ -172,7 +172,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
   console.log(this.nodesLayer.selectAll(".two_dim_array_e"));
   console.log(this.nodesLayer.selectAll(".two_dim_array_e").data(temp_data).enter());
 
-  this.nodesLayer.selectAll(".two_dim_array_e")
+  this.nodesLayer.selectAll(".two_dim_array_e") 
   .data(temp_data, function (d) { return d.name; }).enter().append('rect')
   .attr("class", "two_dim_array_e")
   .attr("width", DrawingEngine.VAR_SIZE)
