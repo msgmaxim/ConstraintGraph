@@ -11,12 +11,26 @@ var cola_links = [];
 
 function init(){
   de.init_svg();
-  data.readFile("not_so_many_clean.fzn", ready);
+
+/// work:
+
+  // data.readFile("not_so_many_clean.fzn", ready);
+  // data.readFile("latinsquare.fzn", ready);
+  // data.readFile("latinsquare_no_gecode.fzn", ready);
+  // data.readFile("aust.fzn", ready);
+  // data.readFile("alpha.fzn", ready);
+  // data.readFile("money.fzn", ready);
+  // data.readFile("simple1d.fzn", ready);
+
+/// do not work:
+  
+  // data.readFile("golomb.fzn", ready); // can't read constraints with <array_name> rather than [] 
+  data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than [] + something else ([] in [])
 }
 
 function ready(){
-  // console.log(data.global_v);
-  // console.log(data.all_v);
+  console.log(data.global_v);
+  console.log(data.all_v);
   // console.log(data.constraints);
   construct_graph();
   de.draw();
@@ -25,8 +39,13 @@ function ready(){
 function expand_node(d){
 
   d.isCollapsed = false;
-    console.log("clicked: ");
-  console.log(d);
+  construct_graph();
+  de.draw();
+}
+
+function collapse_node(d){
+
+  d.isCollapsed = true;
   construct_graph();
   de.draw();
 }
