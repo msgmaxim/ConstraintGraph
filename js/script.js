@@ -20,12 +20,15 @@ function init(){
   // data.readFile("aust.fzn", ready);
   // data.readFile("alpha.fzn", ready);
   // data.readFile("money.fzn", ready);
-  // data.readFile("simple1d.fzn", ready);
+  data.readFile("simple1d.fzn", ready);
+  
 
 /// do not work:
   
+  // data.readFile("bacp-1.fzn", ready);
+  // data.readFile("open_stacks_01.fzn", ready);
   // data.readFile("golomb.fzn", ready); // can't read constraints with <array_name> rather than [] 
-  data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than [] + something else ([] in [])
+  // data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than [] + something else ([] in [])
 }
 
 function ready(){
@@ -96,6 +99,7 @@ function construct_cnodes(){
     var cluster = {name:"", arr:{}};
     var c = data.constraints[i];
     cluster.type = c.name;
+    cluster.name = c.name;
     for (var j in c.arr){
       // check if expanded array
       if (c.arr[j].host && c.arr[j].host.isCollapsed)
@@ -105,7 +109,7 @@ function construct_cnodes(){
       var obj = data.global_v_names[name];
       if (!obj) obj = data.all_v[name];
       cluster.arr[name] = obj; //!!!
-      cluster.name += name + "_";
+      cluster.name += "_" + name;
 
     }
     unique_constraints[cluster.name] = cluster;
