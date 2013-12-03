@@ -156,11 +156,10 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
         return d.width = d.n[0] * (DrawingEngine.VAR_SIZE + DrawingEngine.PADDING) - DrawingEngine.PADDING;
     })
     .attr("height", function (d) {
-      /// TODO: for other dimentions as well
       if (d.dims === 2)
         return d.height = d.n[0] * (DrawingEngine.VAR_SIZE + DrawingEngine.PADDING) - DrawingEngine.PADDING;
       else if (d.dims === 1)
-        return d.width = d.n[0] * (DrawingEngine.VAR_SIZE + DrawingEngine.PADDING) - DrawingEngine.PADDING;
+        return d.height = DrawingEngine.VAR_SIZE;
     })
     .each(function(d) {d.svg_element = this;})
     .append("title").text(function (d) { return d.name; });
@@ -169,9 +168,12 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
 
   var temp_data = [];
 
+
+
   d3.selectAll(".exp_a_node").each(function(d) {
+    var i;
     if (d.dims === 2){
-      for (var i = 0; i < d.n[0]; i++){
+      for (i = 0; i < d.n[0]; i++){
         for (var j = 0; j < d.n[1]; j++){
           var obj = data.all_v[d.name + "[" + (i * d.n[1] + j + 1) + "]"];
           obj.i = i; obj.j = j; obj.host = d;
@@ -179,6 +181,15 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
           temp_data.push(obj);
           
         }
+      }
+    } else if (d.dims === 1) {
+      for (i = 0; i < d.n[0]; i++){
+        var obj = data.all_v[d.name + "[" + (i + 1) + "]"];
+        obj.i = 0;
+        obj.j = i;
+        obj.host = d;
+        obj.real_name = d.name + "[" + (i + 1) + "]";
+        temp_data.push(obj);
       }
     }
   });
@@ -251,7 +262,6 @@ DrawingEngine.prototype._update_drawing = function(){
     .attr("x", function (d) { d.x = d.host.x + (DrawingEngine.VAR_SIZE + DrawingEngine.PADDING) * d.j - d.host.w / 2 + DrawingEngine.VAR_SIZE/2; return d.x - DrawingEngine.PADDING;})
     .attr("y", function (d) { d.y = d.host.y + (DrawingEngine.VAR_SIZE + DrawingEngine.PADDING) * d.i - d.host.h / 2 + DrawingEngine.VAR_SIZE/2; return d.y - DrawingEngine.PADDING;});
     
-
   c_nodes.attr("d", function (d) {
     var h = 16;
     return "M " + d.x + " " + (d.y - h/2) + " l " + (h/2) + " " + (h) + " l " + (-h) + " " + ("0") + " z";
@@ -262,7 +272,6 @@ DrawingEngine.prototype._update_drawing = function(){
     .attr("x2", function (d) { return d.real_target.x; })
     .attr("y2", function (d) { return d.real_target.y; });
 };
-
 
 /// auxiliary functions
 

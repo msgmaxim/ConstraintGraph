@@ -153,7 +153,7 @@ Data.prototype._parseArrays = function(arr){
         a.vars.push(v);
       }
       a.n = [vars.length];
-    } else {
+    } else { // not introduced variables
       rest = rest.substring(b1 + 2, b2 - 1);
       var dims = rest.split(',');
       a.dims = dims.length;
@@ -176,6 +176,9 @@ Data.prototype._parseArrays = function(arr){
     if (a.dims === 2){
      a.w = (DrawingEngine.PADDING + DrawingEngine.VAR_SIZE) * a.n[1] + DrawingEngine.PADDING;
      a.h = (DrawingEngine.PADDING + DrawingEngine.VAR_SIZE) * a.n[0] + DrawingEngine.PADDING;
+    } else if (a.dims === 1){
+      a.w = (DrawingEngine.PADDING + DrawingEngine.VAR_SIZE) * a.n[0] + DrawingEngine.PADDING;
+      a.h = (DrawingEngine.PADDING + DrawingEngine.VAR_SIZE);
     }
 
     // console.log(a);

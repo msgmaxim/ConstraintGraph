@@ -20,7 +20,7 @@ function init(){
   // data.readFile("aust.fzn", ready);
   // data.readFile("alpha.fzn", ready);
   // data.readFile("money.fzn", ready);
-  data.readFile("simple1d.fzn", ready);
+  // data.readFile("simple1d.fzn", ready);
   
 
 /// do not work:
@@ -28,7 +28,7 @@ function init(){
   // data.readFile("bacp-1.fzn", ready);
   // data.readFile("open_stacks_01.fzn", ready);
   // data.readFile("golomb.fzn", ready); // can't read constraints with <array_name> rather than [] 
-  // data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than [] + something else ([] in [])
+  data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than [] + something else ([] in [])
 }
 
 function ready(){
