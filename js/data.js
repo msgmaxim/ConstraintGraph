@@ -93,6 +93,7 @@ Data.prototype._loopConstraints = function(){
           c.arr.push(v.vars[e]);
         }
         c.arr = v.vars;
+        /// TODO: sometimes we should not break
         break;
       } else { /// not an array name
         v.constraints.push(c);
@@ -147,8 +148,11 @@ Data.prototype._parseArrays = function(arr){
       var vars = rest.replace(/[ ]{1,}/gi, "").split(',');
       for (var q = 0; q < vars.length; q++)
       {
+
         var v = this.all_v[vars[q]];
+        this.global_v.splice(v);
         v.host = a;
+        v.real_name = v.name;
         v.constraints = [];
         a.vars.push(v);
       }
@@ -168,7 +172,9 @@ Data.prototype._parseArrays = function(arr){
       // creating array elements
       for (var k = 1; k <= count; k++){
         var name = a.name + "[" + k + "]";
-        this.all_v[name] = {host:a, name:name, constraints: []};
+        var obj = {host:a, name:name, constraints: []}
+        a.vars.push(obj);
+        this.all_v[name] = obj;
       }
     }
 

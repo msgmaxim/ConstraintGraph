@@ -3,7 +3,9 @@ DrawingEngine.PADDING = 5;
 DrawingEngine.ARR_SIZE = 30;
 DrawingEngine.C_SIZE = 12;
 
-DrawingEngine.log_svg_elements = true;
+DrawingEngine.log_svg_elements = false;
+DrawingEngine.log_hover = false;
+
 DrawingEngine.counter = 0;
 
 var v_nodes;
@@ -20,6 +22,7 @@ function DrawingEngine(){
 
   this.width = window.innerWidth;
   this.height = window.innerHeight;
+  // this.cola_obj = cola.d3adaptor().avoidOverlaps(true).size([this.width, this.height]);
   this.cola_obj = cola.d3adaptor().size([this.width, this.height]);
 }
 
@@ -41,6 +44,7 @@ DrawingEngine.prototype._apply_zooming = function(){
 };
 
 DrawingEngine.prototype.draw = function(){
+  // this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).groups([{"leaves":[1,2]}]).start();
   this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start();
 
   this._draw_single_variables();
@@ -81,7 +85,8 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
     .attr("class", "c_node")
     .on("mouseover", function (d) {
       // console.log(d3.select(this));
-      console.log(d);
+      if (DrawingEngine.log_hover)
+        console.log("%cc_node: ", "color: orange", d);
       DrawingEngine.highlight_element(d);
 
     })
@@ -118,7 +123,7 @@ DrawingEngine.unhighlight_all = function(){
 };
 
 DrawingEngine.prototype._draw_array_nodes = function() {
-  console.group("A_NODES");
+   if (DrawingEngine.log_svg_elements) console.group("A_NODES");
   a_nodes = this.nodesLayer.selectAll(".a_node")
     .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}), function (d) { return d.name; });
 
@@ -127,7 +132,6 @@ DrawingEngine.prototype._draw_array_nodes = function() {
   // console.log(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}));
 
   a_nodes.each(function(d) {
-    console.log("reassigning svg_element for: ", d);
     d.svg_element = this;
   }); // because svg_elements becomes undefined for some reason
 
@@ -149,11 +153,11 @@ DrawingEngine.prototype._draw_array_nodes = function() {
     if (DrawingEngine.log_svg_elements) console.log("%c- a_node removed:", "color: brown", d, "with svg: ", this);
   })
   .remove();
-  console.groupEnd();
+   if (DrawingEngine.log_svg_elements) console.groupEnd();
 };
 
 DrawingEngine.prototype._draw_expanded_arrays = function() {
-  console.group("EXPANDED_A_NODES");
+   if (DrawingEngine.log_svg_elements) console.group("EXPANDED_A_NODES");
 
   exp_a_nodes = d3.selectAll(".exp_a_node")
     .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}),
@@ -195,22 +199,27 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
   d3.selectAll(".exp_a_node").each(function(d) {
     var i, obj;
     if (d.dims === 2){
+      console.log("array_vars: ", d.vars);
       for (i = 0; i < d.n[0]; i++){
         for (var j = 0; j < d.n[1]; j++){
-          obj = data.all_v[d.name + "[" + (i * d.n[1] + j + 1) + "]"];
+          // obj = data.all_v[d.name + "[" + (i * d.n[1] + j + 1) + "]"];
+          obj = d.vars[i * d.n[1] + j]; /// TODO: really?!
           obj.i = i; obj.j = j; obj.host = d;
-          obj.real_name = d.name + "[" + (i + 1) + ", " + (j + 1) + "]";
+          if (!obj.real_name)
+            obj.real_name = d.name + "[" + (i + 1) + ", " + (j + 1) + "]";
           temp_data.push(obj);
           
         }
       }
     } else if (d.dims === 1) {
       for (i = 0; i < d.n[0]; i++){
-        obj = data.all_v[d.name + "[" + (i + 1) + "]"];
+        // obj = data.all_v[d.name + "[" + (i + 1) + "]"];
+        obj = d.vars[i];
         obj.i = 0;
         obj.j = i;
         obj.host = d;
-        obj.real_name = d.name + "[" + (i + 1) + "]";
+        if (!obj.real_name)
+          obj.real_name = d.name + "[" + (i + 1) + "]";
         temp_data.push(obj);
       }
     }
@@ -255,7 +264,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
 
   min_a_btns = this.nodesLayer.selectAll(".min_a_btn");
 
-  console.groupEnd();
+   if (DrawingEngine.log_svg_elements) console.groupEnd();
   /// ***************************************************************
 
 };

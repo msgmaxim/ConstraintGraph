@@ -1,15 +1,11 @@
 // to do:
 //  - refactor x/yproject out of here
-//  - in project functions use previous position as starting variable pos and descent pos as desired pos
-//    o create variables with desired positions as previous positions and pass into solver constructor
-//    o update desired positions for each var
-//    o then call solve
 //  - makefeasible:
 //    o apply user constraints, then generated constraints
 //  - autogenerate downward edge constraints with strongly connected components detection
 //  - 3D! (add a third dimension to descent.ts and try out with three.js)
-cola = function () {
-    var cola = {};
+var cola;
+(function (cola) {
     cola.d3adaptor = function () {
         var d3adaptor = {},
             event = d3.dispatch("start", "tick", "end"),
@@ -20,6 +16,9 @@ cola = function () {
             alpha,
             lastStress,
             nodes = [],
+            groups = [],
+            variables = [],
+            rootGroup = null,
             links = [],
             constraints = [],
             distanceMatrix = [],
@@ -27,7 +26,7 @@ cola = function () {
             descent = {};
 
         d3adaptor.tick = function () {
-            if (alpha < 0.00001) {
+            if (alpha < descent.threshold) {
                 event.end({ type: "end", alpha: alpha = 0 });
                 delete lastStress;
                 return true;
@@ -60,6 +59,21 @@ cola = function () {
         d3adaptor.nodes = function (x) {
             if (!arguments.length) return nodes;
             nodes = x;
+            return d3adaptor;
+        };
+
+        d3adaptor.groups = function (x) {
+            if (!arguments.length) return groups;
+            groups = x;
+            rootGroup = {};
+            groups.forEach(function (g) {
+                if (typeof g.leaves !== "undefined")
+                    g.leaves.forEach(function (v, i) { (g.leaves[i] = nodes[v]).parent = g });
+                if (typeof g.groups !== "undefined")
+                    g.groups.forEach(function (gi, i) { (g.groups[i] = groups[gi]).parent = g });
+            });
+            rootGroup.leaves = nodes.filter(function (v) { return typeof v.parent === 'undefined'; });
+            rootGroup.groups = groups.filter(function (g) { return typeof g.parent === 'undefined'; });
             return d3adaptor;
         };
 
@@ -121,107 +135,6 @@ cola = function () {
             return d3adaptor;
         };
 
-        var xbuffer, x0buffer;
-        d3adaptor.xproject = function (x0, x) {
-            //var vs = x.map(function (d, i) {
-            //    var w = 1;
-            //    if (nodes[i].fixed) {
-            //        w = 1000;
-            //        d = nodes[i].px;
-            //    }
-            //    return new vpsc.Variable(d, w);
-            //});
-            //var solver = new vpsc.Solver(vs, cs);
-            //solver.solve();
-            //vs.forEach(function (v, i) {
-            //    x[i] = v.position();
-            //});
-            x0buffer = x0;
-            xbuffer = x;
-        }
-        d3adaptor.yproject_disabled = function (y) {
-            if (typeof constraints !== "undefined" && constraints.length > 0) {
-                var vs = y.map(function (d, i) {
-                    var w = 1;
-                    if (nodes[i].fixed) {
-                        w = 1000;
-                        d = nodes[i].py;
-                    }
-                    return new vpsc.Variable(d, w);
-                });
-                var cs = constraints.filter(function (c) {
-                    c.axis === "y"
-                }).map(function (c) {
-                    return new vpsc.Constraint(vs[c.left], vs[c.right], c.gap, c.equality);
-                });
-                solver = new vpsc.Solver(vs, cs);
-                solver.solve();
-                vs.forEach(function (v, i) {
-                    y[i] = v.position();
-                });
-            }
-        }
-
-        d3adaptor.yproject = function (y0, y) {
-            var userConstraints = typeof constraints !== "undefined" && constraints.length > 0;
-            if (!avoidOverlaps && !userConstraints) return;
-
-            var x = xbuffer, x0 = x0buffer;
-            var n = x.length;
-            var rs = new Array(n);
-            for (var i = 0; i < n; ++i) {
-                var cx = x0[i], cy = y0[i];
-                var v = nodes[i];
-                var w2 = v.width / 2;
-                var h2 = v.height / 2;
-                rs[i] = new vpsc.Rectangle(cx - w2, cx + w2, cy - h2, cy + h2);
-            }
-            var vs = x.map(function (d, i) {
-                var w = 1;
-                if (nodes[i].fixed) {
-                    w = 1000;
-                    x[i] = d = nodes[i].px;
-                }
-                return new vpsc.Variable(d, w);
-            });
-            var cs = avoidOverlaps ? vpsc.generateXConstraints(rs, vs) : [];
-            var solver = new vpsc.Solver(vs, cs);
-            solver.setStartingPositions(x0);
-            solver.setDesiredPositions(x);
-            solver.solve();
-            vs.forEach(function (v, i) {
-                var pos = v.position();
-                rs[i].setXCentre(pos);
-                x[i] = pos;
-            });
-            var vs = y.map(function (d, i) {
-                var w = 1;
-                if (nodes[i].fixed) {
-                    w = 1000;
-                    y[i] = d = nodes[i].py;
-                }
-                return new vpsc.Variable(d, w);
-            });
-
-            var cs = [];
-            if (typeof constraints !== "undefined" && constraints.length > 0) {
-                cs = constraints.filter(function (c) {
-                    return c.axis === "y"
-                }).map(function (c) {
-                    return new vpsc.Constraint(vs[c.left], vs[c.right], c.gap, c.equality);
-                });
-            }
-            if (avoidOverlaps) {
-                cs = cs.concat(vpsc.generateYConstraints(rs, vs));
-            }
-            solver = new vpsc.Solver(vs, cs);
-            solver.setStartingPositions(y0);
-            solver.setDesiredPositions(y);
-            solver.solve();
-            vs.forEach(function (v, i) {
-                y[i] = v.position();
-            });
-        }
         function unionCount(a, b) {
             var u = {};
             for (var i in a) u[i] = {};
@@ -285,19 +198,33 @@ cola = function () {
             var i,
                 j,
                 n = nodes.length,
+                N = n + 2 * groups.length,
                 m = links.length,
                 w = size[0],
-                h = size[1],
-                o;
+                h = size[1];
 
-            for (i = 0; i < n; ++i) {
-                (o = nodes[i]).index = i;
-                o.weight = 0;
+            var x = new Array(N), y = new Array(N);
+            variables = new Array(N);
+
+            var makeVariable = function (i, w) {
+                var v = variables[i] = new vpsc.Variable(0, w);
+                v.index = i;
+                return v;
             }
 
             var G = null;
 
-            if (distanceMatrix.length != n) {
+            var ao = this.avoidOverlaps();
+
+            nodes.forEach(function (v, i) {
+                v.index = i;
+                if (typeof v.x === 'undefined') {
+                    v.x = w / 2, v.y = h / 2;
+                }
+                x[i] = v.x, y[i] = v.y;
+            });
+
+            if (distanceMatrix.length != N) {
                 var edges = links.map(function (e, i) {
                     return {
                         source: typeof e.source === 'number' ? e.source : e.source.index,
@@ -305,49 +232,58 @@ cola = function () {
                         length: typeof e.length !== 'undefined' ? e.length : 1
                     };
                 });
-                distanceMatrix = ShortestPaths.johnsons(n, edges);
-                var G = Descent.createSquareMatrix(n, function () { return 2 });
+                distanceMatrix = ShortestPaths.johnsons(N, edges);
+                var G = cola.Descent.createSquareMatrix(N, function () { return 2 });
                 edges.forEach(function (e) {
                     G[e.source][e.target] = G[e.target][e.source] = 1;
                 });
             }
 
-            var D = Descent.createSquareMatrix(n, function (i, j) {
+            var D = cola.Descent.createSquareMatrix(N, function (i, j) {
                 return distanceMatrix[i][j] * linkDistance;
             });
 
-            var x = new Array(n), y = new Array(n);
-
-            for (var i = 0; i < n; ++i) {
-                var v = nodes[i];
-                if (typeof v.x === 'undefined') {
-                    v.x = w / 2;
-                    v.y = h / 2;
-                }
-                x[i] = v.x;
-                y[i] = v.y;
+            if (rootGroup && typeof rootGroup.groups !== 'undefined') {
+                var i = n;
+                groups.forEach(function(g) {
+                    G[i][i + 1] = G[i + 1][i] = 1e-6;
+                    D[i][i + 1] = D[i + 1][i] = 0.1;
+                    x[i] = 0, y[i++] = 0;
+                    x[i] = 0, y[i++] = 0;
+                });
+            } else {
+                rootGroup = { leaves: nodes };
             }
-            var initialIterations = arguments.length > 0 ? arguments[0] : 0;
-            var ao = this.avoidOverlaps();
+            
+            var initialUnconstrainedIterations = arguments.length > 0 ? arguments[0] : 0;
+            var initialUserConstraintIterations = arguments.length > 1 ? arguments[1] : 0;
+            var initialAllConstraintsIterations = arguments.length > 2 ? arguments[2] : 0;
             this.avoidOverlaps(false);
-            descent = new Descent(x, y, D, G);
+            descent = new cola.Descent(x, y, D);
+
             // apply initialIterations without user constraints or nonoverlap constraints
-            for (i = 0; i < initialIterations; ++i) {
-                descent.rungeKutta();
-            }
+            descent.run(initialUnconstrainedIterations);
+
             // apply initialIterations with user constraints but no noverlap constraints
-            descent.xproject = d3adaptor.xproject;
-            descent.yproject = d3adaptor.yproject;
-            for (i = 0; i < initialIterations; ++i) {
-                descent.rungeKutta();
-            }
+            if (constraints.length > 0) descent.project = new vpsc.Projection(nodes, groups, rootGroup, constraints).projectFunctions();
+            descent.run(initialUserConstraintIterations);
+
             // subsequent iterations will apply all constraints
             this.avoidOverlaps(ao);
-            for (i = 0; i < m; ++i) {
-                o = links[i];
-                if (typeof o.source == "number") o.source = nodes[o.source];
-                if (typeof o.target == "number") o.target = nodes[o.target];
-            }
+            if (ao) descent.project = new vpsc.Projection(nodes, groups, rootGroup, constraints, true).projectFunctions();
+
+            // allow not immediately connected nodes to relax apart (p-stress)
+            descent.G = G;
+            descent.run(initialAllConstraintsIterations);
+
+            links.forEach(function (l) {
+                if (typeof l.source == "number") l.source = nodes[l.source];
+                if (typeof l.target == "number") l.target = nodes[l.target];
+            });
+            nodes.forEach(function (v, i) {
+                v.x = x[i], v.y = y[i];
+            });
+
             return d3adaptor.resume();
         };
 
@@ -409,4 +345,4 @@ cola = function () {
         d.fixed &= ~4; // unset bit 3
     }
     return cola;
-}();
+})(cola || (cola = {}));

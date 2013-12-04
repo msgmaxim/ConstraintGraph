@@ -21,20 +21,20 @@ function init(){
   // data.readFile("alpha.fzn", ready);
   // data.readFile("money.fzn", ready);
   // data.readFile("simple1d.fzn", ready);
-  
+  // data.readFile("queen_cp2.fzn", ready);
 
 /// do not work:
   
   // data.readFile("bacp-1.fzn", ready);
   // data.readFile("open_stacks_01.fzn", ready);
-  // data.readFile("golomb.fzn", ready); // can't read constraints with <array_name> rather than [] 
+  data.readFile("golomb.fzn", ready); // reading introduced variables
 
-  data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than []
+  
 }
 
 function ready(){
-  console.log(data.global_v);
-  console.log(data.all_v);
+  console.log("global_v: ", data.global_v);
+  console.log("all_v: ", data.all_v);
   // console.log(data.constraints);
   construct_graph();
   de.draw();
