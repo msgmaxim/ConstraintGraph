@@ -3,6 +3,9 @@ DrawingEngine.PADDING = 5;
 DrawingEngine.ARR_SIZE = 30;
 DrawingEngine.C_SIZE = 12;
 
+DrawingEngine.log_svg_elements = true;
+DrawingEngine.counter = 0;
+
 var v_nodes;
 var c_nodes;
 var a_nodes;
@@ -32,8 +35,6 @@ DrawingEngine.prototype.init_svg = function (){
     this.buttonsLayer = this.vis.append("g");
   }
 };
-
-
 
 DrawingEngine.prototype._apply_zooming = function(){
   this.vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
@@ -80,8 +81,9 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
     .attr("class", "c_node")
     .on("mouseover", function (d) {
       // console.log(d3.select(this));
-      // console.log(d);
+      console.log(d);
       DrawingEngine.highlight_element(d);
+
     })
     .on("mouseleave", function (d) {
       DrawingEngine.unhighlight_all();
@@ -109,13 +111,14 @@ DrawingEngine.highlight_element = function(n){
 };
 
 DrawingEngine.unhighlight_all = function(){
-  d3.selectAll(".two_dim_array_e").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1";});
-  d3.selectAll(".c_node").attr("style", function (d) {return "fill: rgba(255, 0, 0, 1";});
-  d3.selectAll(".a_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1";});
-  d3.selectAll(".v_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1";});
+  d3.selectAll(".two_dim_array_e").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+  d3.selectAll(".c_node").attr("style", function (d) {return "fill: rgba(255, 0, 0, 1)";});
+  d3.selectAll(".a_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+  d3.selectAll(".v_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
 };
 
 DrawingEngine.prototype._draw_array_nodes = function() {
+  console.group("A_NODES");
   a_nodes = this.nodesLayer.selectAll(".a_node")
     .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}), function (d) { return d.name; });
 
@@ -123,30 +126,44 @@ DrawingEngine.prototype._draw_array_nodes = function() {
 
   // console.log(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}));
 
-  a_nodes.each(function(d) { d.svg_element = this; }); // because svg_elements becomes undefined for some reason
+  a_nodes.each(function(d) {
+    console.log("reassigning svg_element for: ", d);
+    d.svg_element = this;
+  }); // because svg_elements becomes undefined for some reason
 
   a_nodes_enter.append("rect")
     .attr("class", "a_node")
     .attr("width", DrawingEngine.ARR_SIZE)
     .attr("height", DrawingEngine.ARR_SIZE)
-    .each(function(d) {d.svg_element = this;})
+    .each(function(d) {
+      d.svg_element = this;
+      if (DrawingEngine.log_svg_elements) console.log("%c+ a_node created:", "color: blue", d, "with svg: ", this);
+      if (!this.aaa_id)
+        this.aaa_id = ++DrawingEngine.counter;
+    })
+    .attr("aaa_id", DrawingEngine.counter)
     .on("click", function (d) {expand_node(d);})
     .append("title").text(function (d) { return d.name; });
 
-  a_nodes.exit().remove();
+  a_nodes.exit().each(function (d){
+    if (DrawingEngine.log_svg_elements) console.log("%c- a_node removed:", "color: brown", d, "with svg: ", this);
+  })
+  .remove();
+  console.groupEnd();
 };
 
 DrawingEngine.prototype._draw_expanded_arrays = function() {
+  console.group("EXPANDED_A_NODES");
 
-  exp_a_nodes = this.nodesLayer.selectAll(".exp_a_node")
+  exp_a_nodes = d3.selectAll(".exp_a_node")
     .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}),
       function (v) { return v.name; }); /// key function to recognize created elements
 
   this.nodesLayer.selectAll(".exp_a_node").each(function(d) { d.svg_element = this; }); // because svg_elements becomes undefined for some reason
 
-  exp_a_nodes.enter().append("rect")
+  exp_a_nodes.enter()
+  .append("rect")
     .attr("class", "exp_a_node")
-    // .attr("width", DrawingEngine.ARR_SIZE * 2)
     .attr("width", function (d) {
       /// TODO: for other (higher than 2) dimentions as well
       /// TODO: do we need to recalculate width/height each time?
@@ -161,21 +178,26 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
       else if (d.dims === 1)
         return d.height = DrawingEngine.VAR_SIZE;
     })
-    .each(function(d) {d.svg_element = this;})
+    .each(function(d) {
+      if (DrawingEngine.log_svg_elements) console.log("%c+ expanded_a_node created:", "color: blue", d, "with svg: ", this);
+      this.aaa_id = ++DrawingEngine.counter;
+      d.svg_element = this;
+    })
+    .attr("aaa_id", DrawingEngine.counter)
     .append("title").text(function (d) { return d.name; });
 
-  exp_a_nodes.exit().remove();
+  exp_a_nodes.exit().each(function (d){
+    if (DrawingEngine.log_svg_elements) console.log("%c- exp_a_node removed:", "color: brown", d);
+  }).remove();
 
   var temp_data = [];
 
-
-
   d3.selectAll(".exp_a_node").each(function(d) {
-    var i;
+    var i, obj;
     if (d.dims === 2){
       for (i = 0; i < d.n[0]; i++){
         for (var j = 0; j < d.n[1]; j++){
-          var obj = data.all_v[d.name + "[" + (i * d.n[1] + j + 1) + "]"];
+          obj = data.all_v[d.name + "[" + (i * d.n[1] + j + 1) + "]"];
           obj.i = i; obj.j = j; obj.host = d;
           obj.real_name = d.name + "[" + (i + 1) + ", " + (j + 1) + "]";
           temp_data.push(obj);
@@ -184,7 +206,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
       }
     } else if (d.dims === 1) {
       for (i = 0; i < d.n[0]; i++){
-        var obj = data.all_v[d.name + "[" + (i + 1) + "]"];
+        obj = data.all_v[d.name + "[" + (i + 1) + "]"];
         obj.i = 0;
         obj.j = i;
         obj.host = d;
@@ -194,7 +216,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
     }
   });
 
- /// ****************** all elements of 2-dim arrays ***************
+ /// ****************** all elements of 1/2-dim arrays ***************
 
   two_dim_array_e = this.nodesLayer.selectAll(".two_dim_array_e")
   .data(temp_data, function (d) { return d.name; });
@@ -233,6 +255,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
 
   min_a_btns = this.nodesLayer.selectAll(".min_a_btn");
 
+  console.groupEnd();
   /// ***************************************************************
 
 };

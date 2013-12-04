@@ -28,7 +28,8 @@ function init(){
   // data.readFile("bacp-1.fzn", ready);
   // data.readFile("open_stacks_01.fzn", ready);
   // data.readFile("golomb.fzn", ready); // can't read constraints with <array_name> rather than [] 
-  data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than [] + something else ([] in [])
+
+  data.readFile("queen_cp2.fzn", ready); // can't read constraints with <array_name> rather than []
 }
 
 function ready(){
@@ -54,7 +55,7 @@ function collapse_node(d){
 }
 
 function construct_graph(){
-  console.log("reconstruction");
+  // console.log("reconstruction");
   shown_v = [];
   if (shown_v.length === 0)
   for (var i in data.global_v){
@@ -62,14 +63,7 @@ function construct_graph(){
     if (v.type != "arr" || v.isCollapsed){
       shown_v.push(v);
     } else {
-      // TODO: add corresponding single variables
-      // generate_nodes_from_array(v.name + "[", v.n);
-      // shown_v.push(v);
-      // var n = 1;
-      // for (var j = 0; j < v.dims; j++)
-      //   n *= v.n[j];
-      // for (var k = 1; k <= n; k++)
-      //   shown_v.push(data.all_v[v.name + "[" + k + "]"]);
+
       shown_v.push(v);
     }
   }
@@ -92,6 +86,7 @@ function generate_nodes_from_array(str, arr){
 }
 
 function construct_cnodes(){
+  // console.group("C_NODES");
   var name;
   var unique_constraints = {};
   data.constraint_nodes = [];
@@ -118,6 +113,7 @@ function construct_cnodes(){
   for (var k in unique_constraints){
     data.constraint_nodes.push(unique_constraints[k]);
   }
+  // console.groupEnd();
 }
 
 function create_links(){
