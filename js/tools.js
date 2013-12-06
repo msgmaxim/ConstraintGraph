@@ -33,3 +33,7 @@ Tools.parse_array_str = function(str){
   }
   return arr;
 };
+
+Tools.removeBraces = function(str){
+    return str.replace(/[\]\[]{1,}/gi, "");
+};

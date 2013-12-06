@@ -4,7 +4,7 @@ DrawingEngine.ARR_SIZE = 30;
 DrawingEngine.C_SIZE = 12;
 
 DrawingEngine.log_svg_elements = false;
-DrawingEngine.log_hover = false;
+DrawingEngine.log_hover = true;
 
 DrawingEngine.counter = 0;
 

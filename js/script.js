@@ -22,14 +22,13 @@ function init(){
   // data.readFile("money.fzn", ready);
   // data.readFile("simple1d.fzn", ready);
   // data.readFile("queen_cp2.fzn", ready);
+  // data.readFile("golomb.fzn", ready);
 
 /// do not work:
   
-  // data.readFile("bacp-1.fzn", ready);
+  data.readFile("bacp-1.fzn", ready);
   // data.readFile("open_stacks_01.fzn", ready);
-  data.readFile("golomb.fzn", ready); // reading introduced variables
 
-  
 }
 
 function ready(){
