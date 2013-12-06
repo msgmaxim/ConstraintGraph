@@ -23,12 +23,8 @@ function init(){
   // data.readFile("simple1d.fzn", ready);
   // data.readFile("queen_cp2.fzn", ready);
   // data.readFile("golomb.fzn", ready);
-
-/// do not work:
-  
-  data.readFile("bacp-1.fzn", ready);
-  // data.readFile("open_stacks_01.fzn", ready);
-
+  data.readFile("open_stacks_01_max.fzn", ready);
+  // data.readFile("open_stacks_01_maximum.fzn", ready);
 }
 
 function ready(){
@@ -120,6 +116,7 @@ function create_links(){
   cola_links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
+    console.log("creating links for: ", c);
 
     for (var j in c.arr){
       var link = {type: "straight", source: c, length: 2};

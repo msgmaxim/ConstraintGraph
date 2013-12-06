@@ -90,15 +90,15 @@ Data._parseConstraint = function(str){
     var structure = Tools.parse_array_str(str);
 
         /// TODO: make more use of Tools
-    if (c.name === "int_lin_eq")
+    if (c.name === "int_lin_eq")                                      /// constraint int_lin_eq([1, 91, -9000, -90, -900, 10, 1000, -1], [D, E, M, N, O, R, S, Y], 0);
     {
       str = structure[1];
-    } else if (c.name === "array_bool_and"){
+    } else if (c.name === "array_bool_and"){                          /// constraint array_bool_and([BOOL____00082, BOOL____00083], BOOL____00084) :: defines_var(BOOL____00084);
       str = Tools.removeBraces(str);
     }
   }
 
-  var vars = str.replace(/[ ]{1,}/gi, "").split(',');
+  var vars = str.replace(/[ ]{1,}/gi, "").split(',');                 /// constraint array_int_element(INT____00002, orders, INT____00003) :: defines_var(INT____00003);
   if (c.name === "int_eq")
     c.arr = [vars[0]];
   else
@@ -109,12 +109,18 @@ Data._parseConstraint = function(str){
 
 Data.prototype._loopConstraints = function(){
   for (var i = 0; i < this.constraints.length; i++){
+    if (Data.LogParsing) console.log("Looping constraint: ", this.constraints[i]);
     var c = this.constraints[i];
     for (var j = 0; j < c.arr.length; j++){
       var v = this.all_v[c.arr[j]];
       if (!v) {  /// array name?
         v = this.global_v_names[c.arr[j]];
         /// assign all variables
+        if (!v) {
+          // var name_to_delete = c.arr[j];
+          c.arr.splice(j);
+          continue;
+        }
         for (e in v.vars){
           v.vars[e].constraints.push(c);
           v.vars[e].host.constraints.push(c);
@@ -122,7 +128,8 @@ Data.prototype._loopConstraints = function(){
         }
         c.arr = v.vars;
         /// TODO: sometimes we should not break
-        break;
+        j += v.vars.length;
+        // break;
         
       } else { /// not an array name
         v.constraints.push(c);
