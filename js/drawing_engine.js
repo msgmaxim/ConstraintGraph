@@ -106,14 +106,14 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
 };
 
 DrawingEngine.highlight_cnode = function(n){
-  d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 0, 1)";});
+  d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";});
 
   for (var i in n.arr) {
 
     if (n.arr[i].svg_element && (n.arr[i].type === "svar"||
       (n.arr[i].type === "arr" && n.arr[i].isCollapsed) ||
       (n.arr[i].type === "array_element" && !n.arr[i].host.isCollapsed)))
-      d3.select(n.arr[i].svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 0, 1)";});
+      d3.select(n.arr[i].svg_element).attr("style", function (d) {return "fill: gold";});
     // else
     
       // console.log(n.arr[i]);
@@ -122,7 +122,7 @@ DrawingEngine.highlight_cnode = function(n){
 };
 
 DrawingEngine.highlight_var = function(n){
-  d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 0, 1";});
+  d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";});
 
   for (var i in n.constraints){
     DrawingEngine.highlight_cnode(n.constraints[i].cnode);
@@ -158,6 +158,12 @@ DrawingEngine.prototype._draw_array_nodes = function() {
       if (DrawingEngine.log_svg_elements) console.log("%c+ a_node created:", "color: blue", d, "with svg: ", this);
       if (!this.aaa_id)
         this.aaa_id = ++DrawingEngine.counter;
+    })
+    .on("mouseover", function (d) {
+      DrawingEngine.highlight_var(d);
+    })
+    .on("mouseleave", function (d) {
+      DrawingEngine.unhighlight_all();
     })
     .attr("aaa_id", DrawingEngine.counter)
     .on("click", function (d) {expand_node(d);})
@@ -248,6 +254,12 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
   .attr("class", "two_dim_array_e")
   .attr("width", DrawingEngine.VAR_SIZE)
   .attr("height", DrawingEngine.VAR_SIZE)
+  .on("mouseover", function (d) {
+      DrawingEngine.highlight_var(d);
+    })
+  .on("mouseleave", function (d) {
+      DrawingEngine.unhighlight_all();
+    })
   .each(function (d) {
     d.svg_element = this;
     d.type = "array_element";

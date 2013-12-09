@@ -14,7 +14,7 @@ function init(){
 
 /// work:
 
-  // data.readFile("not_so_many_clean.fzn", ready);
+  data.readFile("not_so_many_clean.fzn", ready);
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
   // data.readFile("aust.fzn", ready);
@@ -22,7 +22,7 @@ function init(){
   // data.readFile("money.fzn", ready);
   // data.readFile("simple1d.fzn", ready);
   // data.readFile("queen_cp2.fzn", ready);
-  data.readFile("golomb.fzn", ready);
+  // data.readFile("golomb.fzn", ready);
   // data.readFile("open_stacks_01_max.fzn", ready);
   // data.readFile("open_stacks_01_maximum.fzn", ready);
 }
