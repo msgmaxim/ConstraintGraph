@@ -70,6 +70,12 @@ DrawingEngine.prototype._draw_single_variables = function(){
     .attr("class", "v_node")
     .attr("r", DrawingEngine.VAR_SIZE / 2)
     .each(function(d) {d.svg_element = this;})
+    .on("mouseover", function (d) {
+      DrawingEngine.highlight_var(d);
+    })
+    .on("mouseleave", function (d) {
+      DrawingEngine.unhighlight_all();
+    })
     .append("title").text(function (d) { return d.name; });
 
     v_nodes.exit().remove();
@@ -87,7 +93,7 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
       // console.log(d3.select(this));
       if (DrawingEngine.log_hover)
         console.log("%cc_node: ", "color: orange", d);
-      DrawingEngine.highlight_element(d);
+      DrawingEngine.highlight_cnode(d);
 
     })
     .on("mouseleave", function (d) {
@@ -99,7 +105,7 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
   c_nodes.exit().remove();
 };
 
-DrawingEngine.highlight_element = function(n){
+DrawingEngine.highlight_cnode = function(n){
   d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 0, 1)";});
 
   for (var i in n.arr) {
@@ -113,6 +119,14 @@ DrawingEngine.highlight_element = function(n){
       // console.log(n.arr[i]);
   }
   // console.log("new");
+};
+
+DrawingEngine.highlight_var = function(n){
+  d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 0, 1";});
+
+  for (var i in n.constraints){
+    DrawingEngine.highlight_cnode(n.constraints[i].cnode);
+  }
 };
 
 DrawingEngine.unhighlight_all = function(){

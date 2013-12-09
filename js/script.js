@@ -22,8 +22,8 @@ function init(){
   // data.readFile("money.fzn", ready);
   // data.readFile("simple1d.fzn", ready);
   // data.readFile("queen_cp2.fzn", ready);
-  // data.readFile("golomb.fzn", ready);
-  data.readFile("open_stacks_01_max.fzn", ready);
+  data.readFile("golomb.fzn", ready);
+  // data.readFile("open_stacks_01_max.fzn", ready);
   // data.readFile("open_stacks_01_maximum.fzn", ready);
 }
 
@@ -100,6 +100,7 @@ function construct_cnodes(){
       if (!obj) obj = data.all_v[name];
       cluster.arr[name] = obj; //!!!
       cluster.name += "_" + name;
+      c.cnode = cluster;
 
     }
     unique_constraints[cluster.name] = cluster;
