@@ -1,5 +1,5 @@
 Data.Profiling = true;
-Data.LogParsing = true;
+// Data.LogParsing = true;
 
 function Data(){
   Data._self = this; // not sure if is needed
@@ -33,6 +33,7 @@ Data.prototype._initModel = function(data, callback){
   this._parseArrays(lines.filter(Data._isArray).filter(Data._isVariable));
   this._parseConstraints(lines.filter(Data._isConstraint));
   this._loopConstraints();
+  this._removeRedundancy();
 
   if (Data.Profiling) console.timeEnd("Parsing time: ");
   callback();
@@ -68,7 +69,7 @@ Data.prototype._parseConstraints = function(arr){
     if (Data.LogParsing) console.log("parsed constraints: ", arr[i]);
 
     var c = Data._parseConstraint(arr[i]);
-    this.constraints.push(c);  
+    this.constraints.push(c);
   }
 
   if (Data.LogParsing) console.groupEnd();
@@ -118,7 +119,8 @@ Data.prototype._loopConstraints = function(){
         /// assign all variables
         if (!v) {
           // var name_to_delete = c.arr[j];
-          c.arr.splice(j);
+          c.arr.splice(j, 1);
+          j--;
           continue;
         }
         for (e in v.vars){
@@ -139,6 +141,40 @@ Data.prototype._loopConstraints = function(){
       }
     }
   }
+};
+
+Data.prototype._removeRedundancy = function() {
+  for (var i = 0; i < this.constraints.length; i++){
+    var c = this.constraints[i];
+    if (c.name === "bool2int"){
+      Data._collapseVariables(c.arr[0], c.arr[1]);
+    }
+  }
+};
+
+/// collapse v1 into v2
+Data._collapseVariables = function(v1, v2) {
+  v2.alias = v1.name;
+  console.log("v1: ", v1);
+  console.log("v2: ", v2);
+  // copy constraints from v1 to v2
+  for (var i = 0; i < v1.constraints.length; i++){
+    v2.constraints.push(v1.constraints[i]);
+  }
+  // remove bool2int constraints
+  for (var i = 0; i < v2.constraints.length; i++){
+    var c = v2.constraints[i];
+    if (c.name === "bool2int"){
+      // is indeed that constraint? (so as not to remove unprocessed)
+      if ((c.arr[0].name === v1.name && c.arr[1].name === v2.name) ||
+       (c.arr[0].name === v2.name && c.arr[1].name === v1.name)){
+        console.log("removing: ", v2.constraints[i]);
+        v2.constraints.splice(i--, 1); // remove links from the variable
+      }
+    }
+  }
+  // redirect links for the old variable to the new one
+  this.global_v_names[v1.name] = v2;
 };
 
 Data.prototype._parseVariables = function(arr){

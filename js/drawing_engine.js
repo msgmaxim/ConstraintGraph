@@ -5,6 +5,7 @@ DrawingEngine.C_SIZE = 12;
 
 DrawingEngine.log_svg_elements = false;
 DrawingEngine.log_hover = true;
+DrawingEngine.allow_drag = true;
 
 DrawingEngine.counter = 0;
 
@@ -16,6 +17,8 @@ var s_links;
 var q_link;
 var two_dim_array_e;
 var min_a_btns;
+
+var nodeMouseDown = false;
 
 function DrawingEngine(){
 	DrawingEngine._self = this; // not sure if is needed
@@ -40,11 +43,11 @@ DrawingEngine.prototype.init_svg = function (){
 };
 
 DrawingEngine.prototype._apply_zooming = function(){
+  if (nodeMouseDown) return;
   this.vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
 };
 
 DrawingEngine.prototype.draw = function(){
-  // this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).groups([{"leaves":[1,2]}]).start();
   this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start();
 
   this._draw_single_variables();
@@ -73,10 +76,15 @@ DrawingEngine.prototype._draw_single_variables = function(){
     .on("mouseover", function (d) {
       DrawingEngine.highlight_var(d);
     })
+    .on("mousedown", function () { nodeMouseDown = true; } )
+    .on("mouseup", function() { nodeMouseDown = false; })
     .on("mouseleave", function (d) {
       DrawingEngine.unhighlight_all();
     })
     .append("title").text(function (d) { return d.name; });
+
+    if (DrawingEngine.allow_drag)
+      v_nodes.call(this.cola_obj.drag);
 
     v_nodes.exit().remove();
 };

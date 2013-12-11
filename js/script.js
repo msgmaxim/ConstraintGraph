@@ -25,6 +25,10 @@ function init(){
   // data.readFile("golomb.fzn", ready);
   // data.readFile("open_stacks_01_max.fzn", ready);
   // data.readFile("open_stacks_01_maximum.fzn", ready);
+  
+  // data.readFile("bacp-1.fzn", ready);
+
+
 }
 
 function ready(){
@@ -53,7 +57,7 @@ function construct_graph(){
   // console.log("reconstruction");
   shown_v = [];
   if (shown_v.length === 0)
-  for (var i in data.global_v){
+  for (var i in data.global_v){ // TODO: maybe no need for global_v?
     var v = data.global_v[i];
     if (v.type != "arr" || v.isCollapsed){
       shown_v.push(v);
@@ -117,7 +121,7 @@ function create_links(){
   cola_links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
-    console.log("creating links for: ", c);
+    // console.log("creating links for: ", c);
 
     for (var j in c.arr){
       var link = {type: "straight", source: c, length: 2};
