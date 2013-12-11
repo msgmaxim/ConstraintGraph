@@ -3,7 +3,6 @@ Data.Profiling = true;
 
 function Data(){
   Data._self = this; // not sure if is needed
-  this.global_v = []; // var/array
   this.global_v_names = {}; // map (var/array)name -> var/array
   this.all_v = {}; // map varname -> var
   this.constraints = [];
@@ -183,13 +182,11 @@ Data.prototype._parseVariables = function(arr){
     var v = {};
     v.name = arr[i].substring(arr[i].indexOf(':') + 1).match(/[a-zA-z_0-9]+/)[0];
     v.constraints = [];
-    // if introduced
+    // if introduced  TODO: why would I do that?
     if (arr[i].indexOf("introduced") !== -1){
       v.type = "svar"; // single variable
-      this.global_v.push(v);
     } else { // not introduced
       v.type = "svar"; // single variable
-      this.global_v.push(v);
     }
     this.global_v_names[v.name] = v;
     v.isCollapsed = true;
@@ -227,7 +224,7 @@ Data.prototype._parseArrays = function(arr){
       {
 
         var v = this.all_v[vars[q]];
-        this.global_v.splice(v);
+        delete this.global_v_names[v.name]; // the variable turn out to be a part of an array
         v.host = a;
         v.real_name = v.name;
         v.constraints = [];
@@ -270,6 +267,6 @@ Data.prototype._parseArrays = function(arr){
     // console.log(a);
 
     this.global_v_names[a.name] = a;
-    this.global_v.push(a);
+    // this.global_v.push(a);
   }
 };

@@ -14,7 +14,7 @@ function init(){
 
 /// work:
 
-  data.readFile("not_so_many_clean.fzn", ready);
+  // data.readFile("not_so_many_clean.fzn", ready);
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
   // data.readFile("aust.fzn", ready);
@@ -22,7 +22,7 @@ function init(){
   // data.readFile("money.fzn", ready);
   // data.readFile("simple1d.fzn", ready);
   // data.readFile("queen_cp2.fzn", ready);
-  // data.readFile("golomb.fzn", ready);
+  data.readFile("golomb.fzn", ready);
   // data.readFile("open_stacks_01_max.fzn", ready);
   // data.readFile("open_stacks_01_maximum.fzn", ready);
   
@@ -32,7 +32,7 @@ function init(){
 }
 
 function ready(){
-  console.log("global_v: ", data.global_v);
+  console.log("global_v_names: ", data.global_v_names);
   console.log("all_v: ", data.all_v);
   // console.log(data.constraints);
   construct_graph();
@@ -57,8 +57,8 @@ function construct_graph(){
   // console.log("reconstruction");
   shown_v = [];
   if (shown_v.length === 0)
-  for (var i in data.global_v){ // TODO: maybe no need for global_v?
-    var v = data.global_v[i];
+  for (var i in data.global_v_names){ // TODO: maybe no need for global_v?
+    var v = data.global_v_names[i];
     if (v.type != "arr" || v.isCollapsed){
       shown_v.push(v);
     } else {
