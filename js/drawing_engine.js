@@ -23,15 +23,23 @@ var nodeMouseDown = false;
 function DrawingEngine(){
 	DrawingEngine._self = this; // not sure if is needed
 
-  this.width = window.innerWidth;
-  this.height = window.innerHeight;
+  this.width = window.innerWidth - 20;
+  this.height = window.innerHeight - 20;
+  // this.width = 1600;
+  // this.height = 1200;
   // this.cola_obj = cola.d3adaptor().avoidOverlaps(true).size([this.width, this.height]);
   this.cola_obj = cola.d3adaptor().size([this.width, this.height]);
+  window.addEventListener('resize', function(event){
+    console.log(DrawingEngine._self.svg.width);
+    DrawingEngine._self.svg.attr('width', window.innerWidth - 20);
+    DrawingEngine._self.svg.attr('height', window.innerHeight - 20);
+  });
+
 }
 
 DrawingEngine.prototype.init_svg = function (){
   if (!this.svg) {
-    this.svg = d3.select("#content").append("svg").attr("width", this.width).attr("height", this.height);
+    this.svg = d3.select("#content").append("svg").attr("width", this.width).attr("height", this.height).attr("preserveAspectRatio", "xMinYMin meet");
     this.svg.call(d3.behavior.zoom().on("zoom", (function(caller) {
         return function() {caller._apply_zooming.apply(caller, arguments);};
       })(this)));
@@ -48,7 +56,7 @@ DrawingEngine.prototype._apply_zooming = function(){
 };
 
 DrawingEngine.prototype.draw = function(){
-  this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start();
+  this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start(5, 5, 5);
 
   this._draw_single_variables();
   this._draw_array_nodes();

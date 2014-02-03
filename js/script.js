@@ -1,20 +1,38 @@
 window.addEventListener("load", init);
 
-
 var data = new Data();
 var de = new DrawingEngine();
+
+var isRunInBrouser = true;
 
 
 var shown_v = [];
 var links = [];
 var cola_links = [];
 
+
 function init(){
+  if (isRunInBrouser)
+   initialize('data/aust.fzn');
+}
+
+function log_to_html(str){
+  d3.select("body").append("p").text(str);
+}
+
+function echo(str){
+  return str;
+}
+
+function initialize(file_path){
+
+  // if (file_path !== undefined)
+  //   log_to_html("file: " + file_path);
   de.init_svg();
 
 /// work:
 
-  // data.readFile("not_so_many_clean.fzn", ready);
+  data.readFile(file_path, ready);
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
   // data.readFile("aust.fzn", ready);
@@ -22,7 +40,7 @@ function init(){
   // data.readFile("money.fzn", ready);
   // data.readFile("simple1d.fzn", ready);
   // data.readFile("queen_cp2.fzn", ready);
-  data.readFile("golomb.fzn", ready);
+  // data.readFile("golomb.fzn", ready);
   // data.readFile("open_stacks_01_max.fzn", ready);
   // data.readFile("open_stacks_01_maximum.fzn", ready);
   
@@ -31,11 +49,25 @@ function init(){
 
 }
 
+function init_string(str) {
+  de.init_svg();
+  data.readString(str, ready);
+}
+
 function ready(){
-  console.log("global_v_names: ", data.global_v_names);
-  console.log("all_v: ", data.all_v);
+  if (isRunInBrouser){
+    console.log("global_v_names: ", data.global_v_names);
+    console.log("all_v: ", data.all_v);
+  }
+   
   // console.log(data.constraints);
-  construct_graph();
+
+  // option 1 for graph
+   construct_graph();
+
+  // option 2 gro graph
+  construct_graph_o2();
+
   de.draw();
 }
 
@@ -51,6 +83,11 @@ function collapse_node(d){
   d.isCollapsed = true;
   construct_graph();
   de.draw();
+}
+
+function construct_graph_o2(){
+  console.log('data', data);
+
 }
 
 function construct_graph(){

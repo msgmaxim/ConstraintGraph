@@ -11,7 +11,7 @@ function Data(){
 
 Data.prototype.readFile = function (file_name, callback){
   var req = new XMLHttpRequest();
-  var ajaxURL = '../data/' + file_name;
+  var ajaxURL = file_name;
   ajaxURL += "?noCache=" + (new Date().getTime()) + Math.random();
 
   req.open('get', ajaxURL, false);
@@ -37,6 +37,18 @@ Data.prototype._initModel = function(data, callback){
   if (Data.Profiling) console.timeEnd("Parsing time: ");
   callback();
 };
+
+Data.prototype.readString = function(str, callback){
+  var lines = str.trim().split('\n');
+  
+  this._parseVariables(lines.filter(Data._isSingleVar).filter(Data._isVariable));
+  this._parseArrays(lines.filter(Data._isArray).filter(Data._isVariable));
+  this._parseConstraints(lines.filter(Data._isConstraint));
+  this._loopConstraints();
+  this._removeRedundancy();
+
+  callback();
+}
 
 Data._isVariable = function(str){
   if (str.split(' ').indexOf("var") !== -1)
@@ -146,13 +158,14 @@ Data.prototype._removeRedundancy = function() {
   for (var i = 0; i < this.constraints.length; i++){
     var c = this.constraints[i];
     if (c.name === "bool2int"){
-      Data._collapseVariables(c.arr[0], c.arr[1]);
+      this._collapseVariables(c.arr[0], c.arr[1]);
+      delete this.constraints[i];
     }
   }
 };
 
 /// collapse v1 into v2
-Data._collapseVariables = function(v1, v2) {
+Data.prototype._collapseVariables = function(v1, v2) {
   v2.alias = v1.name;
   console.log("v1: ", v1);
   console.log("v2: ", v2);
@@ -174,6 +187,7 @@ Data._collapseVariables = function(v1, v2) {
   }
   // redirect links for the old variable to the new one
   this.global_v_names[v1.name] = v2;
+  this.all_v[v1.name] = v2;
 };
 
 Data.prototype._parseVariables = function(arr){
