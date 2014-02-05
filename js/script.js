@@ -13,7 +13,7 @@ var cola_links = [];
 
 function init(){
   if (isRunInBrouser)
-   initialize('data/aust.fzn');
+   initialize('data/golomb.fzn');
 }
 
 function log_to_html(str){
@@ -33,6 +33,7 @@ function initialize(file_path){
 /// work:
 
   data.readFile(file_path, ready);
+  data.readNogoodsFile("data/golomb_ng.dat", process_nogoods)
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
   // data.readFile("aust.fzn", ready);
@@ -63,7 +64,7 @@ function ready(){
   // console.log(data.constraints);
 
   // option 1 for graph
-   construct_graph();
+   //construct_graph();
 
   // option 2 gro graph
   construct_graph_o2();
@@ -86,8 +87,19 @@ function collapse_node(d){
 }
 
 function construct_graph_o2(){
-  console.log('data', data);
+  shown_v = [];
+  if (shown_v.length === 0)
+  for (var i in data.all_v){
+    var v = data.all_v[i];
+    shown_v.push(v);
+  }
 
+  create_links_o2();
+
+}
+
+function process_nogoods(lines){
+  console.log("nogoods: ", lines);
 }
 
 function construct_graph(){
@@ -153,12 +165,62 @@ function construct_cnodes(){
   // console.groupEnd();
 }
 
+function create_links_o2(){
+
+  links = []; /// why links and cola_links?
+  cola_links = [];
+
+  for (var i in data.constraints){
+    var c = data.constraints[i];
+    
+    // for each variable in constraint
+    for (var j = 0; j < c.arr.length; j++) 
+      for (var k = j + 1; k < c.arr.length; k++){
+        var link = {type: "straight", source: c.arr[j], length: 5};
+        link.target = c.arr[k]
+        link.real_target = c.arr[k];
+        links.push(link);
+        cola_links.push(link);
+      }
+
+  }
+
+
+  // for (var i in data.constraint_nodes){
+  //   var c = data.constraint_nodes[i];
+
+  //   for (var j in c.arr){
+  //     var link = {type: "straight", source: c, length: 2};
+  //     if (c.arr[j].host){
+  //       link.target = c.arr[j].host; // for cola
+        
+  //       if (c.arr[j].host.isCollapsed === false){
+  //         link.real_target = c.arr[j];
+  //         link.length = 8;
+  //       } else {
+  //         link.real_target = c.arr[j].host;
+  //       }
+          
+  //     }
+  //     else {
+  //        link.target = link.real_target = c.arr[j];
+  //     }
+        
+  //     links.push(link);
+  //     cola_links.push(link);
+  //   }
+    
+
+
+
+  // }
+}
+
 function create_links(){
-  links = [];
+  links = []; /// why links and cola_links?
   cola_links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
-    // console.log("creating links for: ", c);
 
     for (var j in c.arr){
       var link = {type: "straight", source: c, length: 2};

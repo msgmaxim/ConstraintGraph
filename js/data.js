@@ -9,6 +9,29 @@ function Data(){
   this.constraint_nodes = [];
 }
 
+Data.prototype.readNogoodsFile = function (file_name, callback){
+  var req = new XMLHttpRequest();
+  var ajaxURL = file_name;
+  ajaxURL += "?noCache=" + (new Date().getTime()) + Math.random();
+
+  req.open('get', ajaxURL, false);
+  req.onload = (function(caller) {
+        return function() {caller._parseNoGoods.apply(caller, [arguments[0], callback]);};
+      }
+    )(this);
+  req.send();
+}
+
+Data.prototype._parseNoGoods = function (data, callback){
+  var resp = data.target.response.trim().replace(/[ ]{2,}/gi, " ");
+  var lines = resp.split('\n');
+  read_variables(lines);
+  read_varlits(lines);
+  read_clauses(lines);
+
+  generate_vars();
+}
+
 Data.prototype.readFile = function (file_name, callback){
   var req = new XMLHttpRequest();
   var ajaxURL = file_name;
@@ -227,7 +250,11 @@ Data.prototype._parseArrays = function(arr){
     var b1 = rest.indexOf('(');
     var b2 = rest.indexOf(')');
 
-    if (rest.indexOf('introduced') !== -1 || (structure[1] && structure[1].indexOf('..') === -1)) { // introduced variables
+
+    // TODO: not sure if that would work with other examples
+    // if (rest.indexOf('introduced') !== -1 || (structure[1] && structure[1].indexOf('..') === -1)) { // introduced variables
+    if (rest.indexOf('=') !== -1 || (structure[1] && structure[1].indexOf('..') === -1)) { // introduced variables
+      rest = rest.substring(rest.indexOf('='));
       a.dims = 1;
       b1 = rest.indexOf('[');
       b2 = rest.indexOf(']');
