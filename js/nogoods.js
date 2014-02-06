@@ -1,4 +1,5 @@
 var vLayout = new VarLayout();
+var DEFAULT_EDGE_LENGTH = 10;
 
 function VarLayout(){
   this.variables;
@@ -13,6 +14,7 @@ function VarLayout(){
 var variables; // array
 var map_varlits; // map
 var map_var_name; // map
+var links_map = {};
 
 function read_variables(lines){ // !good
   variables = [];
@@ -127,4 +129,64 @@ function generate_vars(){
   }
   console.log(vLayout.new_variables);
   //vLayout.update_drawing();
+}
+
+function generate_graph(){
+  // loop through variables
+
+  for (i in variables){
+    var item = variables[i];
+    item.type = "svar"; 
+    shown_v.push(item);
+  }
+
+    // loop through clauses
+
+  for (i in clauses){
+    for (var j = 0; j < clauses[i].length; j++){
+      for (var k = j+1; k < clauses[i].length; k++){
+         connect_nodes(clauses[i][j], clauses[i][k]);
+      }
+    }
+
+  }
+
+  for (var i in links_map){
+    links.push(links_map[i]);
+    cola_links.push(links_map[i]);
+  }
+
+  // for (i in links_map){
+  //   if (draw_disconnected || links_map[i].occurrence >= min_occurrence)
+  //     graph["links"].push(links_map[i]);
+  // }
+
+}
+
+function connect_nodes(n1, n2){
+  if (n1 == n2) return;
+  var v1 = parseInt(n1["id"]), v2 = parseInt(n2["id"]);
+  var link;
+  if (v1 > v2) {v2 = v1 + v2; v1 = v2 - v1; v2 = v2 - v1;}
+
+  if( links_map[v1 + " " + v2] == undefined) {
+    
+    link = {};
+    link["source"] = variables[parseInt(v1)];
+    link["target"] = variables[parseInt(v2)];
+    link["real_target"] = variables[parseInt(v2)]; // what is real target???
+    link["occurrence"] = 1;
+
+    link["length"] = DEFAULT_EDGE_LENGTH;
+    //link["value"] = DEFAULT_EDGE_VALUE;
+
+    links_map[v1 + " " + v2] = link;
+  } else {
+    link = links_map[v1 + " " + v2];
+    //link["value"] += 0.2;
+    link["occurrence"] += 1;
+  }
+
+  // if (max_occurrence < link["occurrence"])
+  //   max_occurrence = link["occurrence"];
 }

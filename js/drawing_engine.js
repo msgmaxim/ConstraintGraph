@@ -56,7 +56,7 @@ DrawingEngine.prototype._apply_zooming = function(){
 };
 
 DrawingEngine.prototype.draw = function(){
-  this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start(5, 5, 5);
+  this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start(5, 5,  5);
 
   this._draw_single_variables();
   this._draw_array_nodes();
@@ -76,6 +76,8 @@ DrawingEngine.prototype._draw_single_variables = function(){
     .data(shown_v.filter(function(v) {
       return (v.type !== "arr");
     }));
+
+    shown_v.forEach(function (d){ d.width = DrawingEngine.VAR_SIZE; d.height = DrawingEngine.VAR_SIZE });
 
     v_nodes.enter().append("circle")
     .attr("class", "v_node")
@@ -341,7 +343,8 @@ DrawingEngine.prototype._update_drawing = function(){
     return "M " + d.x + " " + (d.y - h/2) + " l " + (h/2) + " " + (h) + " l " + (-h) + " " + ("0") + " z";
   });
   
-  s_links.attr("x1", function (d) { return d.source.x; })
+  s_links.attr("x1", function (d) { 
+    return d.source.x; })
     .attr("y1", function (d) { return d.source.y; })
     .attr("x2", function (d) { return d.real_target.x; })
     .attr("y2", function (d) { return d.real_target.y; });
@@ -350,7 +353,7 @@ DrawingEngine.prototype._update_drawing = function(){
 /// auxiliary functions
 
 function hasClass(elem, className) {
-    return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+    return new RegExp(' ' + className + ' ').test('  ' + elem.className + ' ');
 }
 
 function addClass(elem, className) {

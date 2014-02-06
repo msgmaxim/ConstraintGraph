@@ -34,6 +34,7 @@ function initialize(file_path){
 
   data.readFile(file_path, ready);
   data.readNogoodsFile("data/golomb_ng.dat", process_nogoods)
+  // data.readNogoodsFile("data/maxim.dat", process_nogoods)
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
   // data.readFile("aust.fzn", ready);
@@ -68,7 +69,6 @@ function ready(){
 
   // option 2 gro graph
   construct_graph_o2();
-
   de.draw();
 }
 

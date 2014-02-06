@@ -30,6 +30,9 @@ Data.prototype._parseNoGoods = function (data, callback){
   read_clauses(lines);
 
   generate_vars();
+  generate_graph();
+
+  de.draw();
 }
 
 Data.prototype.readFile = function (file_name, callback){
