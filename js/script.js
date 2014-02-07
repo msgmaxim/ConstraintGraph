@@ -10,10 +10,13 @@ var shown_v = [];
 var links = [];
 var cola_links = [];
 
+var model_links = [];
+
 
 function init(){
   if (isRunInBrouser)
-   initialize('data/golomb.fzn');
+   initialize('data/golomb_9.fzn');
+   // initialize('data/queen_cp2.fzn');
 }
 
 function log_to_html(str){
@@ -33,7 +36,10 @@ function initialize(file_path){
 /// work:
 
   data.readFile(file_path, ready);
-  data.readNogoodsFile("data/golomb_ng.dat", process_nogoods)
+  data.readNogoodsFile("data/golomb_ng_9.dat", process_nogoods);
+  // data.readNogoodsFile("data/queen_cp2.dat", process_nogoods);
+
+
   // data.readNogoodsFile("data/maxim.dat", process_nogoods)
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
@@ -91,7 +97,7 @@ function construct_graph_o2(){
   if (shown_v.length === 0)
   for (var i in data.all_v){
     var v = data.all_v[i];
-    shown_v.push(v);
+    // shown_v.push(v);
   }
 
   create_links_o2();
@@ -179,8 +185,9 @@ function create_links_o2(){
         var link = {type: "straight", source: c.arr[j], length: 5};
         link.target = c.arr[k]
         link.real_target = c.arr[k];
-        links.push(link);
-        cola_links.push(link);
+        // links.push(link);
+        // cola_links.push(link);
+        model_links.push(link);
       }
 
   }
@@ -217,8 +224,8 @@ function create_links_o2(){
 }
 
 function create_links(){
-  links = []; /// why links and cola_links?
-  cola_links = [];
+  // links = []; /// why links and cola_links?
+  // cola_links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
 

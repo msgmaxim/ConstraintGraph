@@ -7,6 +7,7 @@ function Data(){
   this.all_v = {}; // map varname -> var
   this.constraints = [];
   this.constraint_nodes = [];
+  this.var_aliases = {};
 }
 
 Data.prototype.readNogoodsFile = function (file_name, callback){
@@ -268,9 +269,11 @@ Data.prototype._parseArrays = function(arr){
       {
 
         var v = this.all_v[vars[q]];
+        this.var_aliases[v.name] = a.name + "[" + q + "]";
         delete this.global_v_names[v.name]; // the variable turn out to be a part of an array
         v.host = a;
-        v.real_name = v.name;
+        v.real_name = v.name; // what is a real name?
+        v.name = a.name + "[" + q + "]";
         v.constraints = [];
         a.vars.push(v);
       }

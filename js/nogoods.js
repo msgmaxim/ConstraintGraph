@@ -151,10 +151,16 @@ function generate_graph(){
 
   }
 
+
+  var nogood_links = [];
   for (var i in links_map){
-    links.push(links_map[i]);
-    cola_links.push(links_map[i]);
+    nogood_links.push(links_map[i]);
   }
+
+  links = cola_links = subtract_graph(nogood_links, model_links); /// not a copy
+  // links = cola_links = model_links; /// not a copy
+
+  
 
   // for (i in links_map){
   //   if (draw_disconnected || links_map[i].occurrence >= min_occurrence)
@@ -189,4 +195,27 @@ function connect_nodes(n1, n2){
 
   // if (max_occurrence < link["occurrence"])
   //   max_occurrence = link["occurrence"];
+}
+
+
+// subtracts edges links2 from links1
+function subtract_graph(links1, links2){
+    links_map = {};
+    result = [];
+    
+    for (var i = 0; i < links1.length; i++)
+        links_map[give_name(links1[i])] = links1[i];  
+    
+    for (i = 0; i < links2.length; i++)
+        delete links_map[give_name(links2[i])];
+        
+    for (i in links_map) result.push(links_map[i])
+    
+    return result;
+
+    function give_name(link){
+        var n1 = link.source.name;
+        var n2 = link.target.name;
+        return n1 < n2 ? n1 + "_" + n2 : n2 + "_" + n1;
+    }
 }
