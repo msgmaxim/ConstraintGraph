@@ -1,3 +1,9 @@
+predicate all_different_int(array [int] of var int: x);
+predicate array_bool_even(array [int] of var bool: bs);
+predicate array_bool_odd(array [int] of var bool: bs);
+predicate bool_clause_reif(array [int] of var bool: pos, array [int] of var bool: neg, var bool: res);
+predicate bool_conj_reif(array [int] of var bool: pos, array [int] of var bool: neg, var bool: res);
+predicate int_in(var int: x, set of int: s);
 var 2..9: INT____00001 :: is_defined_var :: var_is_introduced;
 var 3..10: INT____00002 :: is_defined_var :: var_is_introduced;
 var 4..11: INT____00003 :: is_defined_var :: var_is_introduced;
