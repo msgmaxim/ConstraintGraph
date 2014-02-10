@@ -15,6 +15,7 @@ var variables; // array
 var map_varlits; // map
 var map_var_name; // map
 var links_map = {};
+var nogood_shown_v = [];
 
 function read_variables(lines){ // !good
   variables = [];
@@ -137,7 +138,7 @@ function generate_graph(){
   for (i in variables){
     var item = variables[i];
     item.type = "svar"; 
-    shown_v.push(item);
+      nogood_shown_v.push(item);
   }
 
     // loop through clauses
@@ -145,6 +146,8 @@ function generate_graph(){
   for (i in clauses){
     for (var j = 0; j < clauses[i].length; j++){
       for (var k = j+1; k < clauses[i].length; k++){
+        if (clauses[i][j] == undefined)
+          console.log("ooops");
          connect_nodes(clauses[i][j], clauses[i][k]);
       }
     }
@@ -157,8 +160,11 @@ function generate_graph(){
     nogood_links.push(links_map[i]);
   }
 
-  links = cola_links = subtract_graph(nogood_links, model_links); /// not a copy
-  // links = cola_links = model_links; /// not a copy
+  // links = cola_links = subtract_graph(nogood_links, model_links); /// not a copy
+  links = cola_links = model_links; /// not a copy
+  // shown_v = [].concat(constraint_shown_v, nogood_shown_v)
+  shown_v = constraint_shown_v;
+  // shown_v = nogood_shown_v;
 
   
 

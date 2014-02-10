@@ -6,16 +6,19 @@ var de = new DrawingEngine();
 var isRunInBrouser = true;
 
 
-var shown_v = [];
+var constraint_shown_v = [];
 var links = [];
 var cola_links = [];
+var shown_v = [];
 
 var model_links = [];
 
 
 function init(){
   if (isRunInBrouser)
-   initialize('data/golomb_9.fzn');
+   // initialize('data/golomb_9.fzn');
+   // initialize('data/queen_cp2.fzn');
+   initialize('data/cars.fzn');
    // initialize('data/queen_cp2.fzn');
 }
 
@@ -36,7 +39,9 @@ function initialize(file_path){
 /// work:
 
   data.readFile(file_path, ready);
-  data.readNogoodsFile("data/golomb_ng_9.dat", process_nogoods);
+  // data.readNogoodsFile("data/golomb_ng_9.dat", process_nogoods);
+  data.readNogoodsFile("data/cars_mod.dat", process_nogoods);
+  // data.readNogoodsFile("data/queens_ng.dat", process_nogoods);
   // data.readNogoodsFile("data/queen_cp2.dat", process_nogoods);
 
 
@@ -93,11 +98,11 @@ function collapse_node(d){
 }
 
 function construct_graph_o2(){
-  shown_v = [];
-  if (shown_v.length === 0)
+  constraint_shown_v = [];
+  if (constraint_shown_v.length === 0)
   for (var i in data.all_v){
     var v = data.all_v[i];
-    // shown_v.push(v);
+    constraint_shown_v.push(v);
   }
 
   create_links_o2();
@@ -110,15 +115,15 @@ function process_nogoods(lines){
 
 function construct_graph(){
   // console.log("reconstruction");
-  shown_v = [];
-  if (shown_v.length === 0)
+  constraint_shown_v = [];
+  if (constraint_shown_v.length === 0)
   for (var i in data.global_v_names){ // TODO: maybe no need for global_v?
     var v = data.global_v_names[i];
     if (v.type != "arr" || v.isCollapsed){
-      shown_v.push(v);
+      constraint_shown_v.push(v);
     } else {
 
-      shown_v.push(v);
+      constraint_shown_v.push(v);
     }
   }
   construct_cnodes();
@@ -129,7 +134,7 @@ function construct_graph(){
 function generate_nodes_from_array(str, arr){
   if (arr.length === 1)
     for (var i = 1; i <= arr[0]; i++)
-      shown_v.push({name: (str + i + "]")});
+      constraint_shown_v.push({name: (str + i + "]")});
   else {
     arr.shift();
     for (var j = 1; j <= arr[0]; j++){

@@ -120,6 +120,8 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
     .each(function(d) {d.svg_element = this;})
     .append("title").text(function (d) { return d.type; });
 
+    c_nodes.enter().append('p').attr("text", function (d) {return d.name}); /// want to show all constraints
+
   c_nodes.exit().remove();
 };
 
