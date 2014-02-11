@@ -145,7 +145,8 @@ DrawingEngine.highlight_var = function(n){
   d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";});
 
   for (var i in n.constraints){
-    DrawingEngine.highlight_cnode(n.constraints[i].cnode);
+    if (n.constraints[i].cnode)
+      DrawingEngine.highlight_cnode(n.constraints[i].cnode);
   }
 };
 

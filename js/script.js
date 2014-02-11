@@ -15,11 +15,24 @@ var model_links = [];
 
 
 function init(){
+
+  document.getElementById("search_input").addEventListener("change", update_search);
+  console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
    // initialize('data/golomb_9.fzn');
    // initialize('data/queen_cp2.fzn');
    initialize('data/cars.fzn');
    // initialize('data/queen_cp2.fzn');
+}
+
+function update_search(e){
+  var name = e.target.value;
+  var re = new RegExp(name);
+  DrawingEngine.unhighlight_all();
+  shown_v.forEach(function (n) {
+    if (re.test(n.name))
+      DrawingEngine.highlight_var(n);
+  })
 }
 
 function log_to_html(str){
