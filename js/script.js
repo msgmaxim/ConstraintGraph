@@ -30,7 +30,7 @@ function update_search(e){
   var re = new RegExp(name);
   DrawingEngine.unhighlight_all();
   shown_v.forEach(function (n) {
-    if (re.test(n.name))
+    if (re.test(n.name) || name == n.name)
       DrawingEngine.highlight_var(n);
   })
 }
@@ -89,7 +89,7 @@ function ready(){
   // console.log(data.constraints);
 
   // option 1 for graph
-   //construct_graph();
+   // construct_graph();
 
   // option 2 gro graph
   construct_graph_o2();

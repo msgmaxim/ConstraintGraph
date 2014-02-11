@@ -82,7 +82,9 @@ DrawingEngine.prototype._draw_single_variables = function(){
     v_nodes.enter().append("circle")
     .attr("class", "v_node")
     .attr("r", DrawingEngine.VAR_SIZE / 2)
-    .each(function(d) {d.svg_element = this;})
+    .each(function(d) {
+      d.svg_element = this;
+    })
     .on("mouseover", function (d) {
       DrawingEngine.highlight_var(d);
     })

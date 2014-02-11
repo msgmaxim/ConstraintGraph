@@ -58,19 +58,23 @@ Data.prototype._initModel = function(data, callback){
   this._parseVariables(lines.filter(Data._isSingleVar).filter(Data._isVariable));
   this._parseArrays(lines.filter(Data._isArray).filter(Data._isVariable));
   this._parseConstraints(lines.filter(Data._isConstraint));
-  this._loopConstraints();
-  this._removeRedundancy();
+  
+  this._loopConstraints(); // something to do with arrays
+  this._removeRedundancy(); // handle bool2int constraints
+  this._applyAliases();
+  
 
   if (Data.Profiling) console.timeEnd("Parsing time: ");
   callback();
 };
 
-Data.prototype.readString = function(str, callback){
+Data.prototype.readString = function(str, callback){ // never called?
   var lines = str.trim().split('\n');
   
   this._parseVariables(lines.filter(Data._isSingleVar).filter(Data._isVariable));
   this._parseArrays(lines.filter(Data._isArray).filter(Data._isVariable));
   this._parseConstraints(lines.filter(Data._isConstraint));
+
   this._loopConstraints();
   this._removeRedundancy();
 
@@ -121,30 +125,47 @@ Data._parseConstraint = function(str){
   var b1 = str.indexOf('(');
   var b2 = str.indexOf(')');
   c.name = str.substring(0, b1);
+
   str = str.substring(b1 + 1, b2).trim();
 
   if (str.charAt(0) === "[" && str.charAt(str.length - 1) === "]"){   /// "[a, b, c]"
     str = str.substring(1, str.length - 1);                           /// "a, b, c"
   } else {
-    var structure = Tools.parse_array_str(str);
+    var structure = Tools.smart_split(str);
 
         /// TODO: make more use of Tools
     if (c.name === "int_lin_eq")                                      /// constraint int_lin_eq([1, 91, -9000, -90, -900, 10, 1000, -1], [D, E, M, N, O, R, S, Y], 0);
     {
-      str = structure[1];
+      str = Tools.removeOuterBraces(structure[1]);
+    } else if (c.name === "int_lin_eq_reif") {
+      str = Tools.removeOuterBraces(structure[1]) + ", " + Tools.smart_split(structure[3])[0];
     } else if (c.name === "array_bool_and"){                          /// constraint array_bool_and([BOOL____00082, BOOL____00083], BOOL____00084) :: defines_var(BOOL____00084);
       str = Tools.removeBraces(str);
-    }
+    } 
   }
 
   var vars = str.replace(/[ ]{1,}/gi, "").split(',');                 /// constraint array_int_element(INT____00002, orders, INT____00003) :: defines_var(INT____00003);
-  if (c.name === "int_eq")
+  if (c.name === "int_eq")                                            /// constraint int_eq(mark[1], 0);
     c.arr = [vars[0]];
   else
     c.arr = vars;
   
   return c;
 };
+
+Data.prototype._applyAliases = function(){
+  for (var i in this.constraints){
+    var c = this.constraints[i];
+    for (var j in c.arr){
+      var v = this.constraints[i].arr[j];
+
+      if (this.var_aliases[v.name] !== undefined) {
+        console.log("applied aliases!");
+        this.constraints[i].arr[j] = this.all_v[this.var_aliases[v.name]];
+      }
+    }
+  }
+}
 
 Data.prototype._loopConstraints = function(){
   for (var i = 0; i < this.constraints.length; i++){
@@ -207,6 +228,7 @@ Data.prototype._collapseVariables = function(v1, v2) {
       // is indeed that constraint? (so as not to remove unprocessed)
       if ((c.arr[0].name === v1.name && c.arr[1].name === v2.name) ||
        (c.arr[0].name === v2.name && c.arr[1].name === v1.name)){
+        this.var_aliases[v1.name] = v2.name;
         console.log("removing: ", v2.constraints[i]);
         v2.constraints.splice(i--, 1); // remove links from the variable
       }
