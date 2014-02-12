@@ -17,12 +17,17 @@ var model_links = [];
 function init(){
 
   document.getElementById("search_input").addEventListener("change", update_search);
+  document.addEventListener("keypress", handle_keyboard);
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
    // initialize('data/golomb_9.fzn');
    // initialize('data/queen_cp2.fzn');
    initialize('data/cars.fzn');
    // initialize('data/queen_cp2.fzn');
+}
+
+function handle_keyboard(e){
+  console.log(e);
 }
 
 function update_search(e){
@@ -115,6 +120,7 @@ function construct_graph_o2(){
   if (constraint_shown_v.length === 0)
   for (var i in data.all_v){
     var v = data.all_v[i];
+    v.type = "svar" // not always an svar, but for now displayed like it is
     constraint_shown_v.push(v);
   }
 

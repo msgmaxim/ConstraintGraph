@@ -129,14 +129,14 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
 
 DrawingEngine.highlight_cnode = function(n){
   // d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";}); to remove
-  DrawingEngine.highlight_svg_element(n);
+  if (n.cnode)
+    DrawingEngine.highlight_svg_element(n.cnode);    
 
   for (var i in n.arr) {
 
     if (n.arr[i].svg_element && (n.arr[i].type === "svar"||
       (n.arr[i].type === "arr" && n.arr[i].isCollapsed) ||
       (n.arr[i].type === "array_element" && !n.arr[i].host.isCollapsed)))
-      // d3.select(n.arr[i].svg_element).attr("style", function (d) {return "fill: gold";}); ro remove
       DrawingEngine.highlight_svg_element(n.arr[i]);
   }
 };
@@ -144,10 +144,10 @@ DrawingEngine.highlight_cnode = function(n){
 // highlight the var_node and everything connected
 DrawingEngine.highlight_var = function(n){
   DrawingEngine.highlight_svg_element(n);
+  console.log("hover: ", n);
 
   for (var i in n.constraints){
-    if (n.constraints[i].cnode)
-      DrawingEngine.highlight_cnode(n.constraints[i].cnode);
+      DrawingEngine.highlight_cnode(n.constraints[i]);
   }
 };
 
