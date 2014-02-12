@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"Var",
+				"VAR_SIZE"
+			],
+			[
+				"con",
+				"constraint_shown_v"
+			],
+			[
+				"nogood",
+				"nogood_shown_v"
+			],
+			[
 				"subtra",
 				"subtract_graph"
 			],
@@ -92,82 +104,18 @@
 	"buffers":
 	[
 		{
-			"file": "script.js",
-			"settings":
-			{
-				"buffer_size": 5596,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.fzn",
-			"settings":
-			{
-				"buffer_size": 2955,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.mzn",
-			"settings":
-			{
-				"buffer_size": 743,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.dat",
-			"settings":
-			{
-				"buffer_size": 238053,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_ng_9.dat",
-			"settings":
-			{
-				"buffer_size": 3483910,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_9.fzn",
-			"settings":
-			{
-				"buffer_size": 8009,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
-			"settings":
-			{
-				"buffer_size": 617,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "drawing_engine.js",
-			"settings":
-			{
-				"buffer_size": 13064,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/maxim.dat",
-			"settings":
-			{
-				"buffer_size": 533,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "data.js",
 			"settings":
 			{
-				"buffer_size": 9856,
+				"buffer_size": 10623,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "script.js",
+			"settings":
+			{
+				"buffer_size": 6301,
 				"line_ending": "Unix"
 			}
 		},
@@ -175,32 +123,55 @@
 			"file": "nogoods.js",
 			"settings":
 			{
-				"buffer_size": 5124,
+				"buffer_size": 5354,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/maxim/Desktop/subtract_graph.js",
+			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queens_ng.dat",
 			"settings":
 			{
-				"buffer_size": 710,
-				"line_ending": "Unix",
-				"name": "nodes1 = [{name:\"a\"}, {name:\"b\"}, {name:\"c\"}, {nam"
-			}
-		},
-		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_ng.dat",
-			"settings":
-			{
-				"buffer_size": 102530,
+				"buffer_size": 4666,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb.fzn",
+			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/cars.fzn",
 			"settings":
 			{
-				"buffer_size": 5197,
+				"buffer_size": 38059,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
+			"settings":
+			{
+				"buffer_size": 652,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.fzn",
+			"settings":
+			{
+				"buffer_size": 3762,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "drawing_engine.js",
+			"settings":
+			{
+				"buffer_size": 13220,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools.js",
+			"settings":
+			{
+				"buffer_size": 1538,
 				"line_ending": "Unix"
 			}
 		}
@@ -229,6 +200,23 @@
 	},
 	"file_history":
 	[
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.dat",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb.fzn",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_ng.dat",
+		"/Users/maxim/Desktop/subtract_graph.js",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/cars_mod.dat",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/cars.dat",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/cars.fzn",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/nogoods.js",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/data.js",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/maxim.dat",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/drawing_engine.js",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_9.fzn",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_ng_9.dat",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.mzn",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.fzn",
+		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/script.js",
 		"/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb.mzn",
 		"/Users/maxim/Dropbox/dev/WebCola/WebCola/src/d3adaptor.js",
 		"/Users/maxim/Dropbox/dev/box_packing/js/script.js",
@@ -255,6 +243,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"00013",
+			"var_alia",
+			"highlight",
+			"step_class[10",
+			"step_class",
+			"190",
+			"generate_graph",
 			"shown_v",
 			");\n",
 			"444",
@@ -302,23 +297,23 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "script.js",
+					"file": "data.js",
 					"settings":
 					{
-						"buffer_size": 5596,
+						"buffer_size": 10623,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								726,
-								726
+								3970,
+								3970
 							]
 						],
 						"settings":
@@ -328,30 +323,32 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1.0,
+						"translation.y": 1779.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.fzn",
+					"file": "script.js",
 					"settings":
 					{
-						"buffer_size": 2955,
+						"buffer_size": 6301,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								523,
+								523
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -361,44 +358,46 @@
 				},
 				{
 					"buffer": 2,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.mzn",
+					"file": "nogoods.js",
 					"settings":
 					{
-						"buffer_size": 743,
+						"buffer_size": 5354,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1526,
+								1531
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 586.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.dat",
+					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queens_ng.dat",
 					"settings":
 					{
-						"buffer_size": 238053,
+						"buffer_size": 4666,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4373,
-								4373
+								1182,
+								1185
 							]
 						],
 						"settings":
@@ -406,25 +405,25 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 740.0,
+						"translation.y": 178.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_ng_9.dat",
+					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/cars.fzn",
 					"settings":
 					{
-						"buffer_size": 3483910,
+						"buffer_size": 38059,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								21611,
+								21621
 							]
 						],
 						"settings":
@@ -432,51 +431,25 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 4024.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_9.fzn",
-					"settings":
-					{
-						"buffer_size": 8009,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
 					"settings":
 					{
-						"buffer_size": 617,
+						"buffer_size": 652,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								268,
-								268
+								652,
+								652
 							]
 						],
 						"settings":
@@ -491,19 +464,45 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "drawing_engine.js",
+					"buffer": 6,
+					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.fzn",
 					"settings":
 					{
-						"buffer_size": 13064,
+						"buffer_size": 3762,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2203,
-								2203
+								2676,
+								2676
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 448.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "drawing_engine.js",
+					"settings":
+					{
+						"buffer_size": 13220,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2666,
+								2666
 							]
 						],
 						"settings":
@@ -520,44 +519,18 @@
 				},
 				{
 					"buffer": 8,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/maxim.dat",
+					"file": "tools.js",
 					"settings":
 					{
-						"buffer_size": 533,
+						"buffer_size": 1538,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								506,
-								506
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "data.js",
-					"settings":
-					{
-						"buffer_size": 9856,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8603,
-								8604
+								1537,
+								1537
 							]
 						],
 						"settings":
@@ -567,116 +540,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3742.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "nogoods.js",
-					"settings":
-					{
-						"buffer_size": 5124,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3143,
-								3150
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 6.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "/Users/maxim/Desktop/subtract_graph.js",
-					"settings":
-					{
-						"buffer_size": 710,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								710,
-								710
-							]
-						],
-						"settings":
-						{
-							"auto_name": "nodes1 = [{name:\"a\"}, {name:\"b\"}, {name:\"c\"}, {nam",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_ng.dat",
-					"settings":
-					{
-						"buffer_size": 102530,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3284,
-								3284
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb.fzn",
-					"settings":
-					{
-						"buffer_size": 5197,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2639,
-								2639
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 4.0,
+						"translation.y": 133.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
