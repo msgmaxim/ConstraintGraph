@@ -33,6 +33,7 @@ Data.prototype._parseNoGoods = function (data, callback){
   generate_vars();
   generate_graph();
 
+  apply_graph();
   de.draw();
 }
 

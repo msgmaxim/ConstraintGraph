@@ -56,7 +56,7 @@ DrawingEngine.prototype._apply_zooming = function(){
 };
 
 DrawingEngine.prototype.draw = function(){
-  this.cola_obj.nodes([].concat(data.constraint_nodes, shown_v)).links(cola_links).start(5, 5,  5);
+  this.cola_obj.nodes(shown_v).links(cola_links).start(5, 5,  5);
 
   this._draw_single_variables();
   this._draw_array_nodes();
@@ -74,7 +74,8 @@ DrawingEngine.prototype.draw = function(){
 DrawingEngine.prototype._draw_single_variables = function(){
     v_nodes = this.nodesLayer.selectAll(".v_node")
     .data(shown_v.filter(function(v) {
-      return (v.type !== "arr");
+      // return (v.type !== "arr");
+      return (v.type === "svar");
     }));
 
     shown_v.forEach(function (d){ d.width = DrawingEngine.VAR_SIZE; d.height = DrawingEngine.VAR_SIZE });
@@ -86,12 +87,16 @@ DrawingEngine.prototype._draw_single_variables = function(){
       d.svg_element = this;
     })
     .on("mouseover", function (d) {
-      DrawingEngine.highlight_var(d);
+      // if (event.shiftKey){
+        // DrawingEngine.unhighlight_all();
+        DrawingEngine.highlight_var(d);
+      
     })
     .on("mousedown", function () { nodeMouseDown = true; } )
     .on("mouseup", function() { nodeMouseDown = false; })
     .on("mouseleave", function (d) {
-      DrawingEngine.unhighlight_all();
+      // if (event.shiftKey)
+        DrawingEngine.unhighlight_all();
     })
     .append("title").text(function (d) { return d.name; });
 
@@ -119,10 +124,10 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
     .on("mouseleave", function (d) {
       DrawingEngine.unhighlight_all();
     })
-    .each(function(d) {d.svg_element = this;})
+    .each(function(d) {d.svg_element = this; console.log("we do draw cnodes")})
     .append("title").text(function (d) { return d.type; });
 
-    c_nodes.enter().append('p').attr("text", function (d) {return d.name}); /// want to show all constraints
+    // c_nodes.enter().append('p').attr("text", function (d) {return d.name}); /// want to show all constraints
 
   c_nodes.exit().remove();
 };
@@ -144,7 +149,6 @@ DrawingEngine.highlight_cnode = function(n){
 // highlight the var_node and everything connected
 DrawingEngine.highlight_var = function(n){
   DrawingEngine.highlight_svg_element(n);
-  console.log("hover: ", n);
 
   for (var i in n.constraints){
       DrawingEngine.highlight_cnode(n.constraints[i]);

@@ -6,28 +6,55 @@ var de = new DrawingEngine();
 var isRunInBrouser = true;
 
 
-var constraint_shown_v = [];
+var model_shown_v = [];
 var links = [];
 var cola_links = [];
 var shown_v = [];
 
 var model_links = [];
+var difference_graph = false;
+// var show_single_vars = false;
 
 
 function init(){
-
+  de.init_svg();
   document.getElementById("search_input").addEventListener("change", update_search);
-  document.addEventListener("keypress", handle_keyboard);
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
-   // initialize('data/golomb_9.fzn');
-   // initialize('data/queen_cp2.fzn');
-   initialize('data/cars.fzn');
-   // initialize('data/queen_cp2.fzn');
+    // run_graph('data/cars.fzn')
+    // run_graph('data/cars.fzn', 'data/cars_mod.dat')
+    // run_graph('data/queen_cp2.fzn', 'data/queens_ng.dat');
+    // run_graph('data/golomb.fzn', 'data/golomb_ng_9.dat');
+    // run_graph('data/radiation.fzn', 'data/radiation_ng.dat');
+    run_graph('data/radiation_04.fzn', 'data/radiation_04_ng.dat');
+
 }
 
-function handle_keyboard(e){
-  console.log(e);
+function run_graph(data_path, nogoods_path){
+  if (nogoods_path === undefined){
+    difference_graph = false;
+    data.readFile(data_path, constr_graph_ready);
+  } else {
+    difference_graph = true;
+    data.readFile(data_path, constr_graph_ready);
+    data.readNogoodsFile(nogoods_path, process_nogoods);
+  }
+  
+  
+}
+
+function apply_graph(){
+  if (difference_graph)
+  {
+    links = cola_links = subtract_graph(nogood_links, model_links); /// not a copy
+    shown_v = nogood_shown_v;
+  } else {
+    links = cola_links = model_links; /// not a copy
+    shown_v = [].concat(model_shown_v, data.constraint_nodes);
+  }
+  
+  
+  
 }
 
 function update_search(e){
@@ -36,7 +63,7 @@ function update_search(e){
   DrawingEngine.unhighlight_all();
   shown_v.forEach(function (n) {
     if (re.test(n.name) || name == n.name)
-      DrawingEngine.highlight_var(n);
+      DrawingEngine.highlight_svg_element(n);
   })
 }
 
@@ -50,19 +77,10 @@ function echo(str){
 
 function initialize(file_path){
 
-  // if (file_path !== undefined)
-  //   log_to_html("file: " + file_path);
-  de.init_svg();
-
-/// work:
-
-  data.readFile(file_path, ready);
   // data.readNogoodsFile("data/golomb_ng_9.dat", process_nogoods);
-  data.readNogoodsFile("data/cars_mod.dat", process_nogoods);
+  
   // data.readNogoodsFile("data/queens_ng.dat", process_nogoods);
   // data.readNogoodsFile("data/queen_cp2.dat", process_nogoods);
-
-
   // data.readNogoodsFile("data/maxim.dat", process_nogoods)
   // data.readFile("latinsquare.fzn", ready);
   // data.readFile("latinsquare_no_gecode.fzn", ready);
@@ -82,23 +100,25 @@ function initialize(file_path){
 
 function init_string(str) {
   de.init_svg();
-  data.readString(str, ready);
+  data.readString(str, constr_graph_ready);
 }
 
-function ready(){
+function constr_graph_ready(){
   if (isRunInBrouser){
     console.log("global_v_names: ", data.global_v_names);
     console.log("all_v: ", data.all_v);
   }
-   
-  // console.log(data.constraints);
 
   // option 1 for graph
-   // construct_graph();
+  if (!difference_graph){
+    construct_graph();
+    // construct_graph_o2();
+    apply_graph();
+    de.draw();
+  } else {
+    construct_graph_o2();
+  }
 
-  // option 2 gro graph
-  construct_graph_o2();
-  de.draw();
 }
 
 function expand_node(d){
@@ -116,12 +136,12 @@ function collapse_node(d){
 }
 
 function construct_graph_o2(){
-  constraint_shown_v = [];
-  if (constraint_shown_v.length === 0)
+  model_shown_v = [];
+  if (model_shown_v.length === 0)
   for (var i in data.all_v){
     var v = data.all_v[i];
     v.type = "svar" // not always an svar, but for now displayed like it is
-    constraint_shown_v.push(v);
+    model_shown_v.push(v);
   }
 
   create_links_o2();
@@ -134,15 +154,15 @@ function process_nogoods(lines){
 
 function construct_graph(){
   // console.log("reconstruction");
-  constraint_shown_v = [];
-  if (constraint_shown_v.length === 0)
+  model_shown_v = [];
+  if (model_shown_v.length === 0)
   for (var i in data.global_v_names){ // TODO: maybe no need for global_v?
     var v = data.global_v_names[i];
     if (v.type != "arr" || v.isCollapsed){
-      constraint_shown_v.push(v);
+      model_shown_v.push(v);
     } else {
 
-      constraint_shown_v.push(v);
+      model_shown_v.push(v);
     }
   }
   construct_cnodes();
@@ -153,7 +173,7 @@ function construct_graph(){
 function generate_nodes_from_array(str, arr){
   if (arr.length === 1)
     for (var i = 1; i <= arr[0]; i++)
-      constraint_shown_v.push({name: (str + i + "]")});
+      model_shown_v.push({name: (str + i + "]")});
   else {
     arr.shift();
     for (var j = 1; j <= arr[0]; j++){
@@ -197,9 +217,6 @@ function construct_cnodes(){
 
 function create_links_o2(){
 
-  links = []; /// why links and cola_links?
-  cola_links = [];
-
   for (var i in data.constraints){
     var c = data.constraints[i];
     
@@ -209,47 +226,13 @@ function create_links_o2(){
         var link = {type: "straight", source: c.arr[j], length: 5};
         link.target = c.arr[k]
         link.real_target = c.arr[k];
-        // links.push(link);
-        // cola_links.push(link);
         model_links.push(link);
       }
 
   }
-
-
-  // for (var i in data.constraint_nodes){
-  //   var c = data.constraint_nodes[i];
-
-  //   for (var j in c.arr){
-  //     var link = {type: "straight", source: c, length: 2};
-  //     if (c.arr[j].host){
-  //       link.target = c.arr[j].host; // for cola
-        
-  //       if (c.arr[j].host.isCollapsed === false){
-  //         link.real_target = c.arr[j];
-  //         link.length = 8;
-  //       } else {
-  //         link.real_target = c.arr[j].host;
-  //       }
-          
-  //     }
-  //     else {
-  //        link.target = link.real_target = c.arr[j];
-  //     }
-        
-  //     links.push(link);
-  //     cola_links.push(link);
-  //   }
-    
-
-
-
-  // }
 }
 
 function create_links(){
-  // links = []; /// why links and cola_links?
-  // cola_links = [];
   for (var i in data.constraint_nodes){
     var c = data.constraint_nodes[i];
 
@@ -270,8 +253,7 @@ function create_links(){
          link.target = link.real_target = c.arr[j];
       }
         
-      links.push(link);
-      cola_links.push(link);
+      model_links.push(link);
     }
     
   }

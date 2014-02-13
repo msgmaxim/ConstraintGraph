@@ -16,6 +16,7 @@ var map_varlits; // map
 var map_var_name; // map
 var links_map = {};
 var nogood_shown_v = [];
+var nogood_links = [];
 
 function read_variables(lines){ // !good
   variables = [];
@@ -155,18 +156,10 @@ function generate_graph(){
   }
 
 
-  var nogood_links = [];
+  
   for (var i in links_map){
     nogood_links.push(links_map[i]);
-  }
-
-  // links = cola_links = subtract_graph(nogood_links, model_links); /// not a copy
-  links = cola_links = model_links; /// not a copy
-  // shown_v = [].concat(constraint_shown_v, nogood_shown_v)
-  shown_v = constraint_shown_v;
-  // shown_v = nogood_shown_v;
-
-  
+  }  
 
   // for (i in links_map){
   //   if (draw_disconnected || links_map[i].occurrence >= min_occurrence)
