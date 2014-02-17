@@ -33,11 +33,21 @@ function DrawingEngine(){
     DrawingEngine._self.svg.attr('height', window.innerHeight - 20);
   });
 
+  document.addEventListener("click", function (e) {
+    if (e.target.nodeName == "svg")
+      DrawingEngine.set_all_unhighlighted();
+      DrawingEngine._update_highlighting();
+      DrawingEngine._draw_var_list();
+  })
+
 }
 
 DrawingEngine.prototype.init_svg = function (){
   if (!this.svg) {
-    this.svg = d3.select("#content").append("svg").attr("width", this.width).attr("height", this.height).attr("preserveAspectRatio", "xMinYMin meet");
+    this.svg = d3.select("#content").append("svg")
+      .attr("width", this.width)
+      .attr("height", this.height)
+      .attr("preserveAspectRatio", "xMinYMin meet");
     this.svg.call(d3.behavior.zoom().on("zoom", (function(caller) {
         return function() {caller._apply_zooming.apply(caller, arguments);};
       })(this)));
@@ -54,7 +64,7 @@ DrawingEngine.prototype._apply_zooming = function(){
 };
 
 DrawingEngine.prototype.draw = function(){
-  var filtred = this._filter_single_nodes(); // brings changes to shown_v
+  var filtred = DrawingEngine._filter_single_nodes(); // brings changes to shown_v
 
   this.cola_obj.nodes(filtred).links(cola_links).start(5, 5,  5);
 
@@ -71,7 +81,7 @@ DrawingEngine.prototype.draw = function(){
   )(this));
 };
 
-DrawingEngine.prototype._filter_single_nodes = function(){
+DrawingEngine._filter_single_nodes = function(){
   // all nodes are thought to be disconnected
   shown_v.forEach(function(n) { n.has_links = false; });
 
@@ -84,6 +94,29 @@ DrawingEngine.prototype._filter_single_nodes = function(){
   return shown_v.filter(function(n) { return n.has_links; })
 }
 
+DrawingEngine._draw_var_list = function(){
+  var filtred = DrawingEngine._filter_single_nodes()
+    .filter(function (d) {
+      return (d.isHighlighted === true);
+    });
+
+  var var_names = d3.select("#var_names").selectAll("p").data(filtred, function (d) { return d.name; });
+
+  var_names.enter().append("p").text(function(d) { return d.name; });
+
+  var_names.exit().remove();
+};
+
+DrawingEngine._update_highlighting = function(){
+  var filtred = DrawingEngine._filter_single_nodes();
+  filtred.forEach(function(n){
+    if (n.isHighlighted)
+      DrawingEngine.highlight_svg_element(n);
+    else
+      d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+  })
+}
+
 DrawingEngine.prototype._draw_single_variables = function(nodes){
     v_nodes = this.nodesLayer.selectAll(".v_node")
     .data(nodes.filter(function(v) {
@@ -93,23 +126,23 @@ DrawingEngine.prototype._draw_single_variables = function(nodes){
 
     // nodes.forEach(function (d){ d.width = DrawingEngine.VAR_SIZE; d.height = DrawingEngine.VAR_SIZE });
 
+
+
     v_nodes.enter().append("circle")
     .attr("class", "v_node")
     .attr("r", DrawingEngine.VAR_SIZE / 2)
     .each(function(d) {
       d.svg_element = this;
     })
-    .on("mouseover", function (d) {
-      // if (event.shiftKey){
-        // DrawingEngine.unhighlight_all();
-        DrawingEngine.highlight_var(d);
+    .on("click", function (d) {
+        DrawingEngine.toggle_highlight_var(d);
       
     })
     .on("mousedown", function () { nodeMouseDown = true; } )
     .on("mouseup", function() { nodeMouseDown = false; })
     .on("mouseleave", function (d) {
       // if (event.shiftKey)
-        DrawingEngine.unhighlight_all();
+        // DrawingEngine.unhighlight_all();
     })
     .append("title").text(function (d) { return d.name; });
 
@@ -117,6 +150,10 @@ DrawingEngine.prototype._draw_single_variables = function(nodes){
       v_nodes.call(this.cola_obj.drag);
 
     v_nodes.exit().remove();
+
+    this.nodesLayer.selectAll(".v_node").each(function(d) {
+      d.svg_element = this;
+    })
 };
 
 DrawingEngine.prototype._draw_constraint_nodes = function(){
@@ -135,7 +172,8 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
 
     })
     .on("mouseleave", function (d) {
-      DrawingEngine.unhighlight_all();
+      DrawingEngine.set_all_unhighlighted();
+      DrawingEngine._update_highlighting();
     })
     .each(function(d) {d.svg_element = this; console.log("we do draw cnodes")})
     .append("title").text(function (d) { return d.type; });
@@ -161,23 +199,54 @@ DrawingEngine.highlight_cnode = function(n){
 
 // highlight the var_node and everything connected
 DrawingEngine.highlight_var = function(n){
-  DrawingEngine.highlight_svg_element(n);
+  
+  n.isHighlighted = true;
+  DrawingEngine._update_highlighting();
+  DrawingEngine._draw_var_list();
 
   for (var i in n.constraints){
       DrawingEngine.highlight_cnode(n.constraints[i]);
   }
 };
 
+DrawingEngine.toggle_highlight_var = function(n) {
+  if (n.isHighlighted === undefined)
+    n.isHighlighted = true;
+  else
+    n.isHighlighted = !n.isHighlighted;
+
+  DrawingEngine._update_highlighting();
+  DrawingEngine._draw_var_list();
+
+  // might want to highlight adjacent nodes as well
+}
+
 DrawingEngine.highlight_svg_element = function(n){
   d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";});
 }
 
-DrawingEngine.unhighlight_all = function(){
+// DrawingEngine.unhighlight_all = function(){
+//   DrawingEngine._filter_single_nodes()
+//    .forEach(function (d) { d.isHighlighted = false; });
+
+//    DrawingEngine._draw_var_list();
+
+//   d3.selectAll(".two_dim_array_e").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+//   d3.selectAll(".c_node").attr("style", function (d) {return "fill: rgba(255, 0, 0, 1)";});
+//   d3.selectAll(".a_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+//   d3.selectAll(".v_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+// };
+
+DrawingEngine._unhighlight_all = function(){
   d3.selectAll(".two_dim_array_e").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
   d3.selectAll(".c_node").attr("style", function (d) {return "fill: rgba(255, 0, 0, 1)";});
   d3.selectAll(".a_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
   d3.selectAll(".v_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
 };
+
+DrawingEngine.set_all_unhighlighted = function (){
+  shown_v.forEach(function (d) { d.isHighlighted = false; });
+}
 
 DrawingEngine.prototype._draw_array_nodes = function(nodes) {
    if (DrawingEngine.log_svg_elements) console.group("A_NODES");
@@ -301,7 +370,8 @@ DrawingEngine.prototype._draw_expanded_arrays = function(nodes) {
       DrawingEngine.highlight_var(d);
     })
   .on("mouseleave", function (d) {
-      DrawingEngine.unhighlight_all();
+      DrawingEngine.set_all_unhighlighted();
+      DrawingEngine._update_highlighting();
     })
   .each(function (d) {
     d.svg_element = this;

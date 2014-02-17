@@ -78,9 +78,8 @@ function apply_filter(value){
     return a > b.occurrence ? a : b.occurrence;
   });  
   var n_value = max_occurrence - value * max_occurrence / 100;
-  links = cola_links = diff_links.filter(function (l) { return l.occurrence > n_value; });
+  links = cola_links = diff_links.filter(function (l) { return l.occurrence >= n_value; });
   de.draw();
-  console.log("applying filter with value: ", value);
 }
 
 function log_to_html(str){
@@ -128,7 +127,6 @@ function constr_graph_ready(){
   // option 1 for graph
   if (!difference_graph){
     construct_graph();
-    // construct_graph_o2();
     apply_graph();
     de.draw();
   } else {

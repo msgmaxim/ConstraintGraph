@@ -37,3 +37,32 @@
 	stroke: #000;
 	fill: none;
 }
+
+#var_names p {
+	margin: 8px;
+	color: DimGray;
+}
+
+#content {
+	position: absolute;
+	top: 10px;
+	z-index: -1;
+}
+
+#sider {
+	background: white;
+	float: left;
+	width: 220px;
+}
+
+#search_input {
+	width: 200px;
+	margin: 5px;
+}
+
+#filter_range {
+	width: 200px;
+	margin: 5px;
+}
+
+
