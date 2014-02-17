@@ -12,6 +12,7 @@ var cola_links = [];
 var shown_v = [];
 
 var model_links = [];
+var diff_links = [];
 var difference_graph = false;
 // var show_single_vars = false;
 
@@ -19,6 +20,8 @@ var difference_graph = false;
 function init(){
   de.init_svg();
   document.getElementById("search_input").addEventListener("change", update_search);
+  document.getElementById("filter_range").addEventListener("mouseup", update_filter);
+
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
     // run_graph('data/cars.fzn')
@@ -40,13 +43,12 @@ function run_graph(data_path, nogoods_path){
     data.readNogoodsFile(nogoods_path, process_nogoods);
   }
   
-  
 }
 
 function apply_graph(){
   if (difference_graph)
   {
-    links = cola_links = subtract_graph(nogood_links, model_links); /// not a copy
+    links = cola_links = diff_links = subtract_graph(nogood_links, model_links); /// not a copy
     shown_v = nogood_shown_v;
   } else {
     links = cola_links = model_links; /// not a copy
@@ -65,6 +67,20 @@ function update_search(e){
     if (re.test(n.name) || name == n.name)
       DrawingEngine.highlight_svg_element(n);
   })
+}
+
+function update_filter(e){
+  apply_filter(e.target.valueAsNumber);
+}
+
+function apply_filter(value){
+  var max_occurrence = diff_links.reduce(function (a, b) { 
+    return a > b.occurrence ? a : b.occurrence;
+  });  
+  var n_value = max_occurrence - value * max_occurrence / 100;
+  links = cola_links = diff_links.filter(function (l) { return l.occurrence > n_value; });
+  de.draw();
+  console.log("applying filter with value: ", value);
 }
 
 function log_to_html(str){

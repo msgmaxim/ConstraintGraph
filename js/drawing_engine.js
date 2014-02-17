@@ -6,6 +6,7 @@ DrawingEngine.C_SIZE = 12;
 DrawingEngine.log_svg_elements = false;
 DrawingEngine.log_hover = true;
 DrawingEngine.allow_drag = true;
+DrawingEngine.draw_singles = false;
 
 DrawingEngine.counter = 0;
 
@@ -25,9 +26,6 @@ function DrawingEngine(){
 
   this.width = window.innerWidth - 20;
   this.height = window.innerHeight - 20;
-  // this.width = 1600;
-  // this.height = 1200;
-  // this.cola_obj = cola.d3adaptor().avoidOverlaps(true).size([this.width, this.height]);
   this.cola_obj = cola.d3adaptor().size([this.width, this.height]);
   window.addEventListener('resize', function(event){
     console.log(DrawingEngine._self.svg.width);
@@ -56,11 +54,13 @@ DrawingEngine.prototype._apply_zooming = function(){
 };
 
 DrawingEngine.prototype.draw = function(){
-  this.cola_obj.nodes(shown_v).links(cola_links).start(5, 5,  5);
+  var filtred = this._filter_single_nodes(); // brings changes to shown_v
 
-  this._draw_single_variables();
-  this._draw_array_nodes();
-  this._draw_expanded_arrays();
+  this.cola_obj.nodes(filtred).links(cola_links).start(5, 5,  5);
+
+  this._draw_single_variables(filtred);
+  this._draw_array_nodes(filtred);
+  this._draw_expanded_arrays(filtred);
   this._draw_constraint_nodes();
   this._draw_links();
 
@@ -71,14 +71,27 @@ DrawingEngine.prototype.draw = function(){
   )(this));
 };
 
-DrawingEngine.prototype._draw_single_variables = function(){
+DrawingEngine.prototype._filter_single_nodes = function(){
+  // all nodes are thought to be disconnected
+  shown_v.forEach(function(n) { n.has_links = false; });
+
+  // loop through all links to spot connected nodes
+  cola_links.forEach(function(l) {
+    l.target.has_links = l.source.has_links = true;
+  })
+
+  // remove disconnected nodes
+  return shown_v.filter(function(n) { return n.has_links; })
+}
+
+DrawingEngine.prototype._draw_single_variables = function(nodes){
     v_nodes = this.nodesLayer.selectAll(".v_node")
-    .data(shown_v.filter(function(v) {
+    .data(nodes.filter(function(v) {
       // return (v.type !== "arr");
       return (v.type === "svar");
     }));
 
-    shown_v.forEach(function (d){ d.width = DrawingEngine.VAR_SIZE; d.height = DrawingEngine.VAR_SIZE });
+    // nodes.forEach(function (d){ d.width = DrawingEngine.VAR_SIZE; d.height = DrawingEngine.VAR_SIZE });
 
     v_nodes.enter().append("circle")
     .attr("class", "v_node")
@@ -166,14 +179,14 @@ DrawingEngine.unhighlight_all = function(){
   d3.selectAll(".v_node").attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
 };
 
-DrawingEngine.prototype._draw_array_nodes = function() {
+DrawingEngine.prototype._draw_array_nodes = function(nodes) {
    if (DrawingEngine.log_svg_elements) console.group("A_NODES");
   a_nodes = this.nodesLayer.selectAll(".a_node")
-    .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}), function (d) { return d.name; });
+    .data(nodes.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}), function (d) { return d.name; });
 
   var a_nodes_enter = a_nodes.enter();
 
-  // console.log(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}));
+  // console.log(nodes.filter(function(v) {return (v.type === "arr" && v.isCollapsed === true);}));
 
   a_nodes.each(function(d) {
     d.svg_element = this;
@@ -206,11 +219,11 @@ DrawingEngine.prototype._draw_array_nodes = function() {
    if (DrawingEngine.log_svg_elements) console.groupEnd();
 };
 
-DrawingEngine.prototype._draw_expanded_arrays = function() {
+DrawingEngine.prototype._draw_expanded_arrays = function(nodes) {
    if (DrawingEngine.log_svg_elements) console.group("EXPANDED_A_NODES");
 
   exp_a_nodes = d3.selectAll(".exp_a_node")
-    .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}),
+    .data(nodes.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}),
       function (v) { return v.name; }); /// key function to recognize created elements
 
   this.nodesLayer.selectAll(".exp_a_node").each(function(d) { d.svg_element = this; }); // because svg_elements becomes undefined for some reason
@@ -305,7 +318,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function() {
   /// ****************** buttons to collapse arrays *****************
 
   min_a_btns = this.nodesLayer.selectAll(".min_a_btn")
-   .data(shown_v.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}),
+   .data(nodes.filter(function(v) {return (v.type === "arr" && v.isCollapsed === false);}),
     function (v) { return v.name; });
   
   min_a_btns.enter()
