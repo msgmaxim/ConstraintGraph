@@ -28,16 +28,17 @@ function DrawingEngine(){
   this.height = window.innerHeight - 20;
   this.cola_obj = cola.d3adaptor().size([this.width, this.height]);
   window.addEventListener('resize', function(event){
-    console.log(DrawingEngine._self.svg.width);
     DrawingEngine._self.svg.attr('width', window.innerWidth - 20);
     DrawingEngine._self.svg.attr('height', window.innerHeight - 20);
   });
 
   document.addEventListener("click", function (e) {
-    if (e.target.nodeName == "svg")
+    if (e.target.nodeName == "svg"){
       DrawingEngine.set_all_unhighlighted();
       DrawingEngine._update_highlighting();
       DrawingEngine._draw_var_list();
+    }
+      
   })
 
 }
@@ -73,6 +74,7 @@ DrawingEngine.prototype.draw = function(){
   this._draw_expanded_arrays(filtred);
   this._draw_constraint_nodes();
   this._draw_links();
+  DrawingEngine._update_highlighting();
 
   this.cola_obj.on("tick", (
     function(caller) {
@@ -95,7 +97,8 @@ DrawingEngine._filter_single_nodes = function(){
 }
 
 DrawingEngine._draw_var_list = function(){
-  var filtred = DrawingEngine._filter_single_nodes()
+  // var filtred = DrawingEngine._filter_single_nodes()
+  var filtred = shown_v
     .filter(function (d) {
       return (d.isHighlighted === true);
     });
@@ -108,13 +111,23 @@ DrawingEngine._draw_var_list = function(){
 };
 
 DrawingEngine._update_highlighting = function(){
-  var filtred = DrawingEngine._filter_single_nodes();
+  // var filtred = DrawingEngine._filter_single_nodes();
+  var filtred = shown_v;
   filtred.forEach(function(n){
     if (n.isHighlighted)
       DrawingEngine.highlight_svg_element(n);
     else
       d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
   })
+
+  // highlight neighbours:
+  // links.forEach(function(l){
+  //   if (l.source.isHighlighted && !l.target.isHighlighted)
+  //     DrawingEngine.highlight_svg_dimly(l.target);
+  //   else if (l.target.isHighlighted && !l.source.isHighlighted)
+  //     DrawingEngine.highlight_svg_dimly(l.source);
+
+  // })
 }
 
 DrawingEngine.prototype._draw_single_variables = function(nodes){
@@ -122,7 +135,7 @@ DrawingEngine.prototype._draw_single_variables = function(nodes){
     .data(nodes.filter(function(v) {
       // return (v.type !== "arr");
       return (v.type === "svar");
-    }));
+    }), function (d) { return d.name; });
 
     // nodes.forEach(function (d){ d.width = DrawingEngine.VAR_SIZE; d.height = DrawingEngine.VAR_SIZE });
 
@@ -150,10 +163,6 @@ DrawingEngine.prototype._draw_single_variables = function(nodes){
       v_nodes.call(this.cola_obj.drag);
 
     v_nodes.exit().remove();
-
-    this.nodesLayer.selectAll(".v_node").each(function(d) {
-      d.svg_element = this;
-    })
 };
 
 DrawingEngine.prototype._draw_constraint_nodes = function(){
@@ -173,7 +182,7 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
     })
     .on("mouseleave", function (d) {
       DrawingEngine.set_all_unhighlighted();
-      DrawingEngine._update_highlighting();
+      // DrawingEngine._update_highlighting();
     })
     .each(function(d) {d.svg_element = this; console.log("we do draw cnodes")})
     .append("title").text(function (d) { return d.type; });
@@ -186,14 +195,15 @@ DrawingEngine.prototype._draw_constraint_nodes = function(){
 DrawingEngine.highlight_cnode = function(n){
   // d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";}); to remove
   if (n.cnode)
-    DrawingEngine.highlight_svg_element(n.cnode);    
+    // DrawingEngine.highlight_svg_element(n.cnode);
+    n.cnode.isHighlighted = true;    
 
   for (var i in n.arr) {
 
     if (n.arr[i].svg_element && (n.arr[i].type === "svar"||
       (n.arr[i].type === "arr" && n.arr[i].isCollapsed) ||
       (n.arr[i].type === "array_element" && !n.arr[i].host.isCollapsed)))
-      DrawingEngine.highlight_svg_element(n.arr[i]);
+      n.arr[i].isHighlighted = true;
   }
 };
 
@@ -201,19 +211,13 @@ DrawingEngine.highlight_cnode = function(n){
 DrawingEngine.highlight_var = function(n){
   
   n.isHighlighted = true;
-  DrawingEngine._update_highlighting();
-  DrawingEngine._draw_var_list();
-
-  for (var i in n.constraints){
-      DrawingEngine.highlight_cnode(n.constraints[i]);
-  }
 };
 
 DrawingEngine.toggle_highlight_var = function(n) {
-  if (n.isHighlighted === undefined)
-    n.isHighlighted = true;
+  if (n.isHighlighted === undefined || n.isHighlighted === false)
+    DrawingEngine.highlight_var(n);
   else
-    n.isHighlighted = !n.isHighlighted;
+    n.isHighlighted = false;
 
   DrawingEngine._update_highlighting();
   DrawingEngine._draw_var_list();
@@ -223,6 +227,10 @@ DrawingEngine.toggle_highlight_var = function(n) {
 
 DrawingEngine.highlight_svg_element = function(n){
   d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";});
+}
+
+DrawingEngine.highlight_svg_dimly = function(n){
+  d3.select(n.svg_element).attr("style", function (d) {return "fill: Lavender";});
 }
 
 // DrawingEngine.unhighlight_all = function(){
@@ -245,7 +253,7 @@ DrawingEngine._unhighlight_all = function(){
 };
 
 DrawingEngine.set_all_unhighlighted = function (){
-  shown_v.forEach(function (d) { d.isHighlighted = false; });
+  shown_v.forEach(function (d) { d.isHighlighted = false; d.isHighlightedDimly = false; });
 }
 
 DrawingEngine.prototype._draw_array_nodes = function(nodes) {
@@ -371,7 +379,7 @@ DrawingEngine.prototype._draw_expanded_arrays = function(nodes) {
     })
   .on("mouseleave", function (d) {
       DrawingEngine.set_all_unhighlighted();
-      DrawingEngine._update_highlighting();
+      // DrawingEngine._update_highlighting();
     })
   .each(function (d) {
     d.svg_element = this;

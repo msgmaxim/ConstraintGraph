@@ -172,15 +172,18 @@ function connect_nodes(n1, n2){
   if (n1 == n2) return;
   var v1 = parseInt(n1["id"]), v2 = parseInt(n2["id"]);
   var link;
-  if (v1 > v2) {v2 = v1 + v2; v1 = v2 - v1; v2 = v2 - v1;}
+  if (v1 > v2) {v2 = v1 + v2; v1 = v2 - v1; v2 = v2 - v1;} // swap
 
   if( links_map[v1 + " " + v2] == undefined) {
     
     link = {};
-    link["source"] = variables[parseInt(v1)];
-    link["target"] = variables[parseInt(v2)];
-    link["real_target"] = variables[parseInt(v2)]; // what is real target???
-    link["occurrence"] = 1;
+    var1 = variables[parseInt(v1)];
+    var2 = variables[parseInt(v2)];
+    link.source = var1;
+    link.target = var2;
+
+    link.real_target = variables[parseInt(v2)]; // what is real target???
+    link.occurrence = 1;
 
     link["length"] = DEFAULT_EDGE_LENGTH;
     //link["value"] = DEFAULT_EDGE_VALUE;

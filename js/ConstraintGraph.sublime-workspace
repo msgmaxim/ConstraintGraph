@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"svg",
+				"svg_element"
+			],
+			[
+				"_dra",
+				"_draw_var_list"
+			],
+			[
+				"is",
+				"isHighlighted"
+			],
+			[
+				"un",
+				"unhighlight_all"
+			],
+			[
+				"upda",
+				"_update_highlighting"
+			],
+			[
+				"fil",
+				"filtred"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"sele",
+				"select"
+			],
+			[
+				"var_",
+				"var_names"
+			],
+			[
+				"te",
+				"text_f"
+			],
+			[
 				"max",
 				"max_occurrence"
 			],
@@ -84,10 +128,6 @@
 				"process_nogoods"
 			],
 			[
-				"is",
-				"isRunInBrouser"
-			],
-			[
 				"rea",
 				"real_height"
 			],
@@ -98,10 +138,6 @@
 			[
 				"node",
 				"node_size"
-			],
-			[
-				"svg",
-				"svg_height"
 			],
 			[
 				"min",
@@ -138,10 +174,6 @@
 			[
 				"desi",
 				"desired_w"
-			],
-			[
-				"sele",
-				"selectAll"
 			]
 		]
 	},
@@ -151,7 +183,7 @@
 			"file": "script.js",
 			"settings":
 			{
-				"buffer_size": 6762,
+				"buffer_size": 6682,
 				"line_ending": "Unix"
 			}
 		},
@@ -199,7 +231,7 @@
 			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
 			"settings":
 			{
-				"buffer_size": 776,
+				"buffer_size": 816,
 				"line_ending": "Unix"
 			}
 		},
@@ -215,7 +247,7 @@
 			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/css/styles.css",
 			"settings":
 			{
-				"buffer_size": 497,
+				"buffer_size": 767,
 				"line_ending": "Unix"
 			}
 		},
@@ -228,10 +260,10 @@
 			}
 		},
 		{
-			"contents": "Searching 12 files for \"hover\"\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/drawing_engine.js:\n    5  \n    6  DrawingEngine.log_svg_elements = false;\n    7: DrawingEngine.log_hover = true;\n    8  DrawingEngine.allow_drag = true;\n    9  \n   ..\n  112      .on(\"mouseover\", function (d) {\n  113        // console.log(d3.select(this));\n  114:       if (DrawingEngine.log_hover)\n  115          console.log(\"%cc_node: \", \"color: orange\", d);\n  116        DrawingEngine.highlight_cnode(d);\n  ...\n  145  DrawingEngine.highlight_var = function(n){\n  146    DrawingEngine.highlight_svg_element(n);\n  147:   console.log(\"hover: \", n);\n  148  \n  149    for (var i in n.constraints){\n\n3 matches in 1 file\n",
+			"contents": "\nSearching 15 files for \"unhighlight_all\"\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/drawing_engine.js:\n   36    document.addEventListener(\"click\", function (e) {\n   37      if (e.target.nodeName == \"svg\")\n   38:       DrawingEngine.unhighlight_all();\n   39    })\n   40  \n   ..\n  133      .on(\"click\", function (d) {\n  134        // if (event.shiftKey){\n  135:         // DrawingEngine.unhighlight_all();\n  136          console.log(\"highlighting: \", d);\n  137          DrawingEngine.highlight_var(d);\n  ...\n  142      .on(\"mouseleave\", function (d) {\n  143        // if (event.shiftKey)\n  144:         // DrawingEngine.unhighlight_all();\n  145      })\n  146      .append(\"title\").text(function (d) { return d.name; });\n  ...\n  168      })\n  169      .on(\"mouseleave\", function (d) {\n  170:       DrawingEngine.unhighlight_all();\n  171      })\n  172      .each(function(d) {d.svg_element = this; console.log(\"we do draw cnodes\")})\n  ...\n  217  }\n  218  \n  219: // DrawingEngine.unhighlight_all = function(){\n  220  //   DrawingEngine._filter_single_nodes()\n  221  //    .forEach(function (d) { d.isHighlighted = false; });\n  ...\n  229  // };\n  230  \n  231: DrawingEngine.unhighlight_all = function(){\n  232    d3.selectAll(\".two_dim_array_e\").attr(\"style\", function (d) {return \"fill: rgba(255, 255, 255, 1)\";});\n  233    d3.selectAll(\".c_node\").attr(\"style\", function (d) {return \"fill: rgba(255, 0, 0, 1)\";});\n  ...\n  268      })\n  269      .on(\"mouseleave\", function (d) {\n  270:       DrawingEngine.unhighlight_all();\n  271      })\n  272      .attr(\"aaa_id\", DrawingEngine.counter)\n  ...\n  363      })\n  364    .on(\"mouseleave\", function (d) {\n  365:       DrawingEngine.unhighlight_all();\n  366      })\n  367    .each(function (d) {\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/script.js:\n   63    var name = e.target.value;\n   64    var re = new RegExp(name);\n   65:   DrawingEngine.unhighlight_all();\n   66    shown_v.forEach(function (n) {\n   67      if (re.test(n.name) || name == n.name)\n\n9 matches across 2 files\n",
 			"settings":
 			{
-				"buffer_size": 716,
+				"buffer_size": 2073,
 				"line_ending": "Unix",
 				"name": "Find Results",
 				"scratch": true
@@ -241,7 +273,7 @@
 			"file": "drawing_engine.js",
 			"settings":
 			{
-				"buffer_size": 13854,
+				"buffer_size": 15999,
 				"line_ending": "Unix"
 			}
 		},
@@ -322,6 +354,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"toggle_",
+			"unhighlight_all",
+			"10px",
 			"});\n",
 			"constr_gr",
 			"expand_node",
@@ -385,7 +420,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 11,
 			"sheets":
 			[
 				{
@@ -393,15 +428,15 @@
 					"file": "script.js",
 					"settings":
 					{
-						"buffer_size": 6762,
+						"buffer_size": 6682,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2061,
-								2061
+								1667,
+								1667
 							]
 						],
 						"settings":
@@ -411,7 +446,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 719.0,
+						"translation.y": 64.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -437,7 +472,7 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1896.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -465,7 +500,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 84.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -555,15 +590,15 @@
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
 					"settings":
 					{
-						"buffer_size": 776,
+						"buffer_size": 816,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								665,
-								677
+								605,
+								617
 							]
 						],
 						"settings":
@@ -608,15 +643,15 @@
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/css/styles.css",
 					"settings":
 					{
-						"buffer_size": 497,
+						"buffer_size": 767,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								260,
-								260
+								529,
+								529
 							]
 						],
 						"settings":
@@ -625,7 +660,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 163.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -662,7 +697,7 @@
 					"buffer": 10,
 					"settings":
 					{
-						"buffer_size": 716,
+						"buffer_size": 2073,
 						"regions":
 						{
 							"match":
@@ -671,16 +706,44 @@
 								"regions":
 								[
 									[
-										199,
-										204
+										0,
+										0
 									],
 									[
-										391,
-										396
+										259,
+										274
 									],
 									[
-										634,
-										639
+										412,
+										427
+									],
+									[
+										645,
+										660
+									],
+									[
+										836,
+										851
+									],
+									[
+										1003,
+										1018
+									],
+									[
+										1196,
+										1211
+									],
+									[
+										1528,
+										1543
+									],
+									[
+										1700,
+										1715
+									],
+									[
+										1938,
+										1953
 									]
 								],
 								"scope": ""
@@ -689,14 +752,14 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								1710,
+								1710
 							]
 						],
 						"settings":
 						{
 							"detect_indentation": false,
-							"output_tag": 1,
+							"output_tag": 3,
 							"result_base_dir": "",
 							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
 							"result_line_regex": "^ +([0-9]+):",
@@ -704,7 +767,7 @@
 							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 181.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -714,15 +777,15 @@
 					"file": "drawing_engine.js",
 					"settings":
 					{
-						"buffer_size": 13854,
+						"buffer_size": 15999,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2267,
-								2267
+								4614,
+								4521
 							]
 						],
 						"settings":
@@ -732,7 +795,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 472.0,
+						"translation.y": 1722.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -758,7 +821,7 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 628.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
