@@ -120,14 +120,17 @@ DrawingEngine._update_highlighting = function(){
       d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
   })
 
-  // highlight neighbours:
-  // links.forEach(function(l){
-  //   if (l.source.isHighlighted && !l.target.isHighlighted)
-  //     DrawingEngine.highlight_svg_dimly(l.target);
-  //   else if (l.target.isHighlighted && !l.source.isHighlighted)
-  //     DrawingEngine.highlight_svg_dimly(l.source);
 
-  // })
+}
+
+/// gets called when mouse is over a node
+DrawingEngine._highlight_neighbours = function(n) {
+  links.forEach(function(l){
+  if (l.source === n && !l.target.isHighlighted)
+    DrawingEngine.highlight_svg_dimly(l.target);
+  else if (l.target === n && !l.source.isHighlighted)
+    DrawingEngine.highlight_svg_dimly(l.source);
+  });
 }
 
 DrawingEngine.prototype._draw_single_variables = function(nodes){
@@ -149,13 +152,15 @@ DrawingEngine.prototype._draw_single_variables = function(nodes){
     })
     .on("click", function (d) {
         DrawingEngine.toggle_highlight_var(d);
-      
+        DrawingEngine._highlight_neighbours(d);
     })
     .on("mousedown", function () { nodeMouseDown = true; } )
     .on("mouseup", function() { nodeMouseDown = false; })
-    .on("mouseleave", function (d) {
-      // if (event.shiftKey)
-        // DrawingEngine.unhighlight_all();
+    .on("mouseover", function (n) {
+      DrawingEngine._highlight_neighbours(n);
+    })
+    .on("mouseleave", function (n) {
+      DrawingEngine._update_highlighting();
     })
     .append("title").text(function (d) { return d.name; });
 
