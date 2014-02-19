@@ -5,7 +5,7 @@ var de = new DrawingEngine();
 
 var isRunInBrouser = true;
 
-
+var vLayout;
 var model_shown_v = [];
 var links = [];
 var cola_links = [];
@@ -41,6 +41,9 @@ function run_graph(data_path, nogoods_path){
     difference_graph = true;
     data.readFile(data_path, constr_graph_ready);
     data.readNogoodsFile(nogoods_path, process_nogoods);
+    vLayout = new VarLayout();
+    vLayout.init();
+    vLayout.update_drawing();
   }
   
 }
@@ -49,6 +52,7 @@ function apply_graph(){
   if (difference_graph)
   {
     links = cola_links = diff_links = subtract_graph(nogood_links, model_links); /// not a copy
+    // links = cola_links = diff_links = nogood_links; /// not a copy
     shown_v = nogood_shown_v;
   } else {
     links = cola_links = model_links; /// not a copy

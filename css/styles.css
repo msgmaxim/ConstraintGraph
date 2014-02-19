@@ -51,8 +51,14 @@
 
 #sider {
 	background: white;
-	float: left;
+	float: right;
 	width: 220px;
+}
+
+#canvas {
+	background: rgba(255, 228, 181, 0.2);
+	float: left;
+	width: 300px;
 }
 
 #search_input {
