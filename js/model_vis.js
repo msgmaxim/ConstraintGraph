@@ -25,7 +25,7 @@ VarLayout.prototype.init = function(){
   	this.canvas.addEventListener('mousewheel', handle_mousewheel, false);
 
 	// this.canvas.width  = window.innerWidth * 0.3;
-	// this.canvas.height = window.innerHeight;
+	 this.canvas.height = window.innerHeight * 0.9;
 
 	
 };

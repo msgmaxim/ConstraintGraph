@@ -59,6 +59,7 @@
 	background: rgba(255, 228, 181, 0.2);
 	float: left;
 	width: 300px;
+	height: auto;
 }
 
 #search_input {
