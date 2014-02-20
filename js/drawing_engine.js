@@ -114,10 +114,16 @@ DrawingEngine._update_highlighting = function(){
   // var filtred = DrawingEngine._filter_single_nodes();
   var filtred = shown_v;
   filtred.forEach(function(n){
-    if (n.isHighlighted)
+    if (n.isHighlighted){
       DrawingEngine.highlight_svg_element(n);
+      DrawingEngine.highlight_svg_element(vLayout.model_nodes[n.name]);
+    }
     else
+    {
       d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+      // d3.select(vLayout.model_nodes[n.name]).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+    }
+      
   })
 
 
@@ -231,7 +237,14 @@ DrawingEngine.toggle_highlight_var = function(n) {
 }
 
 DrawingEngine.highlight_svg_element = function(n){
-  d3.select(n.svg_element).attr("style", function (d) {return "fill: gold";});
+  // if (n === undefined) return;
+  var svg = (n.svg_element === undefined) ? n : n.svg_element;
+  d3.select(svg).attr("style", function (d) {return "fill: gold";});
+}
+
+DrawingEngine.unhighlight_svg_element = function(n){
+  var svg = (n.svg_element === undefined) ? n : n.svg_element;
+  d3.select(svg).attr("style", function (d) {return "fill: whilte";});
 }
 
 DrawingEngine.highlight_svg_dimly = function(n){

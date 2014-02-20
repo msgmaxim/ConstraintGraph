@@ -6,38 +6,43 @@ INT_ARR_COLOR = "green";
 
 
 function VarLayout(){
-	// this.variables;
-	// this.new_variables;
-	// this.context;
-	// this.canvas;
-	// this.file_name;
-
-	// this.show_introduced = true;
+	this.model_nodes = {};
 }
 
 
 VarLayout.prototype.init = function(){
 
-	this.canvas = document.getElementById("canvas");
-	this.context = canvas.getContext("2d");
+	this.svg = d3.select("#v_layout").append("svg")
+      .attr("width", this.width)
+      .attr("height", this.height)
+      .attr("preserveAspectRatio", "xMinYMin meet");
+    this.vis = this.svg.append('g');
+    this.svg.call(d3.behavior.zoom().on("zoom", (function(caller) {
+        return function() {caller._apply_zooming.apply(caller, arguments);};
+      })(this)));
 
-	this.canvas.addEventListener('mousedown', handle_dragndrop, false);
-  	this.canvas.addEventListener('mousewheel', handle_mousewheel, false);
+	// this.canvas.addEventListener('mousedown', handle_dragndrop, false);
+  	// this.canvas.addEventListener('mousewheel', handle_mousewheel, false);
 
 	// this.canvas.width  = window.innerWidth * 0.3;
-	 this.canvas.height = window.innerHeight * 0.9;
+	 // this.canvas.height = window.innerHeight * 0.9;
 
 	
 };
 
+VarLayout.prototype._apply_zooming = function(){
+  // if (nodeMouseDown) return;
+  this.vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+};
+
 VarLayout.prototype.update_drawing = function(){
 
-	this.context.font = "bold 12px Arial";
+	// this.context.font = "bold 12px Arial";
 
-	var context = this.context;
+	// var context = this.context;
 	var variables = Data._self.global_v_names;
 
-	context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
+	// context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
 
 	var x = VarLayout.DISTANCE + rel_x;
 	var y = VarLayout.DISTANCE + rel_y;
@@ -68,22 +73,20 @@ VarLayout.prototype.update_drawing = function(){
 };
 
 VarLayout.prototype.draw_one_dim_array = function(item, x, y){
-	var context = this.context;
+	var vis = this.vis;
 
-	context.strokeStyle = "black";
-	context.lineWidth = 1;
-	context.fillStyle = "black";
-	context.fillText(item.name, x, y + NODE_SIZE/2);
 	y += NODE_SIZE;
 
-	if (item.introduced == "true")
-		context.fillStyle = INTR_ARR_COLOR;
-	else
-		context.fillStyle = ARR_COLOR;
-
 	for (var j = 0; j < item.n[0]; j++){
-		// context.strokeRect(x, y, NODE_SIZE, NODE_SIZE);
-		context.fillRect(x, y, NODE_SIZE, NODE_SIZE);
+		var rect = vis.append("rect").attr("class", "v_node")
+    	   .attr("width", NODE_SIZE)
+    	   .attr("height", NODE_SIZE)
+    	   .attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
+
+    	var name = item.name + "[" + j + "]";
+
+    	this.model_nodes[name] = rect[0][0];
+
 		x += NODE_SIZE + ELEMENT_DISTANCE;
 	}
 
@@ -93,25 +96,21 @@ VarLayout.prototype.draw_one_dim_array = function(item, x, y){
 };
 
 VarLayout.prototype.draw_two_dim_array = function(item, x, y){
-	var context = this.context;
+	var vis = this.vis;
 	var init_x = x;
 
-	context.strokeStyle = "black";
-	context.lineWidth = 1;
-	context.fillStyle = "black";
-	context.fillText(item.name, x, y + NODE_SIZE/2);
 	y += NODE_SIZE;
-
-	if (item.introduced == "true")
-		context.fillStyle = INTR_ARR_COLOR;
-	else
-		context.fillStyle = ARR_COLOR;
 
 	for (var i = 0; i < item.n[1]; i++){
 		for (var j = 0; j < item.n[0]; j++){
-			// context.strokeRect(x, y, NODE_SIZE, NODE_SIZE);
-			context.fillRect(x, y, NODE_SIZE, NODE_SIZE);
+			var rect = vis.append("rect").attr("class", "v_node")
+    	   		.attr("width", NODE_SIZE)
+    	   		.attr("height", NODE_SIZE)
+    	   		.attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
 			x += NODE_SIZE + ELEMENT_DISTANCE;
+
+	    	var name = item.name + "[" + j + "]";
+			this.model_nodes[name] = rect[0][0];
 		}
 		y += NODE_SIZE + ELEMENT_DISTANCE;
 		x = init_x;
@@ -125,27 +124,23 @@ VarLayout.prototype.draw_two_dim_array = function(item, x, y){
 };
 
 VarLayout.prototype.draw_three_dim_array = function(item, x, y){
-	var context = this.context;
-	context.strokeStyle = "black";
-	context.lineWidth = 1;
-	context.fillStyle = "black";
-	context.fillText(item.name, x, y + NODE_SIZE/2);
+	var vis = this.vis;
 	y += NODE_SIZE;
 
 	var init_x = x;
 	var init_y = y;
 
-	if (item.introduced == "true")
-		context.fillStyle = INTR_ARR_COLOR;
-	else
-		context.fillStyle = ARR_COLOR;
-
 	for (var i = 0; i < item.n[0]; i++){
 		for (var j = 0; j < item.n[1]; j++){
 			for (var k = 0; k < item.n[2]; k++){
-				// context.strokeRect(x, y, NODE_SIZE, NODE_SIZE);
-				context.fillRect(x, y, NODE_SIZE, NODE_SIZE);
+				var rect = vis.append("rect").attr("class", "v_node")
+    	   			.attr("width", NODE_SIZE)
+    	   			.attr("height", NODE_SIZE)
+    	   			.attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
 				x += NODE_SIZE + ELEMENT_DISTANCE;
+
+				var name = item.name + "[" + i * item.n[1] + j + "]";
+				this.model_nodes[name] = rect[0][0];
 			}
 			y += NODE_SIZE + ELEMENT_DISTANCE;
 

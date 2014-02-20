@@ -59,8 +59,6 @@ function apply_graph(){
     shown_v = [].concat(model_shown_v, data.constraint_nodes);
   }
   
-  
-  
 }
 
 function update_search(e){
