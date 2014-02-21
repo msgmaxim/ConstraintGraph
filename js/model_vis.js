@@ -78,6 +78,10 @@ VarLayout.prototype.draw_one_dim_array = function(item, x, y){
 
 	y += NODE_SIZE;
 
+	vis.append('text').attr('x', x - NODE_SIZE / 2)
+					  .attr('y', y - NODE_SIZE)
+					  .text(item.name);
+
 	for (var j = 0; j < item.n[0]; j++){
 		var rect = vis.append("rect").attr("class", "v_node")
     	   .attr("width", NODE_SIZE)
@@ -91,7 +95,7 @@ VarLayout.prototype.draw_one_dim_array = function(item, x, y){
 		x += NODE_SIZE + ELEMENT_DISTANCE;
 	}
 
-	y += NODE_SIZE + VarLayout.DISTANCE;
+	y += NODE_SIZE + VarLayout.DISTANCE * 1.5;
 	
 	return y;
 };
@@ -101,6 +105,10 @@ VarLayout.prototype.draw_two_dim_array = function(item, x, y){
 	var init_x = x;
 
 	y += NODE_SIZE;
+
+	vis.append('text').attr('x', x - NODE_SIZE / 2)
+					  .attr('y', y - NODE_SIZE)
+					  .text(item.name);
 
 	for (var i = 0; i < item.n[1]; i++){
 		for (var j = 0; j < item.n[0]; j++){
@@ -117,7 +125,7 @@ VarLayout.prototype.draw_two_dim_array = function(item, x, y){
 		x = init_x;
 	}
 
-	y += VarLayout.DISTANCE - ELEMENT_DISTANCE;
+	y += VarLayout.DISTANCE * 1.5 - ELEMENT_DISTANCE;
 
 	return y;
 
@@ -130,6 +138,13 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 
 	var init_x = x;
 	var init_y = y;
+
+	// var horizontally = true;
+	var horizontally = false;
+
+	vis.append('text').attr('x', x - NODE_SIZE / 2)
+					  .attr('y', y - NODE_SIZE)
+					  .text(item.name);
 
 	for (var i = 0; i < item.n[0]; i++){
 		for (var j = 0; j < item.n[1]; j++){
@@ -146,15 +161,24 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 			}
 			y += NODE_SIZE + ELEMENT_DISTANCE;
 
-			if (j == item.n[1] - 1) init_x += item.n[2] * (NODE_SIZE + ELEMENT_DISTANCE) + VarLayout.DISTANCE;
+			if (j == item.n[1] - 1) {
+				if (horizontally)
+					init_x += item.n[2] * (NODE_SIZE + ELEMENT_DISTANCE) + VarLayout.DISTANCE;
+				else
+					y += VarLayout.DISTANCE;
+			}
 
 			x = init_x;
 		}
-		y = init_y;
+
+		if (horizontally) 
+			y = init_y;
+		else
+			x = init_x;
 
 	}
 
-	return init_y + item.n[1] * (NODE_SIZE + ELEMENT_DISTANCE) - ELEMENT_DISTANCE + VarLayout.DISTANCE;
+	return init_y + item.n[1] * (NODE_SIZE + ELEMENT_DISTANCE) - ELEMENT_DISTANCE + VarLayout.DISTANCE * 1.5;
 
 
 };
