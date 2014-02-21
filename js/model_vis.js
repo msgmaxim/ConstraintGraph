@@ -7,6 +7,7 @@ INT_ARR_COLOR = "green";
 
 function VarLayout(){
 	this.model_nodes = {};
+	this.isReady = true;
 }
 
 
@@ -83,7 +84,7 @@ VarLayout.prototype.draw_one_dim_array = function(item, x, y){
     	   .attr("height", NODE_SIZE)
     	   .attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
 
-    	var name = item.name + "[" + j + "]";
+    	var name = item.name + "[" + (j + 1) + "]";
 
     	this.model_nodes[name] = rect[0][0];
 
@@ -109,7 +110,7 @@ VarLayout.prototype.draw_two_dim_array = function(item, x, y){
     	   		.attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
 			x += NODE_SIZE + ELEMENT_DISTANCE;
 
-	    	var name = item.name + "[" + j + "]";
+	    	var name = item.name + "[" + (i * item.n[0] + j + 1) + "]";
 			this.model_nodes[name] = rect[0][0];
 		}
 		y += NODE_SIZE + ELEMENT_DISTANCE;
@@ -139,7 +140,8 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
     	   			.attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
 				x += NODE_SIZE + ELEMENT_DISTANCE;
 
-				var name = item.name + "[" + i * item.n[1] + j + "]";
+				var name = item.name + "[" + (i * item.n[1] * item.n[2] 
+					+ j * item.n[2] + k + 1) + "]";
 				this.model_nodes[name] = rect[0][0];
 			}
 			y += NODE_SIZE + ELEMENT_DISTANCE;

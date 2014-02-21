@@ -33,7 +33,7 @@ function DrawingEngine(){
   });
 
   document.addEventListener("click", function (e) {
-    if (e.target.nodeName == "svg"){
+    if (e.target.nodeName == "svg" && e.shiftKey){
       DrawingEngine.set_all_unhighlighted();
       DrawingEngine._update_highlighting();
       DrawingEngine._draw_var_list();
@@ -116,12 +116,15 @@ DrawingEngine._update_highlighting = function(){
   filtred.forEach(function(n){
     if (n.isHighlighted){
       DrawingEngine.highlight_svg_element(n);
-      DrawingEngine.highlight_svg_element(vLayout.model_nodes[n.name]);
+      var model_node = vLayout.model_nodes[n.name];
+      if (model_node !== undefined)
+        DrawingEngine.highlight_svg_element(model_node);
     }
     else
     {
       d3.select(n.svg_element).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
-      // d3.select(vLayout.model_nodes[n.name]).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
+      if (vLayout.isReady)
+        d3.select(vLayout.model_nodes[n.name]).attr("style", function (d) {return "fill: rgba(255, 255, 255, 1)";});
     }
       
   })

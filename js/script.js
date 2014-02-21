@@ -63,12 +63,21 @@ function apply_graph(){
 
 function update_search(e){
   var name = e.target.value;
-  var re = new RegExp(name);
-  DrawingEngine.unhighlight_all();
-  shown_v.forEach(function (n) {
+  try 
+  {
+    var re = new RegExp(name);
+  } 
+  catch (e)
+  {
+    console.error("Invalid regular expression: ", name);
+    return;
+  }
+  DrawingEngine._unhighlight_all();
+  DrawingEngine._filter_single_nodes().forEach(function (n) {
     if (re.test(n.name) || name == n.name)
-      DrawingEngine.highlight_svg_element(n);
-  })
+      DrawingEngine.highlight_var(n);
+  });
+  DrawingEngine._update_highlighting();
 }
 
 function update_filter(e){
