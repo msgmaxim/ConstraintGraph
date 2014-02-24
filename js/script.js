@@ -21,6 +21,7 @@ function init(){
   de.init_svg();
   document.getElementById("search_input").addEventListener("change", update_search);
   document.getElementById("filter_range").addEventListener("mouseup", update_filter);
+  document.getElementById("splitter").addEventListener('mousedown', move_splitter);
 
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
@@ -31,6 +32,17 @@ function init(){
     // run_graph('data/radiation.fzn', 'data/radiation_ng.dat');
     run_graph('data/radiation_04.fzn', 'data/radiation_04_ng.dat');
 
+}
+
+function move_splitter(e){
+  document.onmousemove = function(e) {
+    d3.select('#v_layout').style("width", e.x - 20 + "px");
+    console.log();
+  };
+
+  document.onmouseup = function() {
+    document.onmousemove = null;
+  };
 }
 
 function run_graph(data_path, nogoods_path){

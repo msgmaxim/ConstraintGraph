@@ -44,20 +44,25 @@
 }
 
 #content {
-	position: absolute;
-	top: 10px;
-	z-index: -1;
+	position: relative;
+	height: 90%;
 }
 
 #sider {
+	position: absolute;
+	padding: 10px;
 	background: white;
-	float: right;
+	right: 50px;
+  	top: 0;
 	width: 220px;
 }
 
 #v_layout {
+	position: absolute;
+	padding: 10px;
 	background: rgba(255, 228, 181, 0.2);
-	float: left;
+	left: 0;
+  	top: 0;
 	width: 300px;
 	height: auto;
 }
@@ -70,6 +75,16 @@
 #filter_range {
 	width: 200px;
 	margin: 5px;
+}
+
+#splitter {
+  position: absolute;
+  height: 90%;
+  background: rgba(0,0,0);
+  cursor: col-resize;
+  top: 0;
+  right: -8px;
+  width: 16px;
 }
 
 

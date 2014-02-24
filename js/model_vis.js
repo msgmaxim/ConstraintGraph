@@ -139,8 +139,8 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 	var init_x = x;
 	var init_y = y;
 
-	// var horizontally = true;
-	var horizontally = false;
+	var horizontally = true;
+	// var horizontally = false;
 
 	vis.append('text').attr('x', x - NODE_SIZE / 2)
 					  .attr('y', y - NODE_SIZE)
