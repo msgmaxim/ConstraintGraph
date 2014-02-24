@@ -3,7 +3,7 @@
 	fill: rgba(255, 0, 0, 1);
 }
 
-.v_node, .a_node {
+.v_node, .vl_node, .a_node {
 	stroke: rgba(0, 0, 0, 1);
 	stroke-width: 2px;
 	fill: #fff;
@@ -51,6 +51,7 @@
 #sider {
 	position: absolute;
 	padding: 10px;
+	z-index: 1;
 	background: white;
 	right: 50px;
   	top: 0;

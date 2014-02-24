@@ -22,16 +22,23 @@ function init(){
   document.getElementById("search_input").addEventListener("change", update_search);
   document.getElementById("filter_range").addEventListener("mouseup", update_filter);
   document.getElementById("splitter").addEventListener('mousedown', move_splitter);
+  document.getElementById("rotate_btn").addEventListener('click', rotate_vlayout);
 
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
     // run_graph('data/cars.fzn')
-    // run_graph('data/cars.fzn', 'data/cars_mod.dat')
+    run_graph('data/cars.fzn', 'data/cars_mod.dat')
     // run_graph('data/queen_cp2.fzn', 'data/queens_ng.dat');
-    // run_graph('data/golomb.fzn', 'data/golomb_ng_9.dat');
+    // run_graph('data/golomb_9.fzn', 'data/golomb_ng_9.dat');
     // run_graph('data/radiation.fzn', 'data/radiation_ng.dat');
-    run_graph('data/radiation_04.fzn', 'data/radiation_04_ng.dat');
+    // run_graph('data/radiation_04.fzn', 'data/radiation_04_ng.dat');
 
+}
+
+function rotate_vlayout(){
+  vLayout.horizontally = !vLayout.horizontally;
+  vLayout.update_drawing();
+  DrawingEngine._update_highlighting();
 }
 
 function move_splitter(e){

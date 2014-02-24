@@ -8,6 +8,7 @@ INT_ARR_COLOR = "green";
 function VarLayout(){
 	this.model_nodes = {};
 	this.isReady = true;
+	this.horizontally = false;
 }
 
 
@@ -38,12 +39,11 @@ VarLayout.prototype._apply_zooming = function(){
 
 VarLayout.prototype.update_drawing = function(){
 
-	// this.context.font = "bold 12px Arial";
-
-	// var context = this.context;
+	
 	var variables = Data._self.global_v_names;
 
-	// context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
+	d3.selectAll(".vl_node").remove();
+	d3.selectAll(".vl_label").remove();
 
 	var x = VarLayout.DISTANCE + rel_x;
 	var y = VarLayout.DISTANCE + rel_y;
@@ -80,10 +80,11 @@ VarLayout.prototype.draw_one_dim_array = function(item, x, y){
 
 	vis.append('text').attr('x', x - NODE_SIZE / 2)
 					  .attr('y', y - NODE_SIZE)
+					  .attr('class', 'vl_label')
 					  .text(item.name);
 
 	for (var j = 0; j < item.n[0]; j++){
-		var rect = vis.append("rect").attr("class", "v_node")
+		var rect = vis.append("rect").attr("class", "vl_node")
     	   .attr("width", NODE_SIZE)
     	   .attr("height", NODE_SIZE)
     	   .attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
@@ -108,11 +109,12 @@ VarLayout.prototype.draw_two_dim_array = function(item, x, y){
 
 	vis.append('text').attr('x', x - NODE_SIZE / 2)
 					  .attr('y', y - NODE_SIZE)
+					  .attr('class', 'vl_label')
 					  .text(item.name);
 
 	for (var i = 0; i < item.n[1]; i++){
 		for (var j = 0; j < item.n[0]; j++){
-			var rect = vis.append("rect").attr("class", "v_node")
+			var rect = vis.append("rect").attr("class", "vl_node")
     	   		.attr("width", NODE_SIZE)
     	   		.attr("height", NODE_SIZE)
     	   		.attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
@@ -139,17 +141,15 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 	var init_x = x;
 	var init_y = y;
 
-	var horizontally = true;
-	// var horizontally = false;
-
 	vis.append('text').attr('x', x - NODE_SIZE / 2)
 					  .attr('y', y - NODE_SIZE)
+					  .attr('class', 'vl_label')
 					  .text(item.name);
 
 	for (var i = 0; i < item.n[0]; i++){
 		for (var j = 0; j < item.n[1]; j++){
 			for (var k = 0; k < item.n[2]; k++){
-				var rect = vis.append("rect").attr("class", "v_node")
+				var rect = vis.append("rect").attr("class", "vl_node")
     	   			.attr("width", NODE_SIZE)
     	   			.attr("height", NODE_SIZE)
     	   			.attr("x", x - NODE_SIZE/2).attr("y", y - NODE_SIZE/2);
@@ -162,7 +162,7 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 			y += NODE_SIZE + ELEMENT_DISTANCE;
 
 			if (j == item.n[1] - 1) {
-				if (horizontally)
+				if (this.horizontally)
 					init_x += item.n[2] * (NODE_SIZE + ELEMENT_DISTANCE) + VarLayout.DISTANCE;
 				else
 					y += VarLayout.DISTANCE;
@@ -171,7 +171,7 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 			x = init_x;
 		}
 
-		if (horizontally) 
+		if (this.horizontally) 
 			y = init_y;
 		else
 			x = init_x;
