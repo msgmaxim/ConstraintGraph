@@ -6,7 +6,9 @@ INT_ARR_COLOR = "green";
 
 
 function VarLayout(){
+	VarLayout._self = this;
 	this.model_nodes = {};
+	// this.svg_to_var = {};
 	this.isReady = true;
 	this.horizontally = false;
 }
@@ -79,7 +81,15 @@ VarLayout.prototype._put_node = function (name, x, y){
     	.attr("height", NODE_SIZE)
     	.attr("x", x).attr("y", y);
 
+    rect[0][0].addEventListener('click', function (d){
+    	// var v = VarLayout._self.svg_to_var[d.target];
+    	var v = d.target.variable;
+    	DrawingEngine.toggle_highlight_var(v);
+    })
+
     this.model_nodes[name] = rect[0][0];
+    rect[0][0].variable = data.all_v[name];
+    // this.svg_to_var[rect[0][0]] = data.all_v[name];
 }
 
 VarLayout.prototype.draw_one_dim_array = function(item, x, y){
