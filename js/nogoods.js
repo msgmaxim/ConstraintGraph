@@ -11,6 +11,7 @@ function VarLayout(){
   this.show_introduced = true;
 }
 
+var var_map = {};
 var variables; // array
 var map_varlits; // map
 var map_var_name; // map
@@ -27,6 +28,7 @@ function read_variables(lines){ // !good
       
     var pair = lines[i].substring(index + 7).trim().split(' ');
     variables[i] = {name: pair[0], id: i};
+    var_map[pair[0]] = variables[i];
   }
 
   console.log("--- variables ids have been read", variables);

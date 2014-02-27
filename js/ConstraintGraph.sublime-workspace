@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"svg",
+				"svg_to_var"
+			],
+			[
+				"Node",
+				"NODE_SIZE"
+			],
+			[
 				"model",
 				"model_node"
 			],
@@ -30,10 +38,6 @@
 			[
 				"is",
 				"isHighlightedDimly"
-			],
-			[
-				"svg",
-				"svg_element"
 			],
 			[
 				"_dra",
@@ -199,7 +203,7 @@
 			"file": "script.js",
 			"settings":
 			{
-				"buffer_size": 7321,
+				"buffer_size": 7591,
 				"line_ending": "Unix"
 			}
 		},
@@ -217,7 +221,7 @@
 			"file": "model_vis.js",
 			"settings":
 			{
-				"buffer_size": 4414,
+				"buffer_size": 4512,
 				"line_ending": "Unix"
 			}
 		},
@@ -273,7 +277,7 @@
 			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
 			"settings":
 			{
-				"buffer_size": 958,
+				"buffer_size": 1018,
 				"line_ending": "Unix"
 			}
 		},
@@ -289,7 +293,7 @@
 			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/css/styles.css",
 			"settings":
 			{
-				"buffer_size": 1090,
+				"buffer_size": 1109,
 				"line_ending": "Unix"
 			}
 		},
@@ -472,15 +476,15 @@
 					"file": "script.js",
 					"settings":
 					{
-						"buffer_size": 7321,
+						"buffer_size": 7591,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1062,
-								1062
+								1096,
+								1096
 							]
 						],
 						"settings":
@@ -490,7 +494,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -559,15 +563,15 @@
 					"file": "model_vis.js",
 					"settings":
 					{
-						"buffer_size": 4414,
+						"buffer_size": 4512,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3366,
-								3366
+								1777,
+								1777
 							]
 						],
 						"settings":
@@ -576,7 +580,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1868.0,
+						"translation.y": 760.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -746,15 +750,15 @@
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
 					"settings":
 					{
-						"buffer_size": 958,
+						"buffer_size": 1018,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								927,
-								927
+								862,
+								862
 							]
 						],
 						"settings":
@@ -799,15 +803,15 @@
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/css/styles.css",
 					"settings":
 					{
-						"buffer_size": 1090,
+						"buffer_size": 1109,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								642,
-								642
+								86,
+								86
 							]
 						],
 						"settings":
@@ -816,7 +820,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 386.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -861,8 +865,8 @@
 						"selection":
 						[
 							[
-								7925,
-								7889
+								4861,
+								4823
 							]
 						],
 						"settings":
@@ -872,7 +876,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3442.0,
+						"translation.y": 1960.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

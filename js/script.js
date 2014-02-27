@@ -23,6 +23,8 @@ function init(){
   document.getElementById("filter_range").addEventListener("mouseup", update_filter);
   document.getElementById("splitter").addEventListener('mousedown', move_splitter);
   document.getElementById("rotate_btn").addEventListener('click', rotate_vlayout);
+  document.getElementById("content").addEventListener('mousedown', content_mdown);
+  document.getElementById("content").addEventListener('mouseup', content_mup);
 
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
@@ -33,6 +35,16 @@ function init(){
     // run_graph('data/radiation.fzn', 'data/radiation_ng.dat');
     run_graph('data/radiation_04.fzn', 'data/radiation_04_ng.dat');
 
+}
+
+function content_mdown(e) {
+  if (e.shiftKey)
+    nodeMouseDown = true; // not really a nodeMouseDown event;
+}
+
+function content_mup(e) {
+  if (e.shiftKey)
+    nodeMouseDown = false; // not really a nodeMouseDown event;
 }
 
 function rotate_vlayout(){
