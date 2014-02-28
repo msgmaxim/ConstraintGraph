@@ -49,14 +49,19 @@ DrawingEngine.prototype.init_svg = function (){
       .attr("width", this.width)
       .attr("height", this.height)
       .attr("preserveAspectRatio", "xMinYMin meet");
-    this.svg.call(d3.behavior.zoom().on("zoom", (function(caller) {
+    this.svg.append('rect')
+        .attr('class', 'background')
+        .attr('width', "100%")
+        .attr('height', "100%")
+        .call(d3.behavior.zoom().on("zoom", (function(caller) {
         return function() {caller._apply_zooming.apply(caller, arguments);};
       })(this)));
+
     this.vis = this.svg.append('g');
     this.edgesLayer = this.vis.append("g");
     this.nodesLayer = this.vis.append("g");
     this.buttonsLayer = this.vis.append("g");
-  }
+      }
 };
 
 DrawingEngine.prototype._apply_zooming = function(){
@@ -163,8 +168,8 @@ DrawingEngine.prototype._draw_single_variables = function(nodes){
         DrawingEngine.toggle_highlight_var(d);
         DrawingEngine._highlight_neighbours(d);
     })
-    .on("mousedown", function () { nodeMouseDown = true; } )
-    .on("mouseup", function() { nodeMouseDown = false; })
+    .on("mousedown", function () { nodeMouseDown = true;  console.log("mouse down");} )
+    .on("mouseup", function() { nodeMouseDown = false; console.log("mouse up");})
     .on("mouseover", function (n) {
       DrawingEngine._highlight_neighbours(n);
     })
@@ -467,8 +472,7 @@ DrawingEngine.prototype._update_drawing = function(){
     return "M " + d.x + " " + (d.y - h/2) + " l " + (h/2) + " " + (h) + " l " + (-h) + " " + ("0") + " z";
   });
   
-  s_links.attr("x1", function (d) { 
-    return d.source.x; })
+  s_links.attr("x1", function (d) { return d.source.x; })
     .attr("y1", function (d) { return d.source.y; })
     .attr("x2", function (d) { return d.real_target.x; })
     .attr("y2", function (d) { return d.real_target.y; });

@@ -23,8 +23,8 @@ function init(){
   document.getElementById("filter_range").addEventListener("mouseup", update_filter);
   document.getElementById("splitter").addEventListener('mousedown', move_splitter);
   document.getElementById("rotate_btn").addEventListener('click', rotate_vlayout);
-  document.getElementById("content").addEventListener('mousedown', content_mdown);
-  document.getElementById("content").addEventListener('mouseup', content_mup);
+  document.getElementById("content").addEventListener('mousedown', DragRect.content_mdown);
+  document.getElementById("content").addEventListener('mouseup', DragRect.content_mup);
 
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
@@ -37,14 +37,50 @@ function init(){
 
 }
 
-function content_mdown(e) {
-  if (e.shiftKey)
-    nodeMouseDown = true; // not really a nodeMouseDown event;
+function DragRect(){
+
 }
 
-function content_mup(e) {
-  if (e.shiftKey)
-    nodeMouseDown = false; // not really a nodeMouseDown event;
+DragRect.content_mdown = function(e) {
+  if (e.shiftKey){
+    nodeMouseDown = true; // not really a nodeMouseDown event;
+    document.addEventListener('mousemove', DragRect.update);
+    DragRect.x = e.layerX;
+    DragRect.y = e.layerY;
+  }
+
+
+  
+}
+
+DragRect.update = function(e) {
+  DragRect.draw_rect(DragRect.x, e.layerX, DragRect.y, e.layerY);
+  console.log(e);
+}
+
+DragRect.draw_rect = function(x1, x2, y1, y2) {
+  console.log('x: ', x2, 'y: ', y1, 'width: ', Math.abs(x1 - x2), 'height: ', Math.abs(y1 - y2));
+  if (x1 > x2) x1 = [x2, x2 = x1][0];
+  if (y1 > y2) y1 = [y2, y2 = y1][0];
+
+  d3.select('.drag_rect').remove();
+
+  console.log('x: ', x2, 'y: ', y1, 'width: ', Math.abs(x1 - x2), 'height: ', Math.abs(y1 - y2));
+
+  de.svg.append('rect')
+        .attr('x', x1)
+        .attr('y', y1)
+        .attr('class', 'drag_rect')
+        .attr('width', Math.abs(x1 - x2))
+        .attr('height', Math.abs(y1 - y2));
+
+}
+
+DragRect.content_mup = function(e) {
+  // if (e.shiftKey)
+    // nodeMouseDown = false; // not really a nodeMouseDown event;
+    // document.removeEventListener('mousemove', DragRect.update);
+    // d3.select('.drag_rect').remove();
 }
 
 function rotate_vlayout(){
@@ -55,7 +91,7 @@ function rotate_vlayout(){
 
 function move_splitter(e){
   document.onmousemove = function(e) {
-    d3.select('#v_layout').style("width", e.x - 20 + "px");
+    d3.select('#v_layout').attr("width", e.x - 20 + "px");
     console.log();
   };
 

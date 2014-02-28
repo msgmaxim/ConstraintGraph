@@ -28,7 +28,7 @@
 }
 
 .straight_link {
-	stroke-width: 1px;
+	stroke-width: 10px;
 	stroke: #808080;
 }
 
@@ -41,6 +41,16 @@
 #var_names p {
 	margin: 8px;
 	color: DimGray;
+}
+
+.background {
+	fill: rgba(0,0,0,0);
+}
+
+.drag_rect {
+	fill: red;
+	stroke: black;
+	stroke-dasharray: 5, 5;
 }
 
 #content {
@@ -81,7 +91,7 @@
 #splitter {
   position: absolute;
   height: 90%;
-  background: rgba(0,0,0);
+  background: rgba(0,0,0,0);
   cursor: col-resize;
   top: 0;
   right: -8px;

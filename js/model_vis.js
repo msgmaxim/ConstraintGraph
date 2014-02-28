@@ -10,13 +10,14 @@ function VarLayout(){
 	this.model_nodes = {};
 	this.isReady = true;
 	this.horizontally = false;
+	this.height = window.innerHeight - 20;
 }
 
 
 VarLayout.prototype.init = function(){
 
 	this.svg = d3.select("#v_layout").append("svg")
-      .attr("width", this.width)
+      // .attr("width", this.width)
       .attr("height", this.height)
       .attr("preserveAspectRatio", "xMinYMin meet");
     this.vis = this.svg.append('g');
