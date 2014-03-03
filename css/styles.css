@@ -28,7 +28,7 @@
 }
 
 .straight_link {
-	stroke-width: 10px;
+	stroke-width: 1px;
 	stroke: #808080;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .drag_rect {
-	fill: red;
+	fill: none;
 	stroke: black;
 	stroke-dasharray: 5, 5;
 }

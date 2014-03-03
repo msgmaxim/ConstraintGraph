@@ -16,15 +16,17 @@ var diff_links = [];
 var difference_graph = false;
 // var show_single_vars = false;
 
-
 function init(){
   de.init_svg();
   document.getElementById("search_input").addEventListener("input", update_search);
   document.getElementById("filter_range").addEventListener("mouseup", update_filter);
   document.getElementById("splitter").addEventListener('mousedown', move_splitter);
   document.getElementById("rotate_btn").addEventListener('click', rotate_vlayout);
-  document.getElementById("content").addEventListener('mousedown', DragRect.content_mdown);
-  document.getElementById("content").addEventListener('mouseup', DragRect.content_mup);
+  document.getElementById("clear_selection_btn").addEventListener('click', DrawingEngine.clear_selection);
+  document.getElementById("svg").addEventListener('mousedown', DragRect.content_mdown);
+  // de.svg.on('mousedown', DragRect.content_mdown);
+  document.getElementById("svg").addEventListener('mouseup', DragRect.content_mup);
+  // de.svg.on('mouseup', DragRect.content_mup);
 
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
@@ -42,30 +44,30 @@ function DragRect(){
 }
 
 DragRect.content_mdown = function(e) {
+  console.log(e);
+  // console.log("x: ", e.x, "y: ", e.y);
+  // console.log("layerX: ", e.layerX, "layerY: ", e.layerY);
+  // console.log("clientX: ", e.clientX, "clientY: ", e.clientY);
+  // console.log("offsetX: ", e.offsetX, "offsetY: ", e.offsetY);
+  // console.log("pageX: ", e.pageX, "pageY: ", e.pageY);
   if (e.shiftKey){
     nodeMouseDown = true; // not really a nodeMouseDown event;
     document.addEventListener('mousemove', DragRect.update);
-    DragRect.x = e.layerX;
-    DragRect.y = e.layerY;
   }
 
-
-  
+  DragRect.x = e.layerX;
+  DragRect.y = e.layerY;
 }
 
 DragRect.update = function(e) {
   DragRect.draw_rect(DragRect.x, e.layerX, DragRect.y, e.layerY);
-  console.log(e);
 }
 
 DragRect.draw_rect = function(x1, x2, y1, y2) {
-  console.log('x: ', x2, 'y: ', y1, 'width: ', Math.abs(x1 - x2), 'height: ', Math.abs(y1 - y2));
   if (x1 > x2) x1 = [x2, x2 = x1][0];
   if (y1 > y2) y1 = [y2, y2 = y1][0];
 
   d3.select('.drag_rect').remove();
-
-  console.log('x: ', x2, 'y: ', y1, 'width: ', Math.abs(x1 - x2), 'height: ', Math.abs(y1 - y2));
 
   de.svg.append('rect')
         .attr('x', x1)
@@ -77,10 +79,49 @@ DragRect.draw_rect = function(x1, x2, y1, y2) {
 }
 
 DragRect.content_mup = function(e) {
-  // if (e.shiftKey)
-    // nodeMouseDown = false; // not really a nodeMouseDown event;
-    // document.removeEventListener('mousemove', DragRect.update);
-    // d3.select('.drag_rect').remove();
+  if (e.shiftKey){
+    nodeMouseDown = false; // not really a nodeMouseDown event;
+    capture_nodes(DragRect.x, DragRect.y, e.layerX, e.layerY);
+  }
+
+  document.removeEventListener('mousemove', DragRect.update);
+    d3.select('.drag_rect').remove();
+    
+}
+
+function capture_nodes(x1, y1, x2, y2) {
+  if (x1 > x2) x1 = [x2, x2 = x1][0];
+  if (y1 > y2) y1 = [y2, y2 = y1][0];
+
+  x1 -= transform.dx;
+  x2 -= transform.dx;
+  y1 -= transform.dy;
+  y2 -= transform.dy;
+
+  x1 /= transform.scale;
+  x2 /= transform.scale;
+  y1 /= transform.scale;
+  y2 /= transform.scale;
+
+  // console.log(x1, y1, x2, y2);
+
+  var filtered = DrawingEngine._filter_single_nodes();
+
+  for (var i = 0; i < filtered.length; i++){
+    var v = filtered[i];
+    if (v.x && (x1 < v.x) && (v.x < x2) && (y1 < v.y) && (v.y < y2)){
+      DrawingEngine.highlight_var(v);
+      DrawingEngine._update_highlighting();
+      DrawingEngine._draw_var_list();
+
+    }
+  }
+  // de.vis.append('rect')
+  //           .attr('x', x1)
+  //           .attr('y', y1)
+  //           .attr('width', x2 - x1)
+  //           .attr('height', y2 - y1)
+  //           .style('fill', 'rgba(0, 0, 0, 0.1)');
 }
 
 function rotate_vlayout(){

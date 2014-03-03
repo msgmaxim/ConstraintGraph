@@ -157,8 +157,6 @@ function generate_graph(){
 
   }
 
-
-  
   for (var i in links_map){
     nogood_links.push(links_map[i]);
   }  

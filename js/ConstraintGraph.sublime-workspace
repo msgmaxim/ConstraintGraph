@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"dra",
+				"DragRect"
+			],
+			[
+				"D",
+				"DragRect"
+			],
+			[
 				"svg",
 				"svg_to_var"
 			],
@@ -203,25 +211,15 @@
 			"file": "script.js",
 			"settings":
 			{
-				"buffer_size": 7591,
+				"buffer_size": 8944,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Searching 17 files for \"\"svg\"\"\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/ConstraintGraph.sublime-workspace:\n    5  		[\n    6  			[\n    7: 				\"svg\",\n    8  				\"svg_element\"\n    9  			],\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/drawing_engine.js:\n   34  \n   35    document.addEventListener(\"click\", function (e) {\n   36:     if (e.target.nodeName == \"svg\"){\n   37        DrawingEngine.set_all_unhighlighted();\n   38        DrawingEngine._update_highlighting();\n   ..\n   46  DrawingEngine.prototype.init_svg = function (){\n   47    if (!this.svg) {\n   48:     this.svg = d3.select(\"#content\").append(\"svg\")\n   49        .attr(\"width\", this.width)\n   50        .attr(\"height\", this.height)\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/model_vis.js:\n   13  VarLayout.prototype.init = function(){\n   14  \n   15: 	this.svg = d3.select(\"#v_layout\").append(\"svg\")\n   16        .attr(\"width\", this.width)\n   17        .attr(\"height\", this.height)\n\n/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/js/untitled.sublime-workspace:\n   29  			],\n   30  			[\n   31: 				\"svg\",\n   32  				\"svg_height\"\n   33  			],\n\n5 matches across 4 files\n",
-			"settings":
-			{
-				"buffer_size": 1221,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
 			}
 		},
 		{
 			"file": "model_vis.js",
 			"settings":
 			{
-				"buffer_size": 4512,
+				"buffer_size": 4523,
 				"line_ending": "Unix"
 			}
 		},
@@ -253,7 +251,7 @@
 			"file": "nogoods.js",
 			"settings":
 			{
-				"buffer_size": 5124,
+				"buffer_size": 5179,
 				"line_ending": "Unix"
 			}
 		},
@@ -293,7 +291,7 @@
 			"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/css/styles.css",
 			"settings":
 			{
-				"buffer_size": 1109,
+				"buffer_size": 1220,
 				"line_ending": "Unix"
 			}
 		},
@@ -309,7 +307,7 @@
 			"file": "drawing_engine.js",
 			"settings":
 			{
-				"buffer_size": 17091,
+				"buffer_size": 17266,
 				"line_ending": "Unix"
 			}
 		},
@@ -390,6 +388,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Listener('mousemove', DragRect.update);\n    DragRect.x = e.x;\n    DragRect.y = e.y;",
+			"        \n",
+			" (",
+			"nodeMouseDown",
+			"shown_v",
+			"_draw_single_variables",
 			"					  // .attr(\"font-family\", \"sans-serif\")\n					  // .attr(\"font-size\", \"20px\")\n					  // .attr(\"fill\", \"red\");",
 			"\"svg\"",
 			"DIS",
@@ -476,15 +480,15 @@
 					"file": "script.js",
 					"settings":
 					{
-						"buffer_size": 7591,
+						"buffer_size": 8944,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1096,
-								1096
+								2474,
+								2309
 							]
 						],
 						"settings":
@@ -494,63 +498,31 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 725.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "model_vis.js",
 					"settings":
 					{
-						"buffer_size": 1221,
+						"buffer_size": 4523,
 						"regions":
 						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										169,
-										174
-									],
-									[
-										405,
-										410
-									],
-									[
-										654,
-										659
-									],
-									[
-										929,
-										934
-									],
-									[
-										1151,
-										1156
-									]
-								],
-								"scope": ""
-							}
 						},
 						"selection":
 						[
 							[
-								408,
-								408
+								250,
+								250
 							]
 						],
 						"settings":
 						{
-							"detect_indentation": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -560,33 +532,6 @@
 				},
 				{
 					"buffer": 2,
-					"file": "model_vis.js",
-					"settings":
-					{
-						"buffer_size": 4512,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1777,
-								1777
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 760.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "scaling.js",
 					"settings":
 					{
@@ -612,7 +557,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/radiation_04.fzn",
 					"settings":
 					{
@@ -638,7 +583,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "data.js",
 					"settings":
 					{
@@ -666,19 +611,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "nogoods.js",
 					"settings":
 					{
-						"buffer_size": 5124,
+						"buffer_size": 5179,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4610,
-								4624
+								753,
+								753
 							]
 						],
 						"settings":
@@ -688,13 +633,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2488.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queens_ng.dat",
 					"settings":
 					{
@@ -720,7 +665,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/cars.fzn",
 					"settings":
 					{
@@ -746,7 +691,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 8,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/index.html",
 					"settings":
 					{
@@ -773,7 +718,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 9,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/queen_cp2.fzn",
 					"settings":
 					{
@@ -799,19 +744,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 10,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/css/styles.css",
 					"settings":
 					{
-						"buffer_size": 1109,
+						"buffer_size": 1220,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								86,
-								86
+								419,
+								419
 							]
 						],
 						"settings":
@@ -820,13 +765,13 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 145.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 11,
 					"file": "tools.js",
 					"settings":
 					{
@@ -854,19 +799,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 12,
 					"file": "drawing_engine.js",
 					"settings":
 					{
-						"buffer_size": 17091,
+						"buffer_size": 17266,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4861,
-								4823
+								552,
+								590
 							]
 						],
 						"settings":
@@ -876,13 +821,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1960.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 13,
 					"file": "/Users/maxim/Dropbox/dev/MiniZincIDE/MiniZincIDE/ConstraintGraph/data/golomb_9.fzn",
 					"settings":
 					{
