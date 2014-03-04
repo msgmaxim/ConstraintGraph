@@ -24,9 +24,7 @@ function init(){
   document.getElementById("rotate_btn").addEventListener('click', rotate_vlayout);
   document.getElementById("clear_selection_btn").addEventListener('click', DrawingEngine.clear_selection);
   document.getElementById("svg").addEventListener('mousedown', DragRect.content_mdown);
-  // de.svg.on('mousedown', DragRect.content_mdown);
   document.getElementById("svg").addEventListener('mouseup', DragRect.content_mup);
-  // de.svg.on('mouseup', DragRect.content_mup);
 
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
@@ -41,6 +39,11 @@ function init(){
 
 function DragRect(){
 
+}
+
+function update_filter_label(value){
+  // d3.select('#filter_label').innerHTML = value;
+  document.getElementById('filter_label').innerHTML = value;
 }
 
 DragRect.content_mdown = function(e) {
@@ -133,7 +136,6 @@ function rotate_vlayout(){
 function move_splitter(e){
   document.onmousemove = function(e) {
     d3.select('#v_layout').attr("width", e.x - 20 + "px");
-    console.log();
   };
 
   document.onmouseup = function() {
@@ -199,6 +201,7 @@ function apply_filter(value){
   });  
   var n_value = max_occurrence - value * max_occurrence / 100;
   links = cola_links = diff_links.filter(function (l) { return l.occurrence >= n_value; });
+  update_filter_label(Math.round(n_value));
   de.draw();
 }
 

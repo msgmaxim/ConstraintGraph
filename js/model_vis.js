@@ -13,13 +13,21 @@ function VarLayout(){
 	this.height = window.innerHeight - 20;
 }
 
+VarLayout.prototype.mark_hidden = function() {
+	for (var i = 0; i < shown_v.length; i++) {
+		var v = shown_v[i];
+		if (!v.has_links) {
+			d3.select(vLayout.model_nodes[v.name])
+			  .attr("style", function (d) {return "stroke: lightgrey";});
+		}
+	}
+};
+
 
 VarLayout.prototype.init = function(){
 
 	this.svg = d3.select("#v_layout").append("svg")
-      // .attr("width", this.width)
-      .attr("height", this.height)
-      .attr("preserveAspectRatio", "xMinYMin meet");
+      .attr("height", this.height);
     this.vis = this.svg.append('g');
     this.svg.call(d3.behavior.zoom().on("zoom", (function(caller) {
         return function() {caller._apply_zooming.apply(caller, arguments);};
@@ -73,6 +81,8 @@ VarLayout.prototype.update_drawing = function(){
 		}
 
 	}
+
+	this.mark_hidden();
 };
 
 VarLayout.prototype._put_node = function (name, x, y){

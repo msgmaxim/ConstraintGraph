@@ -84,12 +84,19 @@
 }
 
 #filter_range {
-	width: 200px;
+	width: 165px;
 	margin: 5px;
+	display: inline;
+}
+
+#filter_label {
+	display: inline;
+	padding: 5px;
 }
 
 #splitter {
   position: absolute;
+  z-index: 1;
   height: 90%;
   background: rgba(0,0,0,0);
   cursor: col-resize;

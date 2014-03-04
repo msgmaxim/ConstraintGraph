@@ -42,8 +42,7 @@ DrawingEngine.prototype.init_svg = function (){
       .attr("width", this.width)
       .attr("height", this.height)
       .attr("id", "svg")
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      // .attr("preserveAspectRatio", "xMinYMin meet");
+      // .attr("preserveAspectRatio", "xMinYMin meet")
     // this.svg.append('rect')
     //     .attr('class', 'background')
     //     .attr('width', "100%")
@@ -139,6 +138,9 @@ DrawingEngine._update_highlighting = function(){
     }
       
   })
+
+  if (vLayout.isReady)
+    vLayout.mark_hidden();
 
 
 }
