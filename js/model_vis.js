@@ -26,10 +26,10 @@ VarLayout.prototype.mark_hidden = function() {
 };
 
 VarLayout.applyColors = function() {
-	shown_v.filter(function (v) { return v.has_links; })
+	shown_v.filter(function (v) { return (v.has_links && !v.isHighlighted); })
 		   .forEach( function (v) {
 		   		d3.select(vLayout.model_nodes[v.name])
-			  	  .attr("style", function (d) {return "fill: " + VarLayout.getRandomColor(v);});
+			  	  .attr("style", function (d) {return "fill: " + VarLayout.getRightColor(v);});
 		   });
 };
 
@@ -119,7 +119,7 @@ VarLayout.prototype._put_node = function (name, x, y){
     	.attr("width", NODE_SIZE)
     	.attr("height", NODE_SIZE)
     	.attr("x", x).attr("y", y);
-    	// .style('fill', VarLayout.getRandomColor(var_map[name]));
+    	// .style('fill', VarLayout.getRightColor(var_map[name]));
 
     rect[0][0].addEventListener('click', function (e){
     	// var v = VarLayout._self.svg_to_var[d.target];
@@ -132,11 +132,11 @@ VarLayout.prototype._put_node = function (name, x, y){
     // this.svg_to_var[rect[0][0]] = data.all_v[name];
 };
 
-VarLayout.getRandomColor = function(d) {
+VarLayout.getRightColor = function(d) {
 	if (d === undefined)
 		return 'white';
 
-	var b = 0.1 + Math.sqrt((d.occurs - min_occurrence) / (max_occurrence - min_occurrence));
+	var b =  Math.sqrt((d.occurs - min_occurrence) / (max_occurrence - min_occurrence));
 	var color = 'rgba(' + 25 +',' + 25 + ',' + 255 + ',' + b + ')';
 	console.log(color);
 	return color;

@@ -134,7 +134,7 @@ DrawingEngine._update_highlighting = function(){
     {
       d3.select(n.svg_element).style("fill", function (d) {return "rgba(255, 255, 255, 1)";});
       if (vLayout.isReady)
-        d3.select(vLayout.model_nodes[n.name]).attr("style", function (d) {return "fill: " + VarLayout.getRandomColor(d);});
+        d3.select(vLayout.model_nodes[n.name]).attr("style", function (d) {return "fill: " + VarLayout.getRightColor(d);});
         // d3.select(vLayout.model_nodes[n.name]).style("fill", function (d) {return "rgba(255, 255, 255, 1)";});
     }
       

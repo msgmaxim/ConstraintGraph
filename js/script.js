@@ -36,9 +36,9 @@ function init(){
     // run_graph('data/golomb_9.fzn', 'data/golomb_ng_9.dat');
     
     // run_graph('data/radiation/radiation_01.fzn', 'data/radiation/radiation_01.dat');
-    run_graph('data/radiation/radiation_02.fzn', 'data/radiation/radiation_02.dat');
+    // run_graph('data/radiation/radiation_02.fzn', 'data/radiation/radiation_02.dat');
     // run_graph('data/radiation/radiation_03.fzn', 'data/radiation/radiation_03.dat');
-    // run_graph('data/radiation/radiation_04.fzn', 'data/radiation/radiation_04.dat');
+    run_graph('data/radiation/radiation_04.fzn', 'data/radiation/radiation_04.dat');
     // run_graph('data/radiation/radiation_05.fzn', 'data/radiation/radiation_05.dat');
     // run_graph('data/radiation/radiation_06.fzn', 'data/radiation/radiation_06.dat');
     // run_graph('data/radiation/radiation_07.fzn', 'data/radiation/radiation_07.dat');
