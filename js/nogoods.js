@@ -27,7 +27,7 @@ function read_variables(lines){ // !good
     if (index < 0) continue;
       
     var pair = lines[i].substring(index + 7).trim().split(' ');
-    variables[i] = {name: pair[0], id: i};
+    variables[i] = {name: pair[0], id: i, occurs: 0};
     var_map[pair[0]] = variables[i];
   }
 
@@ -72,7 +72,13 @@ function read_clauses(lines){
     var clause = lines[i].substring(index + 8).split(" ");
     var arr = [];
     for (j in clause){
-      arr.push(map_varlits[Math.abs(parseInt(clause[j]))]);
+      var v = map_varlits[Math.abs(parseInt(clause[j]))];
+      if (v === undefined) {
+        console.log('undefined variable detected: ', clause[j]);   
+      } else {
+        arr.push(v);
+      }
+       
     }
     clauses.push(arr);
   
@@ -84,7 +90,7 @@ function read_clauses(lines){
 
 function generate_vars(){
   vLayout.new_variables = {};
-  console.log(variables);
+  console.log("variables: ", variables);
   for (i in variables){
     var instance = variables[i].name;
     var b1 = instance.indexOf('[');
@@ -131,7 +137,7 @@ function generate_vars(){
       }
     }
   }
-  console.log(vLayout.new_variables);
+  console.log("new_variables: ", vLayout.new_variables);
   //vLayout.update_drawing();
 }
 
@@ -149,7 +155,7 @@ function generate_graph(){
   for (i in clauses){
     for (var j = 0; j < clauses[i].length; j++){
       for (var k = j+1; k < clauses[i].length; k++){
-        if (clauses[i][j] == undefined)
+        if (clauses[i][k] == undefined)
           console.log("ooops");
          connect_nodes(clauses[i][j], clauses[i][k]);
       }
@@ -170,15 +176,18 @@ function generate_graph(){
 
 function connect_nodes(n1, n2){
   if (n1 == n2) return;
+
   var v1 = parseInt(n1["id"]), v2 = parseInt(n2["id"]);
   var link;
   if (v1 > v2) {v2 = v1 + v2; v1 = v2 - v1; v2 = v2 - v1;} // swap
 
+  var1 = variables[parseInt(v1)];
+  var2 = variables[parseInt(v2)];
+
   if( links_map[v1 + " " + v2] == undefined) {
     
     link = {};
-    var1 = variables[parseInt(v1)];
-    var2 = variables[parseInt(v2)];
+    
     link.source = var1;
     link.target = var2;
 

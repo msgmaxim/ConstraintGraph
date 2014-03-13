@@ -21,6 +21,16 @@ VarLayout.prototype.mark_hidden = function() {
 			  .attr("style", function (d) {return "stroke: lightgrey";});
 		}
 	}
+
+	VarLayout.applyColors();
+};
+
+VarLayout.applyColors = function() {
+	shown_v.filter(function (v) { return v.has_links; })
+		   .forEach( function (v) {
+		   		d3.select(vLayout.model_nodes[v.name])
+			  	  .attr("style", function (d) {return "fill: " + VarLayout.getRandomColor(v);});
+		   });
 };
 
 
@@ -28,7 +38,7 @@ VarLayout.prototype.init = function(){
 
 	this.svg = d3.select("#v_layout").append("svg")
       .attr("height", this.height);
-    this.vis = this.svg.append('g');
+    this.vis = this.svg.append('g').attr('class', 'vlayout_vis');
     this.svg.call(d3.behavior.zoom().on("zoom", (function(caller) {
         return function() {caller._apply_zooming.apply(caller, arguments);};
       })(this)));
@@ -66,6 +76,9 @@ VarLayout.prototype.update_drawing = function(){
 		if (item.type == "var")
 			y = this.draw_var(item, x, y);
 		else if (item.type == "arr"){
+
+			VarLayout._drawLabel(this.vis, item.name, x, y); // adding array labels to vis
+
 			switch(item.n.length){
 				case 1:
 					y = this.draw_one_dim_array(item, x, y);
@@ -85,11 +98,28 @@ VarLayout.prototype.update_drawing = function(){
 	this.mark_hidden();
 };
 
+VarLayout._drawLabel = function (vis, text, x, y) {
+	vis.append('text')
+		.attr('x', x - NODE_SIZE / 2)
+		.attr('y', y)
+		.attr('class', 'vl_label')
+		.text(text);
+};
+
+VarLayout._getRelPosition = function ( ) {
+	// ...
+};
+
 VarLayout.prototype._put_node = function (name, x, y){
+
+	x = x - NODE_SIZE/2;
+	y = y - NODE_SIZE/2;
+
 	var rect = this.vis.append("rect").attr("class", "vl_node")
     	.attr("width", NODE_SIZE)
     	.attr("height", NODE_SIZE)
     	.attr("x", x).attr("y", y);
+    	// .style('fill', VarLayout.getRandomColor(var_map[name]));
 
     rect[0][0].addEventListener('click', function (e){
     	// var v = VarLayout._self.svg_to_var[d.target];
@@ -100,22 +130,27 @@ VarLayout.prototype._put_node = function (name, x, y){
     this.model_nodes[name] = rect[0][0];
     rect[0][0].variable = var_map[name];
     // this.svg_to_var[rect[0][0]] = data.all_v[name];
-}
+};
+
+VarLayout.getRandomColor = function(d) {
+	if (d === undefined)
+		return 'white';
+
+	var b = 0.1 + Math.sqrt((d.occurs - min_occurrence) / (max_occurrence - min_occurrence));
+	var color = 'rgba(' + 25 +',' + 25 + ',' + 255 + ',' + b + ')';
+	console.log(color);
+	return color;
+};
 
 VarLayout.prototype.draw_one_dim_array = function(item, x, y){
 	var vis = this.vis;
 
 	y += NODE_SIZE;
 
-	vis.append('text').attr('x', x - NODE_SIZE / 2)
-					  .attr('y', y - NODE_SIZE)
-					  .attr('class', 'vl_label')
-					  .text(item.name);
-
 	for (var j = 0; j < item.n[0]; j++){
 
     	var name = item.name + "[" + (j + 1) + "]";
-    	this._put_node(name, x - NODE_SIZE/2, y - NODE_SIZE/2);
+    	this._put_node(name, x, y);
 
 		x += NODE_SIZE + ELEMENT_DISTANCE;
 	}
@@ -131,16 +166,11 @@ VarLayout.prototype.draw_two_dim_array = function(item, x, y){
 
 	y += NODE_SIZE;
 
-	vis.append('text').attr('x', x - NODE_SIZE / 2)
-					  .attr('y', y - NODE_SIZE)
-					  .attr('class', 'vl_label')
-					  .text(item.name);
-
 	for (var i = 0; i < item.n[1]; i++){
 		for (var j = 0; j < item.n[0]; j++){
 			
 	    	var name = item.name + "[" + (i * item.n[0] + j + 1) + "]";
-	    	this._put_node(name, x - NODE_SIZE/2, y - NODE_SIZE/2);
+	    	this._put_node(name, x, y);
 
 	    	x += NODE_SIZE + ELEMENT_DISTANCE;
 
@@ -163,11 +193,6 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 	var init_x = x;
 	var init_y = y;
 
-	vis.append('text').attr('x', x - NODE_SIZE / 2)
-					  .attr('y', y - NODE_SIZE)
-					  .attr('class', 'vl_label')
-					  .text(item.name);
-
 	for (var i = 0; i < item.n[0]; i++){
 		for (var j = 0; j < item.n[1]; j++){
 			for (var k = 0; k < item.n[2]; k++){
@@ -175,7 +200,7 @@ VarLayout.prototype.draw_three_dim_array = function(item, x, y){
 				var name = item.name + "[" + (i * item.n[1] * item.n[2] 
 					+ j * item.n[2] + k + 1) + "]";
 
-    	   		this._put_node(name, x - NODE_SIZE/2, y - NODE_SIZE/2);
+    	   		this._put_node(name, x, y);
 
 				x += NODE_SIZE + ELEMENT_DISTANCE;
 			}

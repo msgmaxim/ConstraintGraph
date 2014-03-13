@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"_draw",
+				"_draw_var_list"
+			],
+			[
+				"un",
+				"set_all_unhighlighted"
+			],
+			[
+				"up",
+				"_update_highlighting"
+			],
+			[
+				"lay",
+				"layerY"
+			],
+			[
 				"read",
 				"read_data"
 			],
@@ -96,10 +112,6 @@
 				"nodesLayer"
 			],
 			[
-				"un",
-				"unhighlight_all"
-			],
-			[
 				"dta",
 				"dataset"
 			],
@@ -154,10 +166,6 @@
 			[
 				"_dra",
 				"_draw_array_elements"
-			],
-			[
-				"_draw",
-				"_draw_expanded_array"
 			],
 			[
 				"draw",
@@ -506,19 +514,75 @@
 			[
 				"ta",
 				"target_id"
-			],
-			[
-				"t",
-				"target_id"
-			],
-			[
-				"lef",
-				"leftsider"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 1131,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "css/styles.css",
+			"settings":
+			{
+				"buffer_size": 1307,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/drawing_engine.js",
+			"settings":
+			{
+				"buffer_size": 17697,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/script.js",
+			"settings":
+			{
+				"buffer_size": 10269,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/model_vis.js",
+			"settings":
+			{
+				"buffer_size": 4739,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/nogoods.js",
+			"settings":
+			{
+				"buffer_size": 5175,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "data/radiation_04.fzn",
+			"settings":
+			{
+				"buffer_size": 60043,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "data/radiation_04_ng.dat",
+			"settings":
+			{
+				"buffer_size": 220981,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/C++/C++.sublime-build",
 	"command_palette":
@@ -722,6 +786,7 @@
 		"height": 0.0,
 		"where_history":
 		[
+			"",
 			"/www/drawconstraints/js",
 			"/home/maxim/au/GistSimilarSubtrees/gecode/gist,-moc*",
 			"/home/maxim/au/libmzn/include/minizinc,/home/maxim/au/libmzn/lib,/home/maxim/au/libmzn/mzn2fzn.cpp",
@@ -738,6 +803,21 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"selectionStart",
+			"radiation_04_ng",
+			"mark",
+			"in mark",
+			"vLayout",
+			"){",
+			"    ",
+			"d",
+			"content_mdown",
+			"addEventListener",
+			"set_all",
+			"select_inner_nodes",
+			"filter_sin",
+			"highlight",
+			"var_map",
 			"attr",
 			"constraints",
 			"key",
@@ -850,22 +930,7 @@
 			"getnoof",
 			"CompareShapes",
 			"getnoof",
-			"countnoof",
-			"multimap<",
-			"searcher",
-			"searchall",
-			"shift+s",
-			"CompareSh",
-			"pair",
-			"multimap<Shape*",
-			"<Shape*",
-			"AnalyzeCursor",
-			"NodeStatus",
-			"setHasSolvedChildren",
-			"HASSOLVEDCHILDREN",
-			"hasSolved",
-			"AnalyzeCursor>",
-			"has"
+			"countnoof"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -873,6 +938,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"){",
+			"capture_nodes",
 			"highlight_cnode",
 			"shapesSet",
 			"multiset<VisualNode*>",
@@ -897,8 +964,226 @@
 	"groups":
 	[
 		{
+			"selected": 7,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 1131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1110,
+								1051
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "css/styles.css",
+					"settings":
+					{
+						"buffer_size": 1307,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								820,
+								820
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 743.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "js/drawing_engine.js",
+					"settings":
+					{
+						"buffer_size": 17697,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1196,
+								1196
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2751.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/script.js",
+					"settings":
+					{
+						"buffer_size": 10269,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4048,
+								4048
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "js/model_vis.js",
+					"settings":
+					{
+						"buffer_size": 4739,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								886,
+								886
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 403.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "js/nogoods.js",
+					"settings":
+					{
+						"buffer_size": 5175,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3578,
+								3578
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2501.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "data/radiation_04.fzn",
+					"settings":
+					{
+						"buffer_size": 60043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "data/radiation_04_ng.dat",
+					"settings":
+					{
+						"buffer_size": 220981,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13035,
+								13035
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 7747.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -1097,7 +1382,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 161.0,
 	"status_bar_visible": true
 }

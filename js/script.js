@@ -15,6 +15,8 @@ var model_links = [];
 var diff_links = [];
 var difference_graph = false;
 // var show_single_vars = false;
+var max_occurrence;
+var min_occurrence;
 
 function init(){
   de.init_svg();
@@ -29,11 +31,19 @@ function init(){
   console.log(document.getElementById("search_input"));
   if (isRunInBrouser)
     // run_graph('data/cars.fzn')
-    // run_graph('data/cars.fzn', 'data/cars_mod.dat')
+    // run_graph('data/cars.fzn', 'data/cars_mod.dat');
     // run_graph('data/queen_cp2.fzn', 'data/queens_ng.dat');
     // run_graph('data/golomb_9.fzn', 'data/golomb_ng_9.dat');
-    // run_graph('data/radiation.fzn', 'data/radiation_ng.dat');
-    run_graph('data/radiation_04.fzn', 'data/radiation_04_ng.dat');
+    
+    // run_graph('data/radiation/radiation_01.fzn', 'data/radiation/radiation_01.dat');
+    run_graph('data/radiation/radiation_02.fzn', 'data/radiation/radiation_02.dat');
+    // run_graph('data/radiation/radiation_03.fzn', 'data/radiation/radiation_03.dat');
+    // run_graph('data/radiation/radiation_04.fzn', 'data/radiation/radiation_04.dat');
+    // run_graph('data/radiation/radiation_05.fzn', 'data/radiation/radiation_05.dat');
+    // run_graph('data/radiation/radiation_06.fzn', 'data/radiation/radiation_06.dat');
+    // run_graph('data/radiation/radiation_07.fzn', 'data/radiation/radiation_07.dat');
+    // run_graph('data/radiation/radiation_08.fzn', 'data/radiation/radiation_08.dat');
+    // run_graph('data/radiation/radiation_09.fzn', 'data/radiation/radiation_09.dat');
 
 }
 
@@ -90,6 +100,31 @@ DragRect.content_mup = function(e) {
   document.removeEventListener('mousemove', DragRect.update);
     d3.select('.drag_rect').remove();
     
+}
+
+function calc_max_occurrence() {
+  max_occurrence = diff_links.reduce(function (a, b) { 
+    return a > b.occurrence ? a : b.occurrence;
+  });  
+
+  console.log("max_occurrence: ", max_occurrence);
+}
+
+function count_var_occurrence(){
+  diff_links.forEach(function (l) {
+    var v1 = l.source;
+    var v2 = l.target;
+
+    if (v1.occurs < l.occurrence) v1.occurs = l.occurrence;
+    if (v2.occurs < l.occurrence) v2.occurs = l.occurrence;
+
+  });
+
+  min_occurrence = variables.reduce(function (min, curr) {
+    return (min > curr.occurs && curr.name.indexOf('[') > 0) ? curr.occurs : min; /// aahhh...
+  }, Math.pow(2, 53))
+
+  console.log("min occurrence: ", min_occurrence);
 }
 
 function capture_nodes(x1, y1, x2, y2) {
@@ -164,6 +199,8 @@ function apply_graph(){
     links = cola_links = diff_links = subtract_graph(nogood_links, model_links); /// not a copy
     // links = cola_links = diff_links = nogood_links; /// not a copy
     shown_v = nogood_shown_v;
+    calc_max_occurrence();
+    count_var_occurrence();
   } else {
     links = cola_links = model_links; /// not a copy
     shown_v = [].concat(model_shown_v, data.constraint_nodes);
@@ -196,9 +233,6 @@ function update_filter(e){
 }
 
 function apply_filter(value){
-  var max_occurrence = diff_links.reduce(function (a, b) { 
-    return a > b.occurrence ? a : b.occurrence;
-  });  
   var n_value = max_occurrence - value * max_occurrence / 100;
   links = cola_links = diff_links.filter(function (l) { return l.occurrence >= n_value; });
   update_filter_label(Math.round(n_value));
